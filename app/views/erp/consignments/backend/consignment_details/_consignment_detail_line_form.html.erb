@@ -1,0 +1,17 @@
+<input type="hidden" name="consignment[consignment_details_attributes][<%= uid %>][id]" value="<%= consignment_detail.id %>">
+<input type="hidden" name="consignment[consignment_details_attributes][<%= uid %>][product_id]" value="<%= consignment_detail.product_id %>">
+<input type="hidden" name="consignment[consignment_details_attributes][<%= uid %>][_destroy]" value="">
+<td><%= consignment_detail.get_product_code %></td>
+<td><%= consignment_detail.get_product_name %></td>
+<td>
+    <%= erp_form_control("number", {
+        name: 'consignment[consignment_details_attributes]['+ uid + '][quantity]',
+        value: consignment_detail.quantity
+    }) %>
+</td>
+<td><%= consignment_detail.get_product_unit %></td>
+<td class="text-right">
+    <%= erp_form_control("addableform_remove_button", {
+        is_nested_form: true
+    }) %>
+</td>

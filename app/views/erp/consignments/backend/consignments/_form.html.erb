@@ -1,0 +1,179 @@
+<%= form_for([erp_consignments, :backend, consignment], html: {multipart: true}) do |f| %>
+    <div class="form-body">        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="portlet light bordered">
+                    <div class="portlet-body form">
+                        <%= erp_form_control("text", {
+                            name: 'consignment[code]',
+                            value: consignment.code,
+                            id: "consignment_code",
+                            label: t('.code'),
+                            placeholder: t('.enter_code'),
+                            help: t('.help_code'),
+                            required: true,
+                            errors: consignment.errors.full_messages_for(:code)
+                        }) %>
+                        <%= erp_form_control('date', {
+                            name: 'consignment[sent_date]',
+                            value: consignment.sent_date,
+                            placeholder: t('.choose_sent_date'),
+                            label: t('.sent_date'),
+                            required: true,
+                            errors: consignment.errors.full_messages_for(:sent_date)
+                        }) %>
+                        <%= erp_form_control('date', {
+                            name: 'consignment[return_date]',
+                            value: consignment.return_date,
+                            placeholder: t('.choose_return_date'),
+                            label: t('.return_date'),
+                            required: true,
+                            errors: consignment.errors.full_messages_for(:return_date)
+                        }) %>
+                        <% if Erp::Core.available?("contacts") %>
+                            <%= erp_form_control("dataselect", {
+                                name: 'consignment[contact_id]',
+                                value: consignment.contact_id,
+                                text: consignment.contact_name,
+                                placeholder: t('.choose_contact'),
+                                label: t('.contact'),
+                                url: erp_contacts.dataselect_backend_contacts_path(format: 'json'),
+                                create: {
+                                    url: erp_contacts.new_backend_contact_path,
+                                    title: t('.create_contact'),
+                                    container_selector: '.new_contact',
+                                    input_selector: 'input[name="contact[name]"]',
+                                    modal_size: "full"
+                                },
+                                edit: {
+                                    url: erp_contacts.edit_backend_contact_path(id: ':value'),
+                                    title: t('.edit_contact'),
+                                    container_selector: '.edit_contact',
+                                    modal_size: "full"
+                                },
+                                required: true,
+                                errors: consignment.errors.full_messages_for(:contact_id)
+                            }) %>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="portlet light bordered">
+                    <div class="portlet-body form">
+                        <%= erp_form_control('select', {
+                            label: t('.consignment_type'),
+                            name: 'consignment[consignment_type]',
+                            value: consignment.consignment_type,
+                            options: Erp::Consignments::Consignment.get_consignment_type_options(),
+                            required: true,
+                            errors: consignment.errors.full_messages_for(:consignment_type)
+                        }) %>
+                        <%= erp_form_control("dataselect", {
+                            name: 'consignment[employee_id]',
+                            value: consignment.employee_id,
+                            text: consignment.employee_name,
+                            placeholder: t('.choose_employee'),
+                            label: t('.employee'),
+                            url: erp.dataselect_backend_users_path(format: 'json'),
+                            required: true,
+                            errors: consignment.errors.full_messages_for(:employee_id)
+                        }) %>
+                        <% if Erp::Core.available?("warehouses") %>
+                            <%= erp_form_control("dataselect", {
+                                name: 'consignment[warehouse_id]',
+                                value: consignment.warehouse_id,
+                                text: consignment.warehouse_name,
+                                placeholder: t('.choose_warehouse'),
+                                label: t('.warehouse'),
+                                url: erp_warehouses.dataselect_backend_warehouses_path(format: 'json'),
+                                create: {
+                                    url: erp_warehouses.new_backend_warehouse_path,
+                                    title: t('.create_warehouse'),
+                                    container_selector: '.new_warehouse',
+                                    input_selector: 'input[name="warehouse[name]"]'
+                                },
+                                edit: {
+                                    url: erp_warehouses.edit_backend_warehouse_path(id: ':value'),
+                                    title: t('.edit_warehouse'),
+                                    container_selector: '.edit_warehouse'
+                                },
+                                required: true,
+                                errors: consignment.errors.full_messages_for(:warehouse_id)
+                            }) %>
+                        <% end %>
+                        <%= erp_form_control("textarea", {
+                            name: 'consignment[note]',
+                            value: consignment.note,
+                            label: t('.note'),
+                            placeholder: t('.enter_note')
+                        }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% if Erp::Core.available?("products") %>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom ">
+                    <ul class="nav nav-tabs ">
+                        <li class="active">
+                            <a href="#tab_5_1" data-toggle="tab" aria-expanded="true"><%= t('.consignment_details') %></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane addableform-table active" id="tab_5_1">
+                            <%= erp_form_control("addableform", {
+                                type: 'table',
+                                add_button: t('.add_product'),
+                                partial: 'erp/consignments/backend/consignment_details/consignment_detail_line_form',
+                                partial_url: erp_consignments.consignment_detail_line_form_backend_consignment_details_path,
+                                items: @consignment.consignment_details,
+                                item: :consignment_detail,
+                                add_control_selector: "input[name='product_id']",
+                                add_control: erp_form_control("dataselect", {
+                                    name: 'product_id',
+                                    placeholder: t('.choose_product'),
+                                    label: t('.product'),
+                                    help: t('.help_product'),
+                                    url: erp_products.dataselect_backend_products_path(format: 'json'),
+                                    create: {
+                                        url: erp_products.new_backend_product_path,
+                                        title: t('.create_product'),
+                                        container_selector: '.new_product',
+                                        input_selector: 'input[name="product[name]"]',
+                                        modal_size: "full"
+                                    },
+                                    edit: {
+                                        url: erp_products.edit_backend_product_path(id: ':value'),
+                                        title: t('.edit_product'),
+                                        container_selector: '.edit_product',
+                                        modal_size: "full"
+                                    }
+                                }),
+                                thead: "<th>#{t('.code')}</th>
+                                        <th>#{t('.name')}</th>
+                                        <th>#{t('.quantity')}</th>
+                                        <th>#{t('.unit')}</th>
+                                        <th class='text-right'>#{t('.action')}</th>"
+                            }) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% end %>
+    </div>
+    <%= erp_component('button/save', {
+        text: t('submit')
+    }) %>
+    <%= erp_component('button/cancel', {
+        text: t('cancel'),
+        href: erp_consignments.backend_consignments_path
+    }) %>
+<% end %>
+<script>
+  window.onload = function() {
+    document.getElementById("consignment_code").focus();
+  };
+</script>

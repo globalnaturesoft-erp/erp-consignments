@@ -1,0 +1,91 @@
+vi:
+  consign: "Ký gửi"
+  lend: "Cho mượn"
+  layouts:
+    erp:
+      backend:
+        sidebar:
+          consignment: "Nhập trả hàng"
+          consignments: "Ký gửi - Cho mượn"
+  erp:
+    consignments:
+      backend:
+        consignments:
+          create:
+            success: "Thêm phiếu thành công."
+          update:
+            success: "Cập nhật phiếu thành công."
+          destroy:
+            success: "Xóa phiếu thành công."
+          delete_all:
+            success: "Xóa phiếu được chọn thành công."
+          archive:
+            success: "Ẩn phiếu thành công."
+          unarchive:
+            success: "Hiện phiếu thành công."
+          archive_all:
+            success: "Ẩn phiếu được chọn thành công."
+          unarchive_all:
+            success: "Hiện phiếu được chọn thành công."
+          index:
+            consignments: "Tất cả phiếu"
+            create: "Thêm phiếu"
+            delete: "Xóa phiếu"
+            code: "Mã phiếu"
+            sent_date: "Ngày xuất"
+            return_date: "Ngày trả"
+            contact: "Khách hàng"
+          list:
+            delete: "Xóa chuyên mục"
+            code: "Mã phiếu"
+            sent_date: "Ngày xuất"
+            return_date: "Ngày trả"
+            contact: "Khách hàng"
+            pending: "Chưa xác nhận"
+            approved: "Đã xác nhận"
+            no_matching_records_found: "Danh sách phiếu hiện tại đang trống."
+          new:
+            consignments: "Tất cả phiếu"
+            create: "Thêm phiếu"
+          edit:
+            consignments: "Tất cả phiếu"
+            create: "Thêm phiếu"
+          consignment_details:
+            consignment_details: "Chi tiết đã xuất"
+            code: "Mã phiếu"
+            name: "Tên sản phẩm"
+            quantity: "Số lượng"
+            unit: "Đơn vị tính"
+            consign: "Ký gửi"
+            lend: "Cho mượn"
+          form:
+            code: "Mã phiếu"
+            name: "Tên sản phẩm"
+            quantity: "Số lượng"
+            unit: "Đơn vị tính"
+            action: "Thao tác"
+            product: "Sản phẩm"
+            help_product: "Chọn & Thêm sản phẩm cần ký gửi hoặc cho mượn"
+            choose_product: "Chọn sản phẩm"
+            add_product: "Thêm sản phẩm"
+            create_product: "Thêm sản phẩm"
+            edit_product: "Cập nhật sản phẩm"
+            enter_code: "Nhập mã phiếu..."
+            help_code: "Mã phiếu ký gửi hoặc cho mượn khi tạo phiếu"
+            sent_date: "Ngày xuất"
+            choose_sent_date: "Chọn ngày xuất"
+            return_date: "Ngày trả"
+            choose_return_date: "Chọn ngày trả"
+            contact: "Khách hàng"
+            choose_contact: "Chọn khách hàng"
+            create_contact: "Thêm thông tin người nhận"
+            edit_contact: "Cập nhật thông tin người nhận"
+            employee: "Nhân viên phụ trách"
+            choose_employee: "Chọn nhân viên phụ trách"
+            create_warehouse: "Thêm kho hàng"
+            edit_warehouse: "Cập nhật kho hàng"
+            warehouse: "Kho"
+            choose_warehouse: "Chọn kho xuất ký gửi"
+            consignment_details: "Chi tiết phiếu ký gửi"
+            note: "Ghi chú"
+            enter_note: "Nhập nội dung ghi chú..."

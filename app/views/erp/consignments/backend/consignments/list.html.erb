@@ -1,0 +1,119 @@
+<table class="table table-advance table-hover table-striped table-checkable order-column">
+    <thead>
+        <tr>
+            <th width='1%'>
+                <%= erp_datalist_check_all %>
+            </th>
+            <% if get_columns(params).include?("code") %>
+                <th><%= t('.code') %></th>
+            <% end %>
+            <% if get_columns(params).include?("contact") %>
+                <th><%= t('.contact') %></th>
+            <% end %>
+            <% if get_columns(params).include?("sent_date") %>
+                <th><%= t('.sent_date') %></th>
+            <% end %>
+            <% if get_columns(params).include?("return_date") %>
+                <th><%= t('.return_date') %></th>
+            <% end %>
+            <% if get_columns(params).include?("status") %>
+                <th><%= t('status') %></th>
+            <% end %>
+            <% if get_columns(params).include?("creator") %>
+                <th class="text-center"><%= t('creator') %></th>
+            <% end %>
+            <% if get_columns(params).include?("created_at") %>
+                <th><%= t('created_at') %></th>
+            <% end %>
+            <th class="text-right" width="7%"><%= t('actions') %></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if @consignments.each do |consignment| %>
+            <tr class="odd gradeX has-child-table" data-url="<%= erp_consignments.consignment_details_backend_consignments_path(id: consignment.id) %>">
+                <td>
+                    <%= erp_datalist_check_row(id: consignment.id) %>
+                </td>
+                <% if get_columns(params).include?("code") %>
+                    <td>
+                        <i class="fa fa-plus expand tr-expand-button"></i>
+                        <strong><%= link_to "#" + consignment.code, erp_consignments.edit_backend_consignment_path(consignment) %></strong>
+                    </td>
+                <% end %>
+                <% if get_columns(params).include?("contact") %>
+                    <td><%= consignment.contact_name %></td>
+                <% end %>
+                <% if get_columns(params).include?("sent_date") %>
+                    <td><%= consignment.sent_date.strftime("%d/%m/%Y") %></td>
+                <% end %>
+                <% if get_columns(params).include?("return_date") %>
+                    <td><%= consignment.return_date.strftime("%d/%m/%Y") %></td>
+                <% end %>
+                <% if get_columns(params).include?("status") %>
+                <td>
+                    <% if consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING %>
+                        <%= erp_component('label/danger', {
+                            text: t('.'+consignment.status)
+                        }) %>
+                    <% end %>
+                    <% if consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED %>
+                        <%= erp_component('label/success', {
+                            text: t('.'+consignment.status)
+                        }) %>
+                    <% end %>
+                </td>
+                <% end %>
+                <% if get_columns(params).include?("creator") %>
+                    <td>
+                        <%= erp_component('avatar', {
+                            user: consignment.creator
+                        }) %>
+                    </td>
+                <% end %>
+                <% if get_columns(params).include?("created_at") %>
+                    <td><%= consignment.created_at.strftime("%d/%m/%Y") %></td>
+                <% end %>
+                <td>
+                    <%= erp_datalist_row_actions(
+                        [
+                            {
+                                text: '<i class="fa fa-edit"></i> '+t('edit'),
+                                href: erp_consignments.edit_backend_consignment_path(consignment)
+                            },
+                            {
+                                text: '<i class="fa fa-eye-slash"></i> '+t('archive'),
+                                url: erp_consignments.archive_backend_consignments_path(id: consignment),
+                                data_method: 'PUT',
+                                hide: consignment.archived,
+                                class: 'ajax-link'
+                            },
+                            {
+                                text: '<i class="fa fa-eye"></i> '+t('unarchive'),
+                                url: erp_consignments.unarchive_backend_consignments_path(id: consignment),
+                                data_method: 'PUT',
+                                hide: !consignment.archived,
+                                class: 'ajax-link'
+                            },
+                            {
+                                divider: true
+                            },
+                            {
+                                text: '<i class="fa fa-trash"></i> '+t('.delete'),
+                                url: erp_consignments.backend_consignment_path(consignment),
+                                data_method: 'DELETE',
+                                class: 'ajax-link',
+                                data_confirm: t('delete_confirm')
+                            }
+                        ]
+                    ) %>
+                </td>
+            </tr>
+        <% end.empty? %>
+            <tr>
+                <td colspan="7"><%= t('.no_matching_records_found') %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+        
+<%= erp_datalist_pagination(@consignments) %>

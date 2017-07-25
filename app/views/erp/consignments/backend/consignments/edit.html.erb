@@ -1,0 +1,29 @@
+<% content_for :title do %>
+    <%= @consignment.code %>
+<% end %>
+
+<% content_for :page_title do %>    
+    <a href="<%= erp_consignments.backend_consignments_path %>">
+    <i class="fa fa-cubes"></i> <%= t('.consignments') %>
+    </a> / <%= @consignment.code %>
+<% end %>
+
+<% content_for :page_toolbar do %>
+    <%= erp_component('button/create', {
+        text: t('.create'),
+        href: erp_consignments.new_backend_consignment_path,
+        class: 'btn-noborder'
+    }) %>
+<% end %>
+
+<div class="row">
+    <div class="col-md-12">
+        <% if @consignment.errors.any? %>
+            <%= erp_form_control("form_error_message") %>
+        <% end %>
+        
+        <!-- BEGIN SAMPLE FORM PORTLET-->
+        <%= render 'form', consignment: @consignment %>
+        <!-- END SAMPLE FORM PORTLET-->
+    </div>
+</div>
