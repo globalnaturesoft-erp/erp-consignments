@@ -2,8 +2,8 @@ module Erp
   module Consignments
     module Backend
       class ConsignmentsController < Erp::Backend::BackendController
-        before_action :set_consignment, only: [:archive, :unarchive, :edit, :update, :destroy]
-        before_action :set_consignments, only: [:delete_all, :archive_all, :unarchive_all]
+        before_action :set_consignment, only: [:archive, :unarchive, :status_pending, :status_approved, :edit, :update, :destroy]
+        before_action :set_consignments, only: [:delete_all, :archive_all, :status_pending_all, :status_approved_all, :unarchive_all]
     
         # GET /consignments
         def index
@@ -111,6 +111,32 @@ module Erp
           end
         end
         
+        # STATUS PENDING /consignments/status_pending?id=1
+        def status_pending
+          @consignment.status_pending
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end
+        end
+        
+        # STATUS APPROVED /consignments/status_approved?id=1
+        def status_approved
+          @consignment.status_approved
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end
+        end
+        
         # DELETE ALL /consignments/delete_all?ids=1,2,3
         def delete_all         
           @consignments.destroy_all
@@ -142,6 +168,34 @@ module Erp
         # UNARCHIVE ALL /consignments/unarchive_all?ids=1,2,3
         def unarchive_all
           @consignments.unarchive_all
+          
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end          
+        end
+        
+        # STATUS PENDING ALL /consignments/status_pending_all?ids=1,2,3
+        def status_pending_all         
+          @consignments.status_pending_all
+          
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end          
+        end
+        
+        # STATUS APPROVED ALL /consignments/status_approved_all?ids=1,2,3
+        def status_approved_all
+          @consignments.status_approved_all
           
           respond_to do |format|
             format.json {

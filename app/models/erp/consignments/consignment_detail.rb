@@ -1,8 +1,9 @@
 module Erp::Consignments
   class ConsignmentDetail < ApplicationRecord
-    validates :consignment, presence: true
+    validates :consignment, :quantity, presence: true
     
     if Erp::Core.available?("products")
+      validates :product_id, presence: true
       belongs_to :product, class_name: "Erp::Products::Product"      
       def get_product_code
         product.code

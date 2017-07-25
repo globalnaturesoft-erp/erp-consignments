@@ -27,22 +27,39 @@ vi:
             success: "Ẩn phiếu được chọn thành công."
           unarchive_all:
             success: "Hiện phiếu được chọn thành công."
+          status_pending:
+            success: "Hủy xác nhận phiếu thành công."
+          status_approved:
+            success: "Xác nhận phiếu thành công."
+          status_pending_all:
+            success: "Hủy xác nhận phiếu được chọn thành công."
+          status_approved_all:
+            success: "Xác nhận phiếu được chọn thành công."
           index:
             consignments: "Tất cả phiếu"
             create: "Thêm phiếu"
-            delete: "Xóa phiếu"
+            delete: "Xóa phiếu được chọn"
             code: "Mã phiếu"
             sent_date: "Ngày xuất"
             return_date: "Ngày trả"
             contact: "Khách hàng"
+            is_type_consign: "Loại ký gửi"
+            is_type_lend: "Loại cho mượn"
+            is_pending: "Chưa xác nhận"
+            is_approved: "Đã xác nhận"
+            change_approved: "Xác nhận phiếu"
+            change_pending: "Hủy xác nhận phiếu"
           list:
-            delete: "Xóa chuyên mục"
+            delete: "Xóa phiếu"
+            edit: "Cập nhật phiếu"
             code: "Mã phiếu"
             sent_date: "Ngày xuất"
             return_date: "Ngày trả"
             contact: "Khách hàng"
             pending: "Chưa xác nhận"
             approved: "Đã xác nhận"
+            change_approved: "Xác nhận phiếu"
+            change_pending: "Hủy xác nhận phiếu"
             no_matching_records_found: "Danh sách phiếu hiện tại đang trống."
           new:
             consignments: "Tất cả phiếu"
@@ -88,4 +105,33 @@ vi:
             choose_warehouse: "Chọn kho xuất ký gửi"
             consignment_details: "Chi tiết phiếu ký gửi"
             note: "Ghi chú"
+            consignment_type: "Loại phiếu"
             enter_note: "Nhập nội dung ghi chú..."
+  activerecord:
+    errors:
+      models:
+        erp/consignments/consignment:
+          attributes:
+            code:
+              blank: "không được để trống"
+            sent_date:
+              blank: "không được để trống"
+            return_date:
+              blank: "không được để trống"
+            contact_id:
+              blank: "không được để trống"
+            consignment_type:
+              blank: "không được để trống"
+            employee_id:
+              blank: "không được để trống"
+            warehouse_id:
+              blank: "không được để trống"
+    attributes:
+      erp/consignments/consignment:
+        code: "Mã phiếu"
+        sent_date: "Ngày xuất"
+        return_date: "Ngày trả"
+        contact_id: "Khách hàng"
+        consignment_type: "Loại phiếu"
+        employee_id: "Nhân viên phụ trách"
+        warehouse_id: "Kho"

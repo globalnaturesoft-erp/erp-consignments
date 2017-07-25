@@ -1,9 +1,11 @@
 module Erp::Consignments
   class Consignment < ApplicationRecord
+		validates :code, :sent_date, :return_date, :consignment_type, :employee_id, :creator_id, :presence => true
     belongs_to :employee, class_name: "Erp::User"
     belongs_to :creator, class_name: "Erp::User"
     
     if Erp::Core.available?("contacts")
+			validates :contact_id, :presence => true
       belongs_to :contact, class_name: "Erp::Contacts::Contact", foreign_key: :contact_id
       
       def contact_name
@@ -12,6 +14,7 @@ module Erp::Consignments
     end
     
     if Erp::Core.available?("warehouses")
+			validates :warehouse_id, :presence => true
       belongs_to :warehouse, class_name: "Erp::Warehouses::Warehouse"
       
       def warehouse_name
@@ -140,6 +143,28 @@ module Erp::Consignments
       employee.present? ? employee.name : ''
     end
     
+    # STATUS
+    def status_pending
+			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING)
+		end
+    
+    def status_approved
+			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED)
+		end
+    
+    def self.status_pending_all
+			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING)
+		end
+    
+    def self.status_approved_all
+			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED)
+		end
+    
+    def total_quantity
+			return consignment_details.sum('quantity')
+		end
+    
+    # ARCHIVE
     def archive
 			update_attributes(archived: true)
 		end

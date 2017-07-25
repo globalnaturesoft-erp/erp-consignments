@@ -77,21 +77,21 @@
                     <%= erp_datalist_row_actions(
                         [
                             {
-                                text: '<i class="fa fa-edit"></i> '+t('edit'),
+                                text: '<i class="fa fa-edit"></i> '+t('.edit'),
                                 href: erp_consignments.edit_backend_consignment_path(consignment)
                             },
                             {
-                                text: '<i class="fa fa-eye-slash"></i> '+t('archive'),
-                                url: erp_consignments.archive_backend_consignments_path(id: consignment),
+                                text: '<i class="fa fa-check"></i> '+t('.change_approved'),
+                                url: erp_consignments.status_approved_backend_consignments_path(id: consignment),
                                 data_method: 'PUT',
-                                hide: consignment.archived,
+                                hide: consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED,
                                 class: 'ajax-link'
                             },
                             {
-                                text: '<i class="fa fa-eye"></i> '+t('unarchive'),
-                                url: erp_consignments.unarchive_backend_consignments_path(id: consignment),
+                                text: '<i class="fa fa-close"></i> '+t('.change_pending'),
+                                url: erp_consignments.status_pending_backend_consignments_path(id: consignment),
                                 data_method: 'PUT',
-                                hide: !consignment.archived,
+                                hide: consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING,
                                 class: 'ajax-link'
                             },
                             {

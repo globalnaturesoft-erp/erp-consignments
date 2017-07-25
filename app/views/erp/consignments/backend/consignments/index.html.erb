@@ -47,13 +47,13 @@
     ],
     actions: [
         {
-            text: '<i class="fa fa-eye-slash"></i> '+t('archive'),
-            url: erp_consignments.archive_all_backend_consignments_path,
+            text: '<i class="fa fa-check"></i> '+t('.change_approved'),
+            url: erp_consignments.status_approved_all_backend_consignments_path,
             data_method: 'PUT'
         },
         {
-            text: '<i class="fa fa-eye"></i> '+t('unarchive'),
-            url: erp_consignments.unarchive_all_backend_consignments_path,
+            text: '<i class="fa fa-close"></i> '+t('.change_pending'),
+            url: erp_consignments.status_pending_all_backend_consignments_path,
             data_method: 'PUT'
         },
         {
@@ -68,7 +68,19 @@
     ],
     filters: [
         {
-            text: t('archived'), name: 'show_archived', value: true, checked: false
+            text: t('.is_type_consign'), name: 'erp_consignments_consignments.consignment_type', value: 'consign', checked: false
+        },
+        {
+            text: t('.is_type_lend'), name: 'erp_consignments_consignments.consignment_type', value: 'lend', checked: false
+        },
+        {
+            divider: true
+        },
+        {
+            text: t('.is_pending'), name: 'erp_consignments_consignments.status', value: 'pending', checked: false
+        },
+        {
+            text: t('.is_approved'), name: 'erp_consignments_consignments.status', value: 'approved', checked: false
         },
     ],
     columns: [

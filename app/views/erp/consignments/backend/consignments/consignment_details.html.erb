@@ -2,7 +2,7 @@
     <div class="alert alert-info text-left">
         <strong><i class="fa fa-user"></i> Nhân viên phụ trách: </strong> <%= @consignment.contact_name %> &nbsp;&nbsp;
         <strong><i class="fa fa-file-text"></i> Loại phiếu: </strong> <%= t("."+@consignment.consignment_type) %> &nbsp;&nbsp;
-        <strong><i class="fa fa-plus-square"></i> Số lượng đã xuất: </strong> 10 &nbsp;&nbsp;
+        <strong><i class="fa fa-plus-square"></i> Số lượng đã xuất: </strong> <%= @consignment.total_quantity %> &nbsp;&nbsp;
         <strong><i class="fa fa-minus-square"></i> Số lượng đã trả: </strong> 0 &nbsp;&nbsp;
         <strong><i class="fa fa-exchange"></i> Số lượng còn lại: </strong> 10 &nbsp;&nbsp;
     </div>
