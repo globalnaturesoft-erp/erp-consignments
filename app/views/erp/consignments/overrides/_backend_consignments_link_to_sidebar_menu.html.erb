@@ -1,8 +1,10 @@
-<li class="nav-item <%= "active open" if ["erp/consignments/backend/consignments"].include?(params[:controller]) %>">
+<li class="nav-item <%= "active open" if ["erp/consignments/backend/consignments",
+                                          "erp/consignments/backend/cs_returns"].include?(params[:controller]) %>">
     <a href="javascript:;" class="nav-link nav-toggle">
         <i class="fa fa-cubes"></i>
         <span class="title"><%= t('.consignment') %></span>
-        <% if ["erp/consignments/backend/consignments"].include?(params[:controller]) %>
+        <% if ["erp/consignments/backend/consignments",
+               "erp/consignments/backend/cs_returns"].include?(params[:controller]) %>
             <span class="selected"></span>
             <span class="arrow open"></span>
         <% else %>
@@ -10,9 +12,14 @@
         <% end %>
     </a>
     <ul class="sub-menu">
-        <li class="nav-item">
+        <li class="nav-item <%= "active" if ["erp/consignments/backend/consignments"].include?(params[:controller]) %>">
             <a href="<%= erp_consignments.backend_consignments_path %>" class="nav-link">
                 <span class="title"><%= t('.consignments') %></span>
+            </a>
+        </li>
+        <li class="nav-item <%= "active" if ["erp/consignments/backend/cs_returns"].include?(params[:controller]) %>">
+            <a href="<%= erp_consignments.backend_cs_returns_path %>" class="nav-link">
+                <span class="title"><%= t('.cs_returns') %></span>
             </a>
         </li>
     </ul>

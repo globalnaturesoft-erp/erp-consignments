@@ -17,6 +17,22 @@ Erp::Consignments::Engine.routes.draw do
 					put 'unarchive_all'
 				end
 			end
+			resources :cs_returns do
+				collection do
+					post 'list'
+					get 'return_details'
+					get 'dataselect'
+					delete 'delete_all'
+					put 'status_pending'
+					put 'status_approved'
+					put 'status_pending_all'
+					put 'status_approved_all'
+					put 'archive'
+					put 'unarchive'
+					put 'archive_all'
+					put 'unarchive_all'
+				end
+			end
 			resources :consignment_details do
 				collection do
           get 'consignment_detail_line_form'

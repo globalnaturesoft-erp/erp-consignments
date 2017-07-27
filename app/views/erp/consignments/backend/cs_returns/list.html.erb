@@ -4,14 +4,14 @@
             <th width='1%'>
                 <%= erp_datalist_check_all %>
             </th>
+            <% if get_columns(params).include?("consignment_code") %>
+                <th><%= t('.consignment_code') %></th>
+            <% end %>
             <% if get_columns(params).include?("code") %>
                 <th><%= t('.code') %></th>
             <% end %>
-            <% if get_columns(params).include?("contact") %>
-                <th><%= t('.contact') %></th>
-            <% end %>
-            <% if get_columns(params).include?("sent_date") %>
-                <th><%= t('.sent_date') %></th>
+            <% if get_columns(params).include?("contact_return") %>
+                <th><%= t('.contact_return') %></th>
             <% end %>
             <% if get_columns(params).include?("return_date") %>
                 <th><%= t('.return_date') %></th>
@@ -29,36 +29,38 @@
         </tr>
     </thead>
     <tbody>
-        <% if @consignments.each do |consignment| %>
-            <tr class="odd gradeX has-child-table" data-url="<%= erp_consignments.consignment_details_backend_consignments_path(id: consignment.id) %>">
+        <% if @cs_returns.each do |cs_return| %>
+            <tr class="odd gradeX has-child-table" data-url="<%= erp_consignments.return_details_backend_cs_returns_path(id: cs_return.id) %>">
                 <td>
-                    <%= erp_datalist_check_row(id: consignment.id) %>
+                    <%= erp_datalist_check_row(id: cs_return.id) %>
                 </td>
-                <% if get_columns(params).include?("code") %>
+                <% if get_columns(params).include?("consignment_code") %>
                     <td>
                         <i class="fa fa-plus expand tr-expand-button"></i>
-                        <strong><%= link_to "#" + consignment.code, erp_consignments.edit_backend_consignment_path(consignment) %></strong>
+                        <strong><%= link_to "#" + cs_return.consignment.code, erp_consignments.edit_backend_cs_return_path(cs_return) %></strong>
                     </td>
                 <% end %>
-                <% if get_columns(params).include?("contact") %>
-                    <td><%= consignment.contact_name %></td>
+                <% if get_columns(params).include?("code") %>
+                    <td>
+                        <strong><%= link_to "#" + cs_return.code, erp_consignments.edit_backend_cs_return_path(cs_return) %></strong>
+                    </td>
                 <% end %>
-                <% if get_columns(params).include?("sent_date") %>
-                    <td><%= consignment.sent_date.strftime("%d/%m/%Y") %></td>
+                <% if get_columns(params).include?("contact_return") %>
+                    <td><%= cs_return.contact_name %></td>
                 <% end %>
                 <% if get_columns(params).include?("return_date") %>
-                    <td><%= consignment.return_date.strftime("%d/%m/%Y") %></td>
+                    <td><%= cs_return.return_date.strftime("%d/%m/%Y") %></td>
                 <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>
-                    <% if consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING %>
+                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING %>
                         <%= erp_component('label/danger', {
-                            text: t('.'+consignment.status)
+                            text: t('.'+cs_return.status)
                         }) %>
                     <% end %>
-                    <% if consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED %>
+                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED %>
                         <%= erp_component('label/success', {
-                            text: t('.'+consignment.status)
+                            text: t('.'+cs_return.status)
                         }) %>
                     <% end %>
                 </td>
@@ -66,36 +68,32 @@
                 <% if get_columns(params).include?("creator") %>
                     <td>
                         <%= erp_component('avatar', {
-                            user: consignment.creator
+                            user: cs_return.creator
                         }) %>
                     </td>
                 <% end %>
                 <% if get_columns(params).include?("created_at") %>
-                    <td><%= consignment.created_at.strftime("%d/%m/%Y") %></td>
+                    <td><%= cs_return.created_at.strftime("%d/%m/%Y") %></td>
                 <% end %>
                 <td>
                     <%= erp_datalist_row_actions(
                         [
                             {
                                 text: '<i class="fa fa-edit"></i> '+t('.edit'),
-                                href: erp_consignments.edit_backend_consignment_path(consignment)
-                            },
-                            {
-                                text: '<i class="fa fa-file-text"></i> '+t('.create_return'),
-                                href: erp_consignments.new_backend_cs_return_path(consignment_id: consignment.id)
+                                href: erp_consignments.edit_backend_cs_return_path(cs_return)
                             },
                             {
                                 text: '<i class="fa fa-check"></i> '+t('.change_approved'),
-                                url: erp_consignments.status_approved_backend_consignments_path(id: consignment),
+                                url: erp_consignments.status_approved_backend_cs_returns_path(id: cs_return),
                                 data_method: 'PUT',
-                                hide: consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED,
+                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED,
                                 class: 'ajax-link'
                             },
                             {
                                 text: '<i class="fa fa-close"></i> '+t('.change_pending'),
-                                url: erp_consignments.status_pending_backend_consignments_path(id: consignment),
+                                url: erp_consignments.status_pending_backend_cs_returns_path(id: cs_return),
                                 data_method: 'PUT',
-                                hide: consignment.status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING,
+                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING,
                                 class: 'ajax-link'
                             },
                             {
@@ -103,7 +101,7 @@
                             },
                             {
                                 text: '<i class="fa fa-trash"></i> '+t('.delete'),
-                                url: erp_consignments.backend_consignment_path(consignment),
+                                url: erp_consignments.backend_cs_return_path(cs_return),
                                 data_method: 'DELETE',
                                 class: 'ajax-link',
                                 data_confirm: t('delete_confirm')
@@ -120,4 +118,4 @@
     </tbody>
 </table>
         
-<%= erp_datalist_pagination(@consignments) %>
+<%= erp_datalist_pagination(@cs_returns) %>

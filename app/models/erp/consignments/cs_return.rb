@@ -1,9 +1,8 @@
 module Erp::Consignments
-  class Consignment < ApplicationRecord
-		validates :code, :sent_date, :return_date, :consignment_type, :employee_id, :creator_id, :presence => true
-    belongs_to :employee, class_name: "Erp::User"
+  class CsReturn < ApplicationRecord
+    validates :return_date, :consignment_id, :creator_id, :presence => true
+    belongs_to :consignment, class_name: "Erp::Consignments::Consignment"
     belongs_to :creator, class_name: "Erp::User"
-    has_many :cs_returns, class_name: "Erp::Consignments::CsReturn"
     
     if Erp::Core.available?("contacts")
 			validates :contact_id, :presence => true
@@ -14,31 +13,12 @@ module Erp::Consignments
       end
     end
     
-    if Erp::Core.available?("warehouses")
-			validates :warehouse_id, :presence => true
-      belongs_to :warehouse, class_name: "Erp::Warehouses::Warehouse"
-      
-      def warehouse_name
-        warehouse.present? ? warehouse.warehouse_name : ''
-      end
-    end
-    
-    has_many :consignment_details, inverse_of: :consignment, dependent: :destroy
-    accepts_nested_attributes_for :consignment_details, :reject_if => lambda { |a| a[:product_id].blank? || a[:quantity].blank? || a[:quantity].to_i <= 0 }, :allow_destroy => true
+    has_many :return_details, inverse_of: :cs_return, dependent: :destroy
+    accepts_nested_attributes_for :return_details, :reject_if => lambda { |a| a[:consignment_detail_id].blank? || a[:quantity].blank? || a[:quantity].to_i <= 0 }, :allow_destroy => true
     
     # class const
-    TYPE_CONSIGN = 'consign'
-    TYPE_LEND = 'lend'
-    CONSIGNMENT_STATUS_PENDING = 'pending'
-    CONSIGNMENT_STATUS_APPROVED = 'approved'
-    
-    # get type method options
-    def self.get_consignment_type_options()
-      [
-        {text: I18n.t('.consign'), value: Erp::Consignments::Consignment::TYPE_CONSIGN},
-        {text: I18n.t('.lend'), value: Erp::Consignments::Consignment::TYPE_LEND}
-      ]
-    end
+    CS_RETURN_STATUS_PENDING = 'pending'
+    CS_RETURN_STATUS_APPROVED = 'approved'
     
     # Filters
     def self.filter(query, params)
@@ -133,48 +113,28 @@ module Erp::Consignments
         query = query.where('LOWER(code) LIKE ?', "%#{keyword}%")
       end
       
-      query = query.limit(8).map{|consignment| {value: consignment.id, text: consignment.code} }
+      query = query.limit(8).map{|cs_return| {value: cs_return.id, text: cs_return.code} }
     end
     
     def creator_name
       creator.present? ? creator.name : ''
     end
     
-    def employee_name
-      employee.present? ? employee.name : ''
-    end
-    
-    def consignment_code
-			return code
-		end
-    
     # STATUS
     def status_pending
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING)
+			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING)
 		end
     
     def status_approved
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED)
+			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED)
 		end
     
     def self.status_pending_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING)
+			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING)
 		end
     
     def self.status_approved_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED)
-		end
-    
-    def total_returned_quantity        
-			self.consignment_details.sum(&:returned_quantity)
-		end    
-    
-    def total_quantity
-			return consignment_details.sum('quantity')
-		end
-    
-    def total_remain_quantity        
-			total_quantity - total_returned_quantity
+			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED)
 		end
     
     # ARCHIVE

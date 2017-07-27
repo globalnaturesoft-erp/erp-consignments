@@ -1,0 +1,98 @@
+<% content_for :title do %>
+    <%= t('.cs_returns') %>
+<% end %>
+
+<% content_for :page_title do %>
+    <i class="fa fa-cubes"></i> <%= t('.cs_returns') %>
+<% end %>
+
+<div class="row top-datalist">
+    <div class="col-md-6">
+        <%= erp_form_control('dateranges', {
+            form_group: 'no'
+        }) %>
+    </div>
+</div>
+
+<%= erp_datalist(
+    url: erp_consignments.list_backend_cs_returns_path,
+    keywords: [
+        {
+            text: t('.consignment_code'),
+            name: 'erp_consignments_consignments.code',
+            select: {
+                name: 'erp_consignments_consignments.id',
+                data_url: erp_consignments.dataselect_backend_consignments_path
+            }
+        },
+        {
+            text: t('.contact_cs_return'),
+            name: 'erp_contacts_contacts.name',
+            select: {
+                name: 'erp_contacts_contacts.id',
+                data_url: erp_contacts.dataselect_backend_contacts_path
+            }
+        },
+        {
+            text: t('creator'),
+            name: 'erp_users.name',
+            select: {
+                name: 'erp_users.id',
+                data_url: erp.dataselect_backend_users_path
+            }
+        }
+    ],
+    actions: [
+        {
+            text: '<i class="fa fa-check"></i> '+t('.change_approved'),
+            url: erp_consignments.status_approved_all_backend_cs_returns_path,
+            data_method: 'PUT'
+        },
+        {
+            text: '<i class="fa fa-close"></i> '+t('.change_pending'),
+            url: erp_consignments.status_pending_all_backend_cs_returns_path,
+            data_method: 'PUT'
+        },
+        {
+            divider: true
+        },
+        {
+            text: '<i class="fa fa-trash"></i> '+t('.delete'),
+            url: erp_consignments.delete_all_backend_cs_returns_path,
+            data_method: 'DELETE',
+            data_confirm: t('delete_confirm')
+        }
+    ],
+    filters: [
+        {
+            text: t('.is_pending'), name: 'erp_consignments_cs_returns.status', value: 'pending', checked: false
+        },
+        {
+            text: t('.is_approved'), name: 'erp_consignments_cs_returns.status', value: 'approved', checked: false
+        },
+    ],
+    columns: [
+        {
+            text: t('.consignment_code'), name: 'consignment_code', value: true, checked: true
+        },
+        {
+            text: t('.code'), name: 'code', value: true, checked: true
+        },
+        {
+            text: t('.contact_return'), name: 'contact_return', value: true, checked: true
+        },
+        {
+            text: t('.return_date'), name: 'return_date', value: true, checked: true
+        },
+        {
+            text: t('status'), name: 'status', value: true, checked: true
+        },
+        {
+            text: t('creator'), name: 'creator', value: true, checked: false
+        },
+        {
+            text: t('created_at'), name: 'created_at', value: true, checked: false
+        }
+    ],
+    sort: { sort_by: 'erp_consignments_cs_returns.created_at', sort_direction: 'desc' }
+) %>

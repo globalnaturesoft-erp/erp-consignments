@@ -1,0 +1,131 @@
+<%= form_for([erp_consignments, :backend, cs_return], html: {multipart: true}) do |f| %>
+    <input type="hidden" name="cs_return[consignment_id]" value="<%= consignment_id %>">
+    <div class="form-body">        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="portlet light bordered">
+                    <div class="portlet-body form">
+                        Mã phiếu ký gửi: # @todo<br><br>
+                        <%= erp_form_control("text", {
+                            name: 'cs_return[code]',
+                            value: cs_return.code,
+                            id: "cs_return_code",
+                            label: t('.code'),
+                            placeholder: t('.enter_code'),
+                            help: t('.help_code'),
+                            required: true,
+                            errors: cs_return.errors.full_messages_for(:code)
+                        }) %>
+                        <%= erp_form_control('date', {
+                            name: 'cs_return[return_date]',
+                            value: cs_return.return_date,
+                            placeholder: t('.choose_return_date'),
+                            label: t('.return_date'),
+                            required: true,
+                            errors: cs_return.errors.full_messages_for(:return_date)
+                        }) %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="portlet light bordered">
+                    <div class="portlet-body form">
+                        <% if Erp::Core.available?("contacts") %>
+                            <%= erp_form_control("dataselect", {
+                                name: 'cs_return[contact_id]',
+                                value: cs_return.contact_id,
+                                text: cs_return.contact_name,
+                                placeholder: t('.choose_contact_return'),
+                                label: t('.contact_return'),
+                                url: erp_contacts.dataselect_backend_contacts_path(format: 'json'),
+                                create: {
+                                    url: erp_contacts.new_backend_contact_path,
+                                    title: t('.create_contact_return'),
+                                    container_selector: '.new_contact',
+                                    input_selector: 'input[name="contact[name]"]',
+                                    modal_size: "full"
+                                },
+                                edit: {
+                                    url: erp_contacts.edit_backend_contact_path(id: ':value'),
+                                    title: t('.edit_contact_return'),
+                                    container_selector: '.edit_contact',
+                                    modal_size: "full"
+                                },
+                                required: true,
+                                errors: cs_return.errors.full_messages_for(:contact_id)
+                            }) %>
+                        <% end %>
+                        <%= erp_form_control("textarea", {
+                            name: 'cs_return[note]',
+                            value: cs_return.note,
+                            label: t('.note'),
+                            placeholder: t('.enter_note')
+                        }) %>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tabbable-custom ">
+                    <ul class="nav nav-tabs ">
+                        <li class="active">
+                            <a href="#tab_5_1" data-toggle="tab" aria-expanded="true"><%= t('.return_details') %></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane addableform-table active" id="tab_5_1">
+                            <table class="table table-advance table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><%= t('.consignment_code') %></th>
+                                        <th><%= t('.product_name') %></th>
+                                        <th><%= t('.consignment_quantity') %></th>
+                                        <th><%= t('.consignment_return') %></th>
+                                        <th><%= t('.return_quantity') %></th>
+                                        <th><%= t('.status') %></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="addableform-container">
+                                    <% @cs_return.return_details.each_with_index do |return_detail, index| %>
+                                        <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][id]" value="<%= return_detail.id %>">  
+                                        <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][consignment_detail_id]" value="<%= return_detail.consignment_detail_id %>">
+                                        <tr class="addableform-line">
+                                            <td><%= return_detail.get_consignment_code %></td>
+                                            <td><%= return_detail.get_product_name %></td>
+                                            <td>
+                                                <%= return_detail.get_consignment_quantity %>
+                                            </td>
+                                            <td><%= return_detail.get_returned_quantity %></td>
+                                            <td>
+                                                <%= erp_form_control("number", {
+                                                    name: 'cs_return[return_details_attributes][' + index.to_s + '][quantity]',
+                                                    value: return_detail.quantity,
+                                                    required: true,
+                                                    errors: return_detail.errors.full_messages_for(:quantity)
+                                                }) %>/<%= return_detail.consignment_detail.quantity %>
+                                            </td>
+                                            <td><span class="label label-sm label-danger">@todo Chưa trả xong</span></td>
+                                        </tr>
+                                    <% end %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%= erp_component('button/save', {
+        text: t('submit')
+    }) %>
+    <%= erp_component('button/cancel', {
+        text: t('cancel'),
+        href: erp_consignments.backend_cs_returns_path
+    }) %>
+<% end %>
+<script>
+  window.onload = function() {
+    document.getElementById("cs_return_code").focus();
+  };
+</script>

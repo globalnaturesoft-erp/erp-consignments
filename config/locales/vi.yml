@@ -7,6 +7,7 @@ vi:
         sidebar:
           consignment: "Nhập trả hàng"
           consignments: "Ký gửi - Cho mượn"
+          cs_returns: "Trả hàng"
   erp:
     consignments:
       backend:
@@ -55,6 +56,7 @@ vi:
             code: "Mã phiếu"
             sent_date: "Ngày xuất"
             return_date: "Ngày trả"
+            create_return: "Tạo phiếu trả hàng"
             contact: "Khách hàng"
             pending: "Chưa xác nhận"
             approved: "Đã xác nhận"
@@ -75,6 +77,10 @@ vi:
             unit: "Đơn vị tính"
             consign: "Ký gửi"
             lend: "Cho mượn"
+            return_code: "Mã phiếu trả"
+            contact_return: "Người trả"
+            date_return: "Ngày trả"
+            note: "Ghi chú"
           form:
             code: "Mã phiếu"
             name: "Tên sản phẩm"
@@ -107,6 +113,95 @@ vi:
             note: "Ghi chú"
             consignment_type: "Loại phiếu"
             enter_note: "Nhập nội dung ghi chú..."
+        cs_returns:
+          create:
+            success: "Thêm phiếu trả thành công."
+          update:
+            success: "Cập nhật phiếu trả thành công."
+          destroy:
+            success: "Xóa phiếu trả thành công."
+          delete_all:
+            success: "Xóa phiếu trả được chọn thành công."
+          archive:
+            success: "Ẩn phiếu trả thành công."
+          unarchive:
+            success: "Hiện phiếu trả thành công."
+          archive_all:
+            success: "Ẩn phiếu trả được chọn thành công."
+          unarchive_all:
+            success: "Hiện phiếu trả được chọn thành công."
+          status_pending:
+            success: "Hủy xác nhận phiếu trả thành công."
+          status_approved:
+            success: "Xác nhận phiếu trả thành công."
+          status_pending_all:
+            success: "Hủy xác nhận phiếu trả được chọn thành công."
+          status_approved_all:
+            success: "Xác nhận phiếu trả được chọn thành công."
+          index:
+            cs_returns: "Trả hàng"
+            create: "Thêm phiếu trả"
+            delete: "Xóa phiếu được chọn"
+            consignment_code: "Mã phiếu ký gửi"
+            contact_cs_return: "Người trả"
+            code: "Mã phiếu trả"
+            return_date: "Ngày trả"
+            contact_return: "Khách hàng trả"
+            change_approved: "Xác nhận phiếu"
+            change_pending: "Hủy xác nhận phiếu"
+            is_pending: "Chưa xác nhận"
+            is_approved: "Đã xác nhận"
+          list:
+            delete: "Xóa phiếu trả"
+            edit: "Cập nhật phiếu trả"
+            consignment_code: "Mã phiếu ký gửi"
+            code: "Mã phiếu trả"
+            return_date: "Ngày trả"
+            contact_return: "Khách hàng trả"
+            pending: "Chưa xác nhận"
+            approved: "Đã xác nhận"
+            change_approved: "Xác nhận phiếu trả"
+            change_pending: "Hủy xác nhận phiếu trả"
+            no_matching_records_found: "Danh sách phiếu trả hiện tại đang trống."
+          new:
+            cs_returns: "Trả hàng"
+            create: "Thêm phiếu trả"
+          edit:
+            cs_returns: "Trả hàng"
+            create: "Thêm phiếu trả"
+          consignment_details:
+            consignment_details: "Chi tiết đã xuất"
+            code: "Mã phiếu"
+            name: "Tên sản phẩm"
+            quantity: "Số lượng"
+            unit: "Đơn vị tính"
+            consign: "Ký gửi"
+            lend: "Cho mượn"
+          return_details:
+            return_details: "Danh sách chi tiết phiếu trả"
+            product_code: "Mã sản phẩm"
+            product_name: "Tên sản phẩm"
+            quantity: "Số lượng trả"
+            unit: "Đơn vị tính"
+          form:
+            code: "Mã phiếu trả"
+            enter_code: "Nhập mã phiếu..."
+            help_code: "Mã phiếu trả khi tạo phiếu"
+            return_date: "Ngày trả"
+            choose_return_date: "Chọn ngày trả"
+            contact_return: "Khách hàng trả"
+            choose_contact_return: "Chọn khách hàng trả"
+            create_contact_return: "Thêm thông tin khách hàng trả"
+            edit_contact_return: "Cập nhật thông tin khách hàng trả"            
+            return_details: "Chi tiết phiếu ký gửi"
+            note: "Ghi chú"
+            enter_note: "Nhập nội dung ghi chú..."
+            consignment_code: "Mã phiếu ký gửi - cho mượn"
+            product_name: "Tên sản phẩm"
+            consignment_quantity: "Số lượng ký gửi - cho mượn"
+            consignment_return: "Số lượng đã trả"
+            return_quantity: "Số lượng trả"
+            status: "Trạng thái"
   activerecord:
     errors:
       models:
