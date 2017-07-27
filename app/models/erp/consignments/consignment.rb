@@ -3,7 +3,7 @@ module Erp::Consignments
 		validates :code, :sent_date, :return_date, :consignment_type, :employee_id, :creator_id, :presence => true
     belongs_to :employee, class_name: "Erp::User"
     belongs_to :creator, class_name: "Erp::User"
-    has_many :cs_returns, class_name: "Erp::Consignments::CsReturn"
+    has_many :cs_returns, class_name: "Erp::Consignments::CsReturn", dependent: :destroy
     
     if Erp::Core.available?("contacts")
 			validates :contact_id, :presence => true
