@@ -11,6 +11,11 @@ vi:
   erp:
     consignments:
       backend:
+        consignment_details:
+          consignment_detail_line_form:
+            create_warehouse: "Thêm kho hàng"
+            edit_warehouse: "Cập nhật kho hàng"
+            choose_warehouse: "Chọn kho xuất ký gửi"            
         consignments:
           create:
             success: "Thêm phiếu thành công."
@@ -28,15 +33,28 @@ vi:
             success: "Ẩn phiếu được chọn thành công."
           unarchive_all:
             success: "Hiện phiếu được chọn thành công."
-          status_pending:
-            success: "Hủy xác nhận phiếu thành công."
-          status_approved:
-            success: "Xác nhận phiếu thành công."
-          status_pending_all:
-            success: "Hủy xác nhận phiếu được chọn thành công."
-          status_approved_all:
-            success: "Xác nhận phiếu được chọn thành công."
+          status_draft:
+            success: "Thay đổi phiếu thành trạng thái nháp thành công."
+          status_active:
+            success: "Phiếu được xác nhận thành công."
+          status_delivered:
+            success: "Phiếu đã được giao thành công."
+          status_deleted:
+            success: "Phiếu đã được hủy."
+          status_draft_all:
+            success: "Thay đổi phiếu đã chọn thành trạng thái nháp thành công."
+          status_active_all:
+            success: "Phiếu đã chọn được xác nhận thành công."
+          status_delivered_all:
+            success: "Phiếu đã được giao thành công."
+          status_deleted_all:
+            success: "Phiếu được chọn đã được hủy."
           index:
+            change_draft: "Phiếu nháp"
+            change_active: "Xác nhận phiếu"
+            change_delivered: "Phiếu đã được giao"
+            change_deleted: "Hủy phiếu"
+            change_deleted_confirm: "Bạn có chắc muốn hủy các phiếu được chọn?"
             consignments: "Tất cả phiếu"
             create: "Thêm phiếu"
             delete: "Xóa phiếu được chọn"
@@ -46,11 +64,20 @@ vi:
             contact: "Khách hàng"
             is_type_consign: "Loại ký gửi"
             is_type_lend: "Loại cho mượn"
-            is_pending: "Chưa xác nhận"
-            is_approved: "Đã xác nhận"
-            change_approved: "Xác nhận phiếu"
-            change_pending: "Hủy xác nhận phiếu"
+            is_draft: "Phiếu nháp"
+            is_active: "Phiếu đã xác nhận"
+            is_delivered: "Phiếu đã giao"
+            is_deleted: "Phiếu đã xóa"
           list:
+            change_draft: "Phiếu nháp"
+            change_active: "Xác nhận phiếu"
+            change_delivered: "Phiếu đã được giao"
+            change_deleted: "Hủy phiếu"
+            change_deleted_confirm: "Bạn có chắc muốn hủy phiếu được chọn?"
+            draft: "Phiếu nháp"
+            active: "Phiếu đã xác nhận"
+            delivered: "Phiếu đã giao"
+            deleted: "Phiếu đã xóa"
             delete: "Xóa phiếu"
             edit: "Cập nhật phiếu"
             code: "Mã phiếu"
@@ -58,10 +85,6 @@ vi:
             return_date: "Ngày trả"
             create_return: "Tạo phiếu trả hàng"
             contact: "Khách hàng"
-            pending: "Chưa xác nhận"
-            approved: "Đã xác nhận"
-            change_approved: "Xác nhận phiếu"
-            change_pending: "Hủy xác nhận phiếu"
             no_matching_records_found: "Danh sách phiếu hiện tại đang trống."
           new:
             consignments: "Tất cả phiếu"
@@ -80,7 +103,7 @@ vi:
             return_code: "Mã phiếu trả"
             contact_return: "Người trả"
             date_return: "Ngày trả"
-            note: "Ghi chú"
+            note: "Ghi chú"            
           form:
             code: "Mã phiếu"
             name: "Tên sản phẩm"
@@ -104,15 +127,12 @@ vi:
             create_contact: "Thêm thông tin người nhận"
             edit_contact: "Cập nhật thông tin người nhận"
             employee: "Nhân viên phụ trách"
-            choose_employee: "Chọn nhân viên phụ trách"
-            create_warehouse: "Thêm kho hàng"
-            edit_warehouse: "Cập nhật kho hàng"
-            warehouse: "Kho"
-            choose_warehouse: "Chọn kho xuất ký gửi"
+            choose_employee: "Chọn nhân viên phụ trách"            
             consignment_details: "Chi tiết phiếu ký gửi"
             note: "Ghi chú"
             consignment_type: "Loại phiếu"
             enter_note: "Nhập nội dung ghi chú..."
+            warehouse: "Kho xuất"
         cs_returns:
           create:
             success: "Thêm phiếu trả thành công."
@@ -130,15 +150,28 @@ vi:
             success: "Ẩn phiếu trả được chọn thành công."
           unarchive_all:
             success: "Hiện phiếu trả được chọn thành công."
-          status_pending:
-            success: "Hủy xác nhận phiếu trả thành công."
-          status_approved:
-            success: "Xác nhận phiếu trả thành công."
-          status_pending_all:
-            success: "Hủy xác nhận phiếu trả được chọn thành công."
-          status_approved_all:
-            success: "Xác nhận phiếu trả được chọn thành công."
+          status_draft:
+            success: "Thay đổi phiếu thành trạng thái nháp thành công."
+          status_active:
+            success: "Phiếu được xác nhận thành công."
+          status_delivered:
+            success: "Phiếu đã được giao thành công."
+          status_deleted:
+            success: "Phiếu đã được hủy."
+          status_draft_all:
+            success: "Thay đổi phiếu đã chọn thành trạng thái nháp thành công."
+          status_active_all:
+            success: "Phiếu đã chọn được xác nhận thành công."
+          status_delivered_all:
+            success: "Phiếu đã được giao thành công."
+          status_deleted_all:
+            success: "Phiếu được chọn đã được hủy."
           index:
+            change_draft: "Phiếu nháp"
+            change_active: "Xác nhận phiếu"
+            change_delivered: "Phiếu đã được giao"
+            change_deleted: "Hủy phiếu"
+            change_deleted_confirm: "Bạn có chắc muốn hủy các phiếu được chọn?"
             cs_returns: "Trả hàng"
             create: "Thêm phiếu trả"
             delete: "Xóa phiếu được chọn"
@@ -147,21 +180,30 @@ vi:
             code: "Mã phiếu trả"
             return_date: "Ngày trả"
             contact_return: "Khách hàng trả"
-            change_approved: "Xác nhận phiếu"
-            change_pending: "Hủy xác nhận phiếu"
-            is_pending: "Chưa xác nhận"
-            is_approved: "Đã xác nhận"
+            is_draft: "Phiếu nháp"
+            is_active: "Phiếu đã xác nhận"
+            is_delivered: "Phiếu đã giao"
+            is_deleted: "Phiếu đã xóa"
           list:
+            change_draft: "Phiếu nháp"
+            change_active: "Xác nhận phiếu"
+            change_delivered: "Phiếu đã được giao"
+            change_deleted: "Hủy phiếu"
+            change_deleted_confirm: "Bạn có chắc muốn hủy phiếu được chọn?"
+            draft: "Phiếu nháp"
+            active: "Phiếu đã xác nhận"
+            delivered: "Phiếu đã giao"
+            deleted: "Phiếu đã xóa"
             delete: "Xóa phiếu trả"
             edit: "Cập nhật phiếu trả"
             consignment_code: "Mã phiếu ký gửi"
             code: "Mã phiếu trả"
             return_date: "Ngày trả"
             contact_return: "Khách hàng trả"
-            pending: "Chưa xác nhận"
-            approved: "Đã xác nhận"
-            change_approved: "Xác nhận phiếu trả"
-            change_pending: "Hủy xác nhận phiếu trả"
+            is_draft: "Phiếu nháp"
+            is_active: "Phiếu đã xác nhận"
+            is_delivered: "Phiếu đã giao"
+            is_deleted: "Phiếu đã xóa"
             no_matching_records_found: "Danh sách phiếu trả hiện tại đang trống."
           new:
             cs_returns: "Trả hàng"
@@ -196,12 +238,16 @@ vi:
             return_details: "Chi tiết phiếu ký gửi"
             note: "Ghi chú"
             enter_note: "Nhập nội dung ghi chú..."
-            consignment_code: "Mã phiếu ký gửi - cho mượn"
+            consignment_code: "Mã phiếu"
             product_name: "Tên sản phẩm"
-            consignment_quantity: "Số lượng ký gửi - cho mượn"
+            consignment_quantity: "Số lượng"
             consignment_return: "Số lượng đã trả"
             return_quantity: "Số lượng trả"
             status: "Trạng thái"
+            warehouse: "Kho nhận"
+            choose_warehouse: "Chọn kho nhận"
+            edit_warehouse: "Cập nhật kho"
+            edit_warehouse: "Thêm kho"
   activerecord:
     errors:
       models:
@@ -219,7 +265,11 @@ vi:
               blank: "không được để trống"
             employee_id:
               blank: "không được để trống"
-            warehouse_id:
+        erp/consignments/cs_return:
+          attributes:
+            return_date:
+              blank: "không được để trống"
+            contact_id:
               blank: "không được để trống"
     attributes:
       erp/consignments/consignment:
@@ -229,4 +279,6 @@ vi:
         contact_id: "Khách hàng"
         consignment_type: "Loại phiếu"
         employee_id: "Nhân viên phụ trách"
-        warehouse_id: "Kho"
+      erp/consignments/cs_return:
+        return_date: "Ngày trả"
+        contact_id: "Khách hàng"

@@ -6,14 +6,6 @@
     <i class="fa fa-cubes"></i> <%= t('.cs_returns') %>
 <% end %>
 
-<div class="row top-datalist">
-    <div class="col-md-6">
-        <%= erp_form_control('dateranges', {
-            form_group: 'no'
-        }) %>
-    </div>
-</div>
-
 <%= erp_datalist(
     url: erp_consignments.list_backend_cs_returns_path,
     keywords: [
@@ -44,31 +36,42 @@
     ],
     actions: [
         {
-            text: '<i class="fa fa-check"></i> '+t('.change_approved'),
-            url: erp_consignments.status_approved_all_backend_cs_returns_path,
+            text: '<i class="fa fa-file-o"></i> '+t('.change_draft'),
+            url: erp_consignments.status_draft_all_backend_cs_returns_path,
             data_method: 'PUT'
         },
         {
-            text: '<i class="fa fa-close"></i> '+t('.change_pending'),
-            url: erp_consignments.status_pending_all_backend_cs_returns_path,
+            text: '<i class="fa fa-file-text-o"></i> '+t('.change_active'),
+            url: erp_consignments.status_active_all_backend_cs_returns_path,
+            data_method: 'PUT'
+        },
+        {
+            text: '<i class="fa fa-file-text"></i> '+t('.change_delivered'),
+            url: erp_consignments.status_delivered_all_backend_cs_returns_path,
             data_method: 'PUT'
         },
         {
             divider: true
         },
         {
-            text: '<i class="fa fa-trash"></i> '+t('.delete'),
-            url: erp_consignments.delete_all_backend_cs_returns_path,
-            data_method: 'DELETE',
-            data_confirm: t('delete_confirm')
+            text: '<i class="fa fa-trash"></i> '+t('.change_deleted'),
+            url: erp_consignments.status_deleted_all_backend_cs_returns_path,
+            data_method: 'PUT',
+            data_confirm: t('.change_deleted_confirm')
         }
     ],
     filters: [
         {
-            text: t('.is_pending'), name: 'erp_consignments_cs_returns.status', value: 'pending', checked: false
+            text: t('.is_draft'), name: 'erp_consignments_cs_returns.status', value: 'draft', checked: false
         },
         {
-            text: t('.is_approved'), name: 'erp_consignments_cs_returns.status', value: 'approved', checked: false
+            text: t('.is_active'), name: 'erp_consignments_cs_returns.status', value: 'active', checked: false
+        },
+        {
+            text: t('.is_delivered'), name: 'erp_consignments_cs_returns.status', value: 'delivered', checked: false
+        },
+        {
+            text: t('.is_deleted'), name: 'erp_consignments_cs_returns.status', value: 'deleted', checked: false
         },
     ],
     columns: [

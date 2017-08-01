@@ -17,8 +17,10 @@ module Erp::Consignments
     accepts_nested_attributes_for :return_details, :reject_if => lambda { |a| a[:consignment_detail_id].blank? || a[:quantity].blank? || a[:quantity].to_i <= 0 }, :allow_destroy => true
     
     # class const
-    CS_RETURN_STATUS_PENDING = 'pending'
-    CS_RETURN_STATUS_APPROVED = 'approved'
+    CS_RETURN_STATUS_DRAFT = 'draft'
+    CS_RETURN_STATUS_ACTIVE = 'active'
+    CS_RETURN_STATUS_DELIVERED = 'delivered'
+    CS_RETURN_STATUS_DELETED = 'deleted'
     
     # Filters
     def self.filter(query, params)
@@ -121,20 +123,36 @@ module Erp::Consignments
     end
     
     # STATUS
-    def status_pending
-			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING)
+    def status_draft
+			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DRAFT)
 		end
     
-    def status_approved
-			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED)
+    def status_active
+			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_ACTIVE)
 		end
     
-    def self.status_pending_all
-			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING)
+    def status_delivered
+			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELIVERED)
 		end
     
-    def self.status_approved_all
-			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED)
+    def status_deleted
+			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED)
+		end
+    
+    def self.status_draft_all
+			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DRAFT)
+		end
+    
+    def self.status_active_all
+			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_ACTIVE)
+		end
+    
+    def self.status_delivered_all
+			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELIVERED)
+		end
+    
+    def self.status_deleted_all
+			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED)
 		end
     
     # ARCHIVE

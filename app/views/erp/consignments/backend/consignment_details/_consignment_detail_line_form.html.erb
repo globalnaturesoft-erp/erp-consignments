@@ -10,6 +10,28 @@
     }) %>
 </td>
 <td><%= consignment_detail.get_product_unit %></td>
+<td>
+    <% if Erp::Core.available?("warehouses") %>
+        <%= erp_form_control("dataselect", {
+            name: 'consignment[consignment_details_attributes]['+ uid + '][warehouse_id]',
+            value: consignment_detail.warehouse_id,
+            text: consignment_detail.warehouse_name,
+            placeholder: t('.choose_warehouse'),
+            url: erp_warehouses.dataselect_backend_warehouses_path(format: 'json'),
+            create: {
+                url: erp_warehouses.new_backend_warehouse_path,
+                title: t('.create_warehouse'),
+                container_selector: '.new_warehouse',
+                input_selector: 'input[name="warehouse[name]"]'
+            },
+            edit: {
+                url: erp_warehouses.edit_backend_warehouse_path(id: ':value'),
+                title: t('.edit_warehouse'),
+                container_selector: '.edit_warehouse'
+            }
+        }) %>
+    <% end %>
+</td>
 <td class="text-right">
     <%= erp_form_control("addableform_remove_button", {
         is_nested_form: true

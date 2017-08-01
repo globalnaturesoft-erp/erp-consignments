@@ -12,16 +12,7 @@ module Erp::Consignments
       def contact_name
         contact.present? ? contact.contact_name : ''
       end
-    end
-    
-    if Erp::Core.available?("warehouses")
-			validates :warehouse_id, :presence => true
-      belongs_to :warehouse, class_name: "Erp::Warehouses::Warehouse"
-      
-      def warehouse_name
-        warehouse.present? ? warehouse.warehouse_name : ''
-      end
-    end
+    end    
     
     has_many :consignment_details, inverse_of: :consignment, dependent: :destroy
     accepts_nested_attributes_for :consignment_details, :reject_if => lambda { |a| a[:product_id].blank? || a[:quantity].blank? || a[:quantity].to_i <= 0 }, :allow_destroy => true
@@ -29,8 +20,10 @@ module Erp::Consignments
     # class const
     TYPE_CONSIGN = 'consign'
     TYPE_LEND = 'lend'
-    CONSIGNMENT_STATUS_PENDING = 'pending'
-    CONSIGNMENT_STATUS_APPROVED = 'approved'
+    CONSIGNMENT_STATUS_DRAFT = 'draft'
+    CONSIGNMENT_STATUS_ACTIVE = 'active'
+    CONSIGNMENT_STATUS_DELIVERED = 'delivered'
+    CONSIGNMENT_STATUS_DELETED = 'deleted'
     
     # get type method options
     def self.get_consignment_type_options()
@@ -149,20 +142,36 @@ module Erp::Consignments
 		end
     
     # STATUS
-    def status_pending
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING)
+    def status_draft
+			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DRAFT)
 		end
     
-    def status_approved
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED)
+    def status_active
+			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_ACTIVE)
 		end
     
-    def self.status_pending_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_PENDING)
+    def status_delivered
+			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELIVERED)
 		end
     
-    def self.status_approved_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_APPROVED)
+    def status_deleted
+			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELETED)
+		end
+    
+    def self.status_draft_all
+			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DRAFT)
+		end
+    
+    def self.status_active_all
+			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_ACTIVE)
+		end
+    
+    def self.status_delivered_all
+			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELIVERED)
+		end
+    
+    def self.status_deleted_all
+			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELETED)
 		end
     
     def total_returned_quantity        

@@ -78,30 +78,7 @@
                             url: erp.dataselect_backend_users_path(format: 'json'),
                             required: true,
                             errors: consignment.errors.full_messages_for(:employee_id)
-                        }) %>
-                        <% if Erp::Core.available?("warehouses") %>
-                            <%= erp_form_control("dataselect", {
-                                name: 'consignment[warehouse_id]',
-                                value: consignment.warehouse_id,
-                                text: consignment.warehouse_name,
-                                placeholder: t('.choose_warehouse'),
-                                label: t('.warehouse'),
-                                url: erp_warehouses.dataselect_backend_warehouses_path(format: 'json'),
-                                create: {
-                                    url: erp_warehouses.new_backend_warehouse_path,
-                                    title: t('.create_warehouse'),
-                                    container_selector: '.new_warehouse',
-                                    input_selector: 'input[name="warehouse[name]"]'
-                                },
-                                edit: {
-                                    url: erp_warehouses.edit_backend_warehouse_path(id: ':value'),
-                                    title: t('.edit_warehouse'),
-                                    container_selector: '.edit_warehouse'
-                                },
-                                required: true,
-                                errors: consignment.errors.full_messages_for(:warehouse_id)
-                            }) %>
-                        <% end %>
+                        }) %>                        
                         <%= erp_form_control("textarea", {
                             name: 'consignment[note]',
                             value: consignment.note,
@@ -155,6 +132,7 @@
                                         <th>#{t('.name')}</th>
                                         <th>#{t('.quantity')}</th>
                                         <th>#{t('.unit')}</th>
+                                        <th width='20%'>#{t('.warehouse')}</th>
                                         <th class='text-right'>#{t('.action')}</th>"
                             }) %>
                         </div>

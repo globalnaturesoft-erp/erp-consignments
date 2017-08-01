@@ -2,8 +2,8 @@ module Erp
   module Consignments
     module Backend
       class CsReturnsController < Erp::Backend::BackendController
-        before_action :set_cs_return, only: [:archive, :unarchive, :status_pending, :status_approved, :edit, :update, :destroy]
-        before_action :set_cs_returns, only: [:delete_all, :archive_all, :status_pending_all, :status_approved_all, :unarchive_all]
+        before_action :set_cs_return, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted, :edit, :update, :destroy]
+        before_action :set_cs_returns, only: [:delete_all, :archive_all, :unarchive_all, :status_draft_all, :status_active_all, :status_delivered_all, :status_deleted_all]
     
         # GET /cs_returns
         def index
@@ -46,9 +46,10 @@ module Erp
         end
     
         # POST /cs_returns
-        def create
+        def create        
           @cs_return = CsReturn.new(cs_return_params)
           @cs_return.creator = current_user
+          @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
     
           if @cs_return.save
             if request.xhr?
@@ -123,9 +124,9 @@ module Erp
           end
         end
         
-        # STATUS PENDING /cs_returns/status_pending?id=1
-        def status_pending
-          @cs_return.status_pending
+        # STATUS DRAFT /cs_returns/status_draft?id=1
+        def status_draft
+          @cs_return.status_draft
           respond_to do |format|
             format.json {
               render json: {
@@ -136,9 +137,35 @@ module Erp
           end
         end
         
-        # STATUS APPROVED /cs_returns/status_approved?id=1
-        def status_approved
-          @cs_return.status_approved
+        # STATUS ACTIVE /cs_returns/status_active?id=1
+        def status_active
+          @cs_return.status_active
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end
+        end
+        
+        # STATUS DELIVERED /cs_returns/status_delivered?id=1
+        def status_delivered
+          @cs_return.status_delivered
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end
+        end
+        
+        # STATUS DELETED /cs_returns/status_deleted?id=1
+        def status_deleted
+          @cs_return.status_deleted
           respond_to do |format|
             format.json {
               render json: {
@@ -191,9 +218,9 @@ module Erp
           end          
         end
         
-        # STATUS PENDING ALL /cs_returns/status_pending_all?ids=1,2,3
-        def status_pending_all         
-          @cs_returns.status_pending_all
+        # STATUS DRAFT ALL /cs_returns/status_draft_all?ids=1,2,3
+        def status_draft_all         
+          @cs_returns.status_draft_all
           
           respond_to do |format|
             format.json {
@@ -205,9 +232,37 @@ module Erp
           end          
         end
         
-        # STATUS APPROVED ALL /cs_returns/status_approved_all?ids=1,2,3
-        def status_approved_all
-          @cs_returns.status_approved_all
+        # STATUS ACTIVE ALL /cs_returns/status_active_all?ids=1,2,3
+        def status_active_all
+          @cs_returns.status_active_all
+          
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end          
+        end
+        
+        # STATUS DELIVERED ALL /cs_returns/status_delivered_all?ids=1,2,3
+        def status_delivered_all         
+          @cs_returns.status_delivered_all
+          
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end          
+        end
+        
+        # STATUS DELETED ALL /cs_returns/status_deleted_all?ids=1,2,3
+        def status_deleted_all
+          @cs_returns.status_deleted_all
           
           respond_to do |format|
             format.json {
@@ -241,7 +296,7 @@ module Erp
           # Only allow a trusted parameter "white list" through.
           def cs_return_params
             params.fetch(:cs_return, {}).permit(:code, :return_date, :note, :contact_id, :consignment_id,
-                                                  :return_details_attributes => [:id, :cs_return_id, :consignment_detail_id, :quantity, :_destroy])
+                                                  :return_details_attributes => [:id, :cs_return_id, :consignment_detail_id, :warehouse_id, :quantity, :_destroy])
           end
       end
     end

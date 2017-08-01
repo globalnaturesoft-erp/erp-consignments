@@ -2,8 +2,8 @@ module Erp
   module Consignments
     module Backend
       class ConsignmentsController < Erp::Backend::BackendController
-        before_action :set_consignment, only: [:archive, :unarchive, :status_pending, :status_approved, :edit, :update, :destroy]
-        before_action :set_consignments, only: [:delete_all, :archive_all, :status_pending_all, :status_approved_all, :unarchive_all]
+        before_action :set_consignment, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted, :edit, :update, :destroy]
+        before_action :set_consignments, only: [:delete_all, :archive_all, :unarchive_all, :status_draft_all, :status_active_all, :status_delivered_all, :status_deleted_all]
     
         # GET /consignments
         def index
@@ -111,9 +111,9 @@ module Erp
           end
         end
         
-        # STATUS PENDING /consignments/status_pending?id=1
-        def status_pending
-          @consignment.status_pending
+        # STATUS DRAFT /consignments/status_draft?id=1
+        def status_draft
+          @consignment.status_draft
           respond_to do |format|
             format.json {
               render json: {
@@ -124,9 +124,35 @@ module Erp
           end
         end
         
-        # STATUS APPROVED /consignments/status_approved?id=1
-        def status_approved
-          @consignment.status_approved
+        # STATUS ACTIVE /consignments/status_active?id=1
+        def status_active
+          @consignment.status_active
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end
+        end
+        
+        # STATUS DELIVERED /consignments/status_delivered?id=1
+        def status_delivered
+          @consignment.status_delivered
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end
+        end
+        
+        # STATUS DELETED /consignments/status_deleted?id=1
+        def status_deleted
+          @consignment.status_deleted
           respond_to do |format|
             format.json {
               render json: {
@@ -179,9 +205,9 @@ module Erp
           end          
         end
         
-        # STATUS PENDING ALL /consignments/status_pending_all?ids=1,2,3
-        def status_pending_all         
-          @consignments.status_pending_all
+        # STATUS DRAFT ALL /consignments/status_draft_all?ids=1,2,3
+        def status_draft_all         
+          @consignments.status_draft_all
           
           respond_to do |format|
             format.json {
@@ -193,9 +219,37 @@ module Erp
           end          
         end
         
-        # STATUS APPROVED ALL /consignments/status_approved_all?ids=1,2,3
-        def status_approved_all
-          @consignments.status_approved_all
+        # STATUS ACTIVE ALL /consignments/status_active_all?ids=1,2,3
+        def status_active_all
+          @consignments.status_active_all
+          
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end          
+        end
+        
+        # STATUS DELIVERED ALL /consignments/status_delivered_all?ids=1,2,3
+        def status_delivered_all         
+          @consignments.status_delivered_all
+          
+          respond_to do |format|
+            format.json {
+              render json: {
+                'message': t('.success'),
+                'type': 'success'
+              }
+            }
+          end          
+        end
+        
+        # STATUS DELETED ALL /consignments/status_deleted_all?ids=1,2,3
+        def status_deleted_all
+          @consignments.status_deleted_all
           
           respond_to do |format|
             format.json {
@@ -228,8 +282,8 @@ module Erp
     
           # Only allow a trusted parameter "white list" through.
           def consignment_params
-            params.fetch(:consignment, {}).permit(:code, :sent_date, :return_date, :consignment_type, :contact_id, :warehouse_id, :employee_id,
-                                                  :consignment_details_attributes => [:id, :product_id, :quantity, :_destroy])
+            params.fetch(:consignment, {}).permit(:code, :sent_date, :return_date, :consignment_type, :contact_id, :employee_id,
+                                                  :consignment_details_attributes => [:id, :product_id, :warehouse_id, :quantity, :_destroy])
           end
       end
     end

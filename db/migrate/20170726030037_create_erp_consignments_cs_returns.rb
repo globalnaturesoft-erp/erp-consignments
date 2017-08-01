@@ -4,7 +4,7 @@ class CreateErpConsignmentsCsReturns < ActiveRecord::Migration[5.1]
       t.string :code
       t.datetime :return_date
       t.text :note
-      t.string :status, default: "pending"
+      t.string :status, default: "draft"
       t.boolean :archived, default: false
       t.references :consignment, index: true, references: :erp_consignments_consignments
       t.references :contact, index: true, references: :erp_contacts_contacts

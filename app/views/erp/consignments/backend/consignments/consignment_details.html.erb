@@ -38,10 +38,11 @@
                         <table class="table table-bordered table-striped flip-content">
                             <thead class="flip-content">
                                 <tr>
-                                    <th width="15%" class="text-left"><%= t('.code') %></th>
+                                    <th width="20%" class="text-left"><%= t('.code') %></th>
                                     <th><%= t('.name') %></th>
                                     <th class="numeric"><%= t('.quantity') %></th>
                                     <th class="text-right"><%= t('.unit') %></th>
+                                    <th class="text-right"><%= t('.warehouse') %></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,6 +54,7 @@
                                     <td class="text-left"><%= consignment_detail.get_product_name %></td>
                                     <td class="numeric text-left"><%= consignment_detail.quantity %></td>
                                     <td class="text-right"><%= consignment_detail.get_product_unit %></td>
+                                    <td class="text-right"><%= consignment_detail.warehouse_name %></td>
                                 </tr>
                                 <% end %>
                             </tbody>

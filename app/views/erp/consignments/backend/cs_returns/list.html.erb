@@ -53,13 +53,23 @@
                 <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>
-                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING %>
+                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DRAFT %>
                         <%= erp_component('label/danger', {
                             text: t('.'+cs_return.status)
                         }) %>
                     <% end %>
-                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED %>
+                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_ACTIVE %>
+                        <%= erp_component('label/primary', {
+                            text: t('.'+cs_return.status)
+                        }) %>
+                    <% end %>
+                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELIVERED %>
                         <%= erp_component('label/success', {
+                            text: t('.'+cs_return.status)
+                        }) %>
+                    <% end %>
+                    <% if cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED %>
+                        <%= erp_component('label/default', {
                             text: t('.'+cs_return.status)
                         }) %>
                     <% end %>
@@ -83,29 +93,37 @@
                                 href: erp_consignments.edit_backend_cs_return_path(cs_return)
                             },
                             {
-                                text: '<i class="fa fa-check"></i> '+t('.change_approved'),
-                                url: erp_consignments.status_approved_backend_cs_returns_path(id: cs_return),
+                                text: '<i class="fa fa-file-o"></i> '+t('.change_draft'),
+                                url: erp_consignments.status_draft_backend_cs_returns_path(id: cs_return),
                                 data_method: 'PUT',
-                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_APPROVED,
+                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DRAFT,
                                 class: 'ajax-link'
                             },
                             {
-                                text: '<i class="fa fa-close"></i> '+t('.change_pending'),
-                                url: erp_consignments.status_pending_backend_cs_returns_path(id: cs_return),
+                                text: '<i class="fa fa-file-text-o"></i> '+t('.change_active'),
+                                url: erp_consignments.status_active_backend_cs_returns_path(id: cs_return),
                                 data_method: 'PUT',
-                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_PENDING,
+                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_ACTIVE,
+                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELIVERED,
+                                class: 'ajax-link'
+                            },
+                            {
+                                text: '<i class="fa fa-file-text"></i> '+t('.change_delivered'),
+                                url: erp_consignments.status_delivered_backend_cs_returns_path(id: cs_return),
+                                data_method: 'PUT',
+                                hide: cs_return.status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DRAFT,
                                 class: 'ajax-link'
                             },
                             {
                                 divider: true
                             },
                             {
-                                text: '<i class="fa fa-trash"></i> '+t('.delete'),
-                                url: erp_consignments.backend_cs_return_path(cs_return),
-                                data_method: 'DELETE',
+                                text: '<i class="fa fa-close"></i> '+t('.change_deleted'),
+                                url: erp_consignments.status_deleted_backend_cs_returns_path(id: cs_return),
+                                data_method: 'PUT',
                                 class: 'ajax-link',
-                                data_confirm: t('delete_confirm')
-                            }
+                                data_confirm: t('.change_deleted_confirm')
+                            },
                         ]
                     ) %>
                 </td>
