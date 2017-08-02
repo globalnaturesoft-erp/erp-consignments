@@ -12,7 +12,16 @@ module Erp::Consignments
       def contact_name
         contact.present? ? contact.contact_name : ''
       end
-    end    
+    end
+    
+    if Erp::Core.available?("warehouses")
+			validates :warehouse_id, :presence => true
+      belongs_to :warehouse, class_name: "Erp::Warehouses::Warehouse"
+      
+      def warehouse_name
+        warehouse.present? ? warehouse.warehouse_name : ''
+      end
+    end
     
     has_many :consignment_details, inverse_of: :consignment, dependent: :destroy
     accepts_nested_attributes_for :consignment_details, :reject_if => lambda { |a| a[:product_id].blank? || a[:quantity].blank? || a[:quantity].to_i <= 0 }, :allow_destroy => true

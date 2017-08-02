@@ -6,6 +6,7 @@ class CreateErpConsignmentsCsReturns < ActiveRecord::Migration[5.1]
       t.text :note
       t.string :status, default: "draft"
       t.boolean :archived, default: false
+      t.references :warehouse, index: true, references: :erp_warehouses_warehouses
       t.references :consignment, index: true, references: :erp_consignments_consignments
       t.references :contact, index: true, references: :erp_contacts_contacts
       t.references :creator, index: true, references: :erp_users

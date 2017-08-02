@@ -55,6 +55,31 @@
                                 errors: cs_return.errors.full_messages_for(:contact_id)
                             }) %>
                         <% end %>
+                        <% if Erp::Core.available?("warehouses") %>
+                            <%= erp_form_control("dataselect", {
+                                name: 'cs_return[warehouse_id]',
+                                value: cs_return.warehouse_id,
+                                text: cs_return.warehouse_name,
+                                placeholder: t('.choose_warehouse'),
+                                label: t('.warehouse'),
+                                url: erp_warehouses.dataselect_backend_warehouses_path(format: 'json'),
+                                create: {
+                                    url: erp_contacts.new_backend_contact_path,
+                                    title: t('.create_warehouse'),
+                                    container_selector: '.new_warehouse',
+                                    input_selector: 'input[name="warehouse[name]"]',
+                                    modal_size: "full"
+                                },
+                                edit: {
+                                    url: erp_warehouses.edit_backend_warehouse_path(id: ':value'),
+                                    title: t('.edit_warehouse'),
+                                    container_selector: '.edit_warehouse',
+                                    modal_size: "full"
+                                },
+                                required: true,
+                                errors: consignment.errors.full_messages_for(:warehouse_id)
+                            }) %>
+                        <% end %>
                         <%= erp_form_control("textarea", {
                             name: 'cs_return[note]',
                             value: cs_return.note,
@@ -105,28 +130,6 @@
                                                     required: true,
                                                     errors: return_detail.errors.full_messages_for(:quantity)
                                                 }) %>/<%= return_detail.consignment_detail.quantity %>
-                                            </td>
-                                            <td>
-                                                <% if Erp::Core.available?("warehouses") %>
-                                                    <%= erp_form_control("dataselect", {
-                                                        name: 'cs_return[return_details_attributes]['+ index.to_s + '][warehouse_id]',
-                                                        value: return_detail.warehouse_id,
-                                                        text: return_detail.warehouse_name,
-                                                        placeholder: t('.choose_warehouse'),
-                                                        url: erp_warehouses.dataselect_backend_warehouses_path(format: 'json'),
-                                                        create: {
-                                                            url: erp_warehouses.new_backend_warehouse_path,
-                                                            title: t('.create_warehouse'),
-                                                            container_selector: '.new_warehouse',
-                                                            input_selector: 'input[name="warehouse[name]"]'
-                                                        },
-                                                        edit: {
-                                                            url: erp_warehouses.edit_backend_warehouse_path(id: ':value'),
-                                                            title: t('.edit_warehouse'),
-                                                            container_selector: '.edit_warehouse'
-                                                        }
-                                                    }) %>
-                                                <% end %>
                                             </td>
                                             <td>
                                                 <% if return_detail.get_consignment_quantity > return_detail.get_returned_quantity %>

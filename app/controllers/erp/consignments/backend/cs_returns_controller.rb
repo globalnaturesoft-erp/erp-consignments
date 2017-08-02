@@ -295,8 +295,8 @@ module Erp
     
           # Only allow a trusted parameter "white list" through.
           def cs_return_params
-            params.fetch(:cs_return, {}).permit(:code, :return_date, :note, :contact_id, :consignment_id,
-                                                  :return_details_attributes => [:id, :cs_return_id, :consignment_detail_id, :warehouse_id, :quantity, :_destroy])
+            params.fetch(:cs_return, {}).permit(:code, :return_date, :note, :warehouse_id, :contact_id, :consignment_id,
+                                                  :return_details_attributes => [:id, :cs_return_id, :consignment_detail_id, :quantity, :_destroy])
           end
       end
     end

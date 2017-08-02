@@ -133,6 +133,9 @@ vi:
             consignment_type: "Loại phiếu"
             enter_note: "Nhập nội dung ghi chú..."
             warehouse: "Kho xuất"
+            choose_warehouse: "Chọn kho xuất"
+            create_warehouse: "Thêm kho xuất"
+            update_warehouse: "Cập nhật kho xuất"
         cs_returns:
           create:
             success: "Thêm phiếu trả thành công."
@@ -265,11 +268,15 @@ vi:
               blank: "không được để trống"
             employee_id:
               blank: "không được để trống"
+            warehouse_id:
+              blank: "không được để trống"
         erp/consignments/cs_return:
           attributes:
             return_date:
               blank: "không được để trống"
             contact_id:
+              blank: "không được để trống"
+            warehouse_id:
               blank: "không được để trống"
     attributes:
       erp/consignments/consignment:
@@ -279,6 +286,8 @@ vi:
         contact_id: "Khách hàng"
         consignment_type: "Loại phiếu"
         employee_id: "Nhân viên phụ trách"
+        warehouse_id: "Kho"
       erp/consignments/cs_return:
         return_date: "Ngày trả"
         contact_id: "Khách hàng"
+        warehouse_id: "Khách hàng"

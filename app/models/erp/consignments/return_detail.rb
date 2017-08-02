@@ -2,16 +2,7 @@ module Erp::Consignments
   class ReturnDetail < ApplicationRecord
     belongs_to :cs_return, inverse_of: :return_details
     validates :cs_return, presence: true
-    belongs_to :consignment_detail, class_name: "Erp::Consignments::ConsignmentDetail"
-    
-    if Erp::Core.available?("warehouses")
-			validates :warehouse_id, :presence => true
-      belongs_to :warehouse, class_name: "Erp::Warehouses::Warehouse"
-      
-      def warehouse_name
-        warehouse.present? ? warehouse.warehouse_name : ''
-      end
-    end
+    belongs_to :consignment_detail, class_name: "Erp::Consignments::ConsignmentDetail"  
     
     def get_remain_quantity
       consignment_detail.remain_quantity

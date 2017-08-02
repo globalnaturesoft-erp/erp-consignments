@@ -4,15 +4,6 @@ module Erp::Consignments
     belongs_to :consignment, inverse_of: :consignment_details  
     has_many :return_details, class_name: "Erp::Consignments::ReturnDetail"
     
-    if Erp::Core.available?("warehouses")
-			validates :warehouse_id, :presence => true
-      belongs_to :warehouse, class_name: "Erp::Warehouses::Warehouse"
-      
-      def warehouse_name
-        warehouse.present? ? warehouse.warehouse_name : ''
-      end
-    end
-    
     if Erp::Core.available?("products")
       validates :product_id, presence: true
       belongs_to :product, class_name: "Erp::Products::Product"
