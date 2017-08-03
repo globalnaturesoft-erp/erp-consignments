@@ -14,7 +14,9 @@
                 <th><%= t('.contact_return') %></th>
             <% end %>
             <% if get_columns(params).include?("return_date") %>
-                <th><%= t('.return_date') %></th>
+                <th class="sortable" sort-by='erp_consignments_cs_returns.return_date'>
+                    <%= t('.return_date') %>
+                </th>
             <% end %>
             <% if get_columns(params).include?("status") %>
                 <th><%= t('status') %></th>

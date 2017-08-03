@@ -2,10 +2,18 @@ module Erp::Consignments
   class ReturnDetail < ApplicationRecord
     belongs_to :cs_return, inverse_of: :return_details
     validates :cs_return, presence: true
-    belongs_to :consignment_detail, class_name: "Erp::Consignments::ConsignmentDetail"  
+    belongs_to :consignment_detail, class_name: "Erp::Consignments::ConsignmentDetail"
+    
+    STATUS_RETURNED = 'returned'
+    STATUS_NOT_RETURN = 'not_return'
+    STATUS_OVER_RETURED = 'over_returned'
     
     def get_remain_quantity
       consignment_detail.remain_quantity
+    end
+    
+    def get_consignment_quantity
+      consignment_detail.quantity
     end
     
     def get_returned_quantity
@@ -28,8 +36,5 @@ module Erp::Consignments
       consignment_detail.get_product_unit
     end
       
-    def get_consignment_quantity
-      consignment_detail.quantity
-    end
   end
 end

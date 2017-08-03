@@ -5,7 +5,7 @@
             <div class="col-md-6">
                 <div class="portlet light bordered">
                     <div class="portlet-body form">
-                        Mã phiếu ký gửi: # @todo<br><br>
+                        Mã phiếu ký gửi: <%= link_to @consignment.code, erp_consignments.edit_backend_consignment_path(@consignment.id), target: "_blank" %><br><br>
                         <%= erp_form_control("text", {
                             name: 'cs_return[code]',
                             value: cs_return.code,
@@ -77,7 +77,7 @@
                                     modal_size: "full"
                                 },
                                 required: true,
-                                errors: consignment.errors.full_messages_for(:warehouse_id)
+                                errors: cs_return.errors.full_messages_for(:warehouse_id)
                             }) %>
                         <% end %>
                         <%= erp_form_control("textarea", {
@@ -105,10 +105,9 @@
                                     <tr>
                                         <th><%= t('.consignment_code') %></th>
                                         <th><%= t('.product_name') %></th>
-                                        <th><%= t('.consignment_quantity') %></th>
-                                        <th><%= t('.consignment_return') %></th>
+                                        <th><%= t('.consignment_quantity') %></th>                                        
                                         <th><%= t('.return_quantity') %></th>
-                                        <th><%= t('.warehouse') %></th>
+                                        <th><%= t('.consignment_return') %></th>
                                         <th><%= t('.status') %></th>
                                     </tr>
                                 </thead>
@@ -122,22 +121,22 @@
                                             <td>
                                                 <%= return_detail.get_consignment_quantity %>
                                             </td>
-                                            <td><%= return_detail.get_returned_quantity %></td>
                                             <td>
                                                 <%= erp_form_control("number", {
                                                     name: 'cs_return[return_details_attributes][' + index.to_s + '][quantity]',
                                                     value: return_detail.quantity,
                                                     required: true,
                                                     errors: return_detail.errors.full_messages_for(:quantity)
-                                                }) %>/<%= return_detail.consignment_detail.quantity %>
+                                                }) %>
                                             </td>
+                                            <td><%= return_detail.get_returned_quantity %></td>                                            
                                             <td>
                                                 <% if return_detail.get_consignment_quantity > return_detail.get_returned_quantity %>
-                                                    <span class="label label-sm label-warning">Chưa trả xong</span>
+                                                    <span class="label label-sm label-warning"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_NOT_RETURN) %></span>
                                                 <% elsif return_detail.get_consignment_quantity == return_detail.get_returned_quantity %>
-                                                    <span class="label label-sm label-success">Đã trả xong</span>
+                                                    <span class="label label-sm label-success"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_RETURNED) %></span>
                                                 <% else %>
-                                                    <span class="label label-sm label-danger">Trả dư</span>
+                                                    <span class="label label-sm label-danger"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_OVER_RETURED) %></span>
                                                 <% end %>
                                             </td>
                                         </tr>

@@ -14,6 +14,25 @@
     }) %>
 <% end %>
 
+<% content_for :global_filter do %>
+    <div class="row top-datalist">
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: t('.consignment_from_date'),
+                name: 'consignment_from_date',
+                placeholder: t('.select_from_date')
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: t('.consignment_to_date'),
+                name: 'consignment_to_date',
+                placeholder: t('.select_to_date')
+            }) %>
+        </div>
+    </div>
+<% end %>
+
 <%= erp_datalist(
     url: erp_consignments.list_backend_consignments_path,
     keywords: [

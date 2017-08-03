@@ -4,7 +4,7 @@
         <strong><i class="fa fa-file-text"></i> Loại phiếu: </strong> <%= t("."+@consignment.consignment_type) %> &nbsp;&nbsp;
         <strong><i class="fa fa-plus-square"></i> Tổng đã xuất: </strong> <%= @consignment.total_quantity %> &nbsp;&nbsp;
         <strong><i class="fa fa-minus-square"></i> Tổng đã trả: </strong> <%= @consignment.total_returned_quantity %> &nbsp;&nbsp;
-        <strong><i class="fa fa-exchange"></i> Còn lại: </strong> <%= @consignment.total_remain_quantity %> &nbsp;&nbsp;
+        <strong><i class="fa fa-navicon"></i> Kho xuất: </strong> <%= @consignment.warehouse_name %>
     </div>
     <div class="tabbable-custom ">
         <ul class="nav nav-tabs ">
@@ -42,7 +42,6 @@
                                     <th><%= t('.name') %></th>
                                     <th class="numeric"><%= t('.quantity') %></th>
                                     <th class="text-right"><%= t('.unit') %></th>
-                                    <th class="text-right"><%= t('.warehouse') %></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,7 +53,6 @@
                                     <td class="text-left"><%= consignment_detail.get_product_name %></td>
                                     <td class="numeric text-left"><%= consignment_detail.quantity %></td>
                                     <td class="text-right"><%= consignment_detail.get_product_unit %></td>
-                                    <td class="text-right"><%= consignment_detail.warehouse_name %></td>
                                 </tr>
                                 <% end %>
                             </tbody>

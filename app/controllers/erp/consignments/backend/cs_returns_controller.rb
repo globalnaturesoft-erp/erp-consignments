@@ -13,6 +13,14 @@ module Erp
         def list
           @cs_returns = CsReturn.search(params).paginate(:page => params[:page], :per_page => 10)
           
+          if params.to_unsafe_hash[:global_filter].present? and params.to_unsafe_hash[:global_filter][:return_from_date].present?
+            @cs_returns = @cs_returns.where('return_date >= ?', params.to_unsafe_hash[:global_filter][:return_from_date].to_date.beginning_of_day)
+          end
+
+          if params.to_unsafe_hash[:global_filter].present? and params.to_unsafe_hash[:global_filter][:return_to_date].present? 
+            @cs_returns = @cs_returns.where('return_date <= ?', params.to_unsafe_hash[:global_filter][:return_to_date].to_date.end_of_day)
+          end
+          
           render layout: nil
         end
         

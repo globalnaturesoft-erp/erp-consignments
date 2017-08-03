@@ -11,21 +11,21 @@
                 <table class="table table-bordered table-striped flip-content">
                     <thead class="flip-content">
                         <tr>
-                            <th class="text-left"><%= t('.product_code') %></th>
+                            <th width="20%" class="text-left"><%= t('.product_code') %></th>
                             <th class="text-left"><%= t('.product_name') %></th>
                             <th class="numeric text-right"><%= t('.quantity') %></th>
                             <th class="text-right"><%= t('.unit') %></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <% @cs_return.return_details.each do |return_detail| %>
+                        <% @cs_return.return_details.each do |return_detail| %>
+                        <tr>                            
                             <td class="text-left"><%= return_detail.get_product_code %></td>
                             <td class="text-left"><%= return_detail.get_product_name %></td>
                             <td class="numeric text-right"><%= return_detail.quantity %></td>
-                            <td class="text-right"><%= return_detail.get_product_unit %></td>
-                            <% end %>
+                            <td class="text-right"><%= return_detail.get_product_unit %></td>                            
                         </tr>
+                        <% end %>
                     </tbody>
                 </table>
             </div>

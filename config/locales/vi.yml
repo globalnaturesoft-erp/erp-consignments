@@ -68,6 +68,10 @@ vi:
             is_active: "Phiếu đã xác nhận"
             is_delivered: "Phiếu đã giao"
             is_deleted: "Phiếu đã xóa"
+            consignment_from_date: "Ngày xuất phiếu (từ ngày):"
+            consignment_to_date: "Ngày xuất phiếu (đến ngày:)"
+            select_from_date: "Chọn mốc thời gian từ..."
+            select_to_date: "Chọn mốc thời gian đến..."
           list:
             change_draft: "Phiếu nháp"
             change_active: "Xác nhận phiếu"
@@ -187,6 +191,10 @@ vi:
             is_active: "Phiếu đã xác nhận"
             is_delivered: "Phiếu đã giao"
             is_deleted: "Phiếu đã xóa"
+            return_from_date: "Ngày trả hàng (từ ngày):"
+            return_to_date: "Ngày trả hàng (đến ngày:)"
+            select_from_date: "Chọn mốc thời gian từ..."
+            select_to_date: "Chọn mốc thời gian đến..."
           list:
             change_draft: "Phiếu nháp"
             change_active: "Xác nhận phiếu"
@@ -243,7 +251,7 @@ vi:
             enter_note: "Nhập nội dung ghi chú..."
             consignment_code: "Mã phiếu"
             product_name: "Tên sản phẩm"
-            consignment_quantity: "Số lượng"
+            consignment_quantity: "Số lượng ký gửi"
             consignment_return: "Số lượng đã trả"
             return_quantity: "Số lượng trả"
             status: "Trạng thái"
@@ -251,6 +259,9 @@ vi:
             choose_warehouse: "Chọn kho nhận"
             edit_warehouse: "Cập nhật kho"
             edit_warehouse: "Thêm kho"
+            returned: "Đã trả xong"
+            not_return: "Chưa trả xong"
+            over_returned: "Trả dư"
   activerecord:
     errors:
       models:

@@ -6,6 +6,25 @@
     <i class="fa fa-cubes"></i> <%= t('.cs_returns') %>
 <% end %>
 
+<% content_for :global_filter do %>
+    <div class="row top-datalist">
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: t('.return_from_date'),
+                name: 'return_from_date',
+                placeholder: t('.select_from_date')
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control('date', {
+                label: t('.return_to_date'),
+                name: 'return_to_date',
+                placeholder: t('.select_to_date')
+            }) %>
+        </div>
+    </div>
+<% end %>
+
 <%= erp_datalist(
     url: erp_consignments.list_backend_cs_returns_path,
     keywords: [
