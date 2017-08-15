@@ -23,11 +23,11 @@ module Erp::Consignments
       end
       
       def get_product_code
-        product.code
+				product.present? ? product.code : ''
       end
       
       def get_product_name
-        product.name
+				product.present? ? product.name : ''
       end
       
       def get_product_unit
