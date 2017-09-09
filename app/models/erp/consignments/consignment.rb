@@ -108,6 +108,20 @@ module Erp::Consignments
       # add conditions to query
       query = query.where(and_conds.join(' AND ')) if !and_conds.empty?
       
+       # global filter
+      global_filter = params[:global_filter]
+
+      if global_filter.present?
+				# filter by consignment contact
+				if global_filter[:contact].present?
+					query = query.where(contact_id: global_filter[:contact])
+				end
+				
+				if global_filter[:warehouse].present?
+					query = query.where(warehouse_id: global_filter[:warehouse])
+				end
+			end
+      
       return query
     end
     
@@ -188,7 +202,7 @@ module Erp::Consignments
 		end    
     
     def total_quantity
-			return consignment_details.sum('quantity')
+			return consignment_details.sum(:quantity)
 		end
     
     def total_remain_quantity        

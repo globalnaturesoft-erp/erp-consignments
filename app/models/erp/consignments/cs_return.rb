@@ -164,6 +164,10 @@ module Erp::Consignments
 			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED)
 		end
     
+    def total_quantity        
+			self.return_details.sum(:quantity)
+		end
+    
     # ARCHIVE
     def archive
 			update_attributes(archived: true)

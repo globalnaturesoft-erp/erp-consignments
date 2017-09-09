@@ -5,7 +5,10 @@
                 <%= erp_datalist_check_all %>
             </th>
             <% if get_columns(params).include?("code") %>
-                <th><%= t('.code') %></th>
+                <th width='10%'><%= t('.code') %></th>
+            <% end %>
+            <% if get_columns(params).include?("type") %>
+                <th><%= t('.type') %></th>
             <% end %>
             <% if get_columns(params).include?("contact") %>
                 <th><%= t('.contact') %></th>
@@ -19,6 +22,15 @@
                 <th  class="sortable" sort-by='erp_consignments_consignments.return_date'>
                     <%= t('.return_date') %>
                 </th>
+            <% end %>
+            <% if get_columns(params).include?("quantity") %>
+                <th><%= t('.quantity') %></th>
+            <% end %>
+            <% if get_columns(params).include?("employee") %>
+                <th><%= t('.employee') %></th>
+            <% end %>
+            <% if get_columns(params).include?("warehouse") %>
+                <th><%= t('.warehouse') %></th>
             <% end %>
             <% if get_columns(params).include?("status") %>
                 <th><%= t('status') %></th>
@@ -44,6 +56,9 @@
                         <strong><%= link_to "#" + consignment.code, erp_consignments.edit_backend_consignment_path(consignment) %></strong>
                     </td>
                 <% end %>
+                <% if get_columns(params).include?("type") %>
+                    <td><%= t("."+consignment.consignment_type) %></td>
+                <% end %>
                 <% if get_columns(params).include?("contact") %>
                     <td><%= consignment.contact_name %></td>
                 <% end %>
@@ -52,6 +67,15 @@
                 <% end %>
                 <% if get_columns(params).include?("return_date") %>
                     <td><%= consignment.return_date.strftime("%d/%m/%Y") %></td>
+                <% end %>
+                <% if get_columns(params).include?("quantity") %>
+                    <td><%= consignment.total_quantity %></td>
+                <% end %>
+                <% if get_columns(params).include?("employee") %>
+                    <td><%= consignment.employee_name %></td>
+                <% end %>
+                <% if get_columns(params).include?("warehouse") %>
+                    <td><%= consignment.warehouse_name %></td>
                 <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>

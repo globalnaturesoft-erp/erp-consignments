@@ -30,6 +30,22 @@
                 placeholder: t('.select_to_date')
             }) %>
         </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'contact',
+                label: t('.filter_customer'),
+                placeholder: t('.choose_customer'),
+                url: erp_contacts.dataselect_backend_contacts_path(format: 'json')
+            }) %>
+        </div>
+        <div class="col-md-3">
+            <%= erp_form_control("dataselect", {
+                name: 'warehouse',
+                label: t('.filter_warehouse'),
+                placeholder: t('.choose_warehouse'),
+                url: erp_warehouses.dataselect_backend_warehouses_path(format: 'json')
+            }) %>
+        </div>
     </div>
 <% end %>
 
@@ -38,14 +54,6 @@
     keywords: [
         {
             text: t('.code'), name: 'erp_consignments_consignments.code'
-        },
-        {
-            text: t('.contact'),
-            name: 'erp_contacts_contacts.name',
-            select: {
-                name: 'erp_contacts_contacts.id',
-                data_url: erp_contacts.dataselect_backend_contacts_path
-            }
         },
         {
             text: t('creator'),
@@ -110,6 +118,9 @@
             text: t('.code'), name: 'code', value: true, checked: true
         },
         {
+            text: t('.type'), name: 'type', value: true, checked: true
+        },
+        {
             text: t('.contact'), name: 'contact', value: true, checked: true
         },
         {
@@ -117,6 +128,15 @@
         },
         {
             text: t('.return_date'), name: 'return_date', value: true, checked: true
+        },
+        {
+            text: t('.quantity'), name: 'quantity', value: true, checked: true
+        },
+        {
+            text: t('.employee'), name: 'employee', value: true, checked: true
+        },
+        {
+            text: t('.warehouse'), name: 'warehouse', value: true, checked: true
         },
         {
             text: t('status'), name: 'status', value: true, checked: true
