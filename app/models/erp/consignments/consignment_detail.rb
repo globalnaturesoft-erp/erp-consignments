@@ -3,6 +3,7 @@ module Erp::Consignments
     validates :consignment, :quantity, presence: true
     belongs_to :consignment, inverse_of: :consignment_details  
     has_many :return_details, class_name: "Erp::Consignments::ReturnDetail"
+    belongs_to :state, class_name: "Erp::Products::State"
     
     if Erp::Core.available?("products")
       validates :product_id, presence: true
@@ -33,6 +34,10 @@ module Erp::Consignments
       def get_product_unit
 				product.unit.present? ? product.unit.name : ''        
       end
+    
+			def state_name
+				state.nil? ? '' : state.name
+			end
     end
   end
 end

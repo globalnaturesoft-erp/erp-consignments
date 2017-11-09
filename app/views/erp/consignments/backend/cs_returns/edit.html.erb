@@ -1,19 +1,11 @@
 <% content_for :title do %>
-    <%= @cs_return.code %>
+    <%= t('.edit') %>
 <% end %>
 
 <% content_for :page_title do %>    
     <a href="<%= erp_consignments.backend_cs_returns_path %>">
     <i class="fa fa-cubes"></i> <%= t('.cs_returns') %>
     </a> / <%= @cs_return.code %>
-<% end %>
-
-<% content_for :page_toolbar do %>
-    <%= erp_component('button/create', {
-        text: t('.create'),
-        href: erp_consignments.new_backend_cs_return_path,
-        class: 'btn-noborder'
-    }) %>
 <% end %>
 
 <div class="row">

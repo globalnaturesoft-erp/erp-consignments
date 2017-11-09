@@ -4,32 +4,6 @@
             <div class="col-md-6">
                 <div class="portlet light bordered">
                     <div class="portlet-body form">
-                        <%= erp_form_control("text", {
-                            name: 'consignment[code]',
-                            value: consignment.code,
-                            id: "consignment_code",
-                            label: t('.code'),
-                            placeholder: t('.enter_code'),
-                            help: t('.help_code'),
-                            required: true,
-                            errors: consignment.errors.full_messages_for(:code)
-                        }) %>
-                        <%= erp_form_control('date', {
-                            name: 'consignment[sent_date]',
-                            value: consignment.sent_date,
-                            placeholder: t('.choose_sent_date'),
-                            label: t('.sent_date'),
-                            required: true,
-                            errors: consignment.errors.full_messages_for(:sent_date)
-                        }) %>
-                        <%= erp_form_control('date', {
-                            name: 'consignment[return_date]',
-                            value: consignment.return_date,
-                            placeholder: t('.choose_return_date'),
-                            label: t('.return_date'),
-                            required: true,
-                            errors: consignment.errors.full_messages_for(:return_date)
-                        }) %>
                         <% if Erp::Core.available?("contacts") %>
                             <%= erp_form_control("dataselect", {
                                 name: 'consignment[contact_id]',
@@ -55,12 +29,28 @@
                                 errors: consignment.errors.full_messages_for(:contact_id)
                             }) %>
                         <% end %>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="portlet light bordered">
-                    <div class="portlet-body form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <%= erp_form_control('date', {
+                                    name: 'consignment[sent_date]',
+                                    value: consignment.sent_date,
+                                    placeholder: t('.choose_sent_date'),
+                                    label: t('.sent_date'),
+                                    required: true,
+                                    errors: consignment.errors.full_messages_for(:sent_date)
+                                }) %>
+                            </div>
+                            <div class="col-md-6">
+                                <%= erp_form_control('date', {
+                                    name: 'consignment[return_date]',
+                                    value: consignment.return_date,
+                                    placeholder: t('.choose_return_date'),
+                                    label: t('.return_date'),
+                                    required: true,
+                                    errors: consignment.errors.full_messages_for(:return_date)
+                                }) %>
+                            </div>
+                        </div>
                         <% if Erp::Core.available?("warehouses") %>
                             <%= erp_form_control("dataselect", {
                                 name: 'consignment[warehouse_id]',
@@ -86,14 +76,37 @@
                                 errors: consignment.errors.full_messages_for(:warehouse_id)
                             }) %>
                         <% end %>
-                        <%= erp_form_control('select', {
-                            label: t('.consignment_type'),
-                            name: 'consignment[consignment_type]',
-                            value: consignment.consignment_type,
-                            options: Erp::Consignments::Consignment.get_consignment_type_options(),
-                            required: true,
-                            errors: consignment.errors.full_messages_for(:consignment_type)
-                        }) %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="portlet light bordered">
+                    <div class="portlet-body form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <%= erp_form_control("text", {
+                                    name: 'consignment[code]',
+                                    value: consignment.code,
+                                    id: "consignment_code",
+                                    label: t('.code'),
+                                    placeholder: t('.enter_code'),
+                                    help: t('.help_code'),
+                                    required: !consignment.id.nil?,
+                                    errors: consignment.errors.full_messages_for(:code)
+                                }) %>
+                            </div>
+                            <div class="col-md-6">
+                                <%= erp_form_control('select', {
+                                    label: t('.consignment_type'),
+                                    name: 'consignment[consignment_type]',
+                                    value: consignment.consignment_type,
+                                    options: Erp::Consignments::Consignment.get_consignment_type_options(),
+                                    required: true,
+                                    errors: consignment.errors.full_messages_for(:consignment_type),
+                                    disabled: !consignment.id.nil?
+                                }) %>
+                            </div>
+                        </div>
                         <%= erp_form_control("dataselect", {
                             name: 'consignment[employee_id]',
                             value: consignment.employee_id,
@@ -108,7 +121,8 @@
                             name: 'consignment[note]',
                             value: consignment.note,
                             label: t('.note'),
-                            placeholder: t('.enter_note')
+                            placeholder: t('.enter_note'),
+                            rows: 1
                         }) %>
                     </div>
                 </div>
@@ -157,6 +171,7 @@
                                         <th>#{t('.name')}</th>
                                         <th>#{t('.quantity')}</th>
                                         <th>#{t('.unit')}</th>
+                                        <th>#{t('.state')}</th>
                                         <th class='text-right'>#{t('.action')}</th>"
                             }) %>
                         </div>

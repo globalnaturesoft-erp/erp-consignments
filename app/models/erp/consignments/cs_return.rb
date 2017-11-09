@@ -1,5 +1,6 @@
 module Erp::Consignments
   class CsReturn < ApplicationRecord
+		validates :code, uniqueness: true
     validates :return_date, :consignment_id, :creator_id, :presence => true
     belongs_to :consignment, class_name: "Erp::Consignments::Consignment"
     belongs_to :creator, class_name: "Erp::User"
@@ -183,6 +184,36 @@ module Erp::Consignments
     
     def self.unarchive_all
 			update_all(archived: false)
+		end
+    
+    def is_deleted?
+			return status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED
+		end
+    
+    def cs_return_consign?
+			return consignment.consignment_type == Erp::Consignments::Consignment::TYPE_CONSIGN
+		end
+    
+    def cs_return_lend?
+			return consignment.consignment_type == Erp::Consignments::Consignment::TYPE_LEND
+		end
+    
+    # Generate code
+    before_validation :generate_code
+    def generate_code
+			if !code.present?
+				query = Erp::Consignments::CsReturn.joins(:consignment)
+				if cs_return_consign?
+					query = query.where(erp_consignments_consignments: {consignment_type: Erp::Consignments::Consignment::TYPE_CONSIGN})
+				elsif cs_return_lend?
+					query = query.where(erp_consignments_consignments: {consignment_type: Erp::Consignments::Consignment::TYPE_LEND})
+				end
+				
+				str = (cs_return_consign? ? 'HKG' : 'HXM')
+				num = query.where('erp_consignments_cs_returns.return_date >= ? AND erp_consignments_cs_returns.return_date <= ?', self.return_date.beginning_of_month, self.return_date.end_of_month).count + 1
+				
+				self.code = str + return_date.strftime("%m") + return_date.strftime("%Y").last(2) + "-" + num.to_s.rjust(3, '0')
+			end
 		end
   end
 end

@@ -3,13 +3,23 @@
 <input type="hidden" name="consignment[consignment_details_attributes][<%= uid %>][_destroy]" value="">
 <td><%= consignment_detail.get_product_code %></td>
 <td><%= consignment_detail.get_product_name %></td>
-<td>
+<td width='10%'>
     <%= erp_form_control("number", {
         name: 'consignment[consignment_details_attributes]['+ uid + '][quantity]',
         value: consignment_detail.quantity
     }) %>
 </td>
 <td><%= consignment_detail.get_product_unit %></td>
+<td width='20%'>
+    <%= erp_form_control("dataselect", {
+        name: 'consignment[consignment_details_attributes][' + uid + '][state_id]',
+        value: consignment_detail.state_id,
+        text: consignment_detail.state_name,
+        placeholder: t('.choose_state'),
+        url: erp_products.dataselect_backend_states_path(format: 'json'),
+        required: true
+    }) %>
+</td>
 <td class="text-right">
     <%= erp_form_control("addableform_remove_button", {
         is_nested_form: true

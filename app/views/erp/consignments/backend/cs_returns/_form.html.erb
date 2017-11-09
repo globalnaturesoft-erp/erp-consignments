@@ -5,31 +5,32 @@
             <div class="col-md-6">
                 <div class="portlet light bordered">
                     <div class="portlet-body form">
-                        Mã phiếu ký gửi: <%= link_to @consignment.code, erp_consignments.edit_backend_consignment_path(@consignment.id), target: "_blank" %><br><br>
-                        <%= erp_form_control("text", {
-                            name: 'cs_return[code]',
-                            value: cs_return.code,
-                            id: "cs_return_code",
-                            label: t('.code'),
-                            placeholder: t('.enter_code'),
-                            help: t('.help_code'),
-                            required: true,
-                            errors: cs_return.errors.full_messages_for(:code)
-                        }) %>
-                        <%= erp_form_control('date', {
-                            name: 'cs_return[return_date]',
-                            value: cs_return.return_date,
-                            placeholder: t('.choose_return_date'),
-                            label: t('.return_date'),
-                            required: true,
-                            errors: cs_return.errors.full_messages_for(:return_date)
-                        }) %>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="portlet light bordered">
-                    <div class="portlet-body form">
+                        <%= t('.consignment_code') %> <span class="text-lowercase"><%= t(".#{@consignment.consignment_type}") %></span>:
+                        <%= link_to @consignment.code, erp_consignments.edit_backend_consignment_path(@consignment.id), target: "_blank", class: 'bold' %><br><br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <%= erp_form_control("text", {
+                                    name: 'cs_return[code]',
+                                    value: cs_return.code,
+                                    id: "cs_return_code",
+                                    label: t('.code'),
+                                    placeholder: t('.enter_code'),
+                                    help: t('.help_code'),
+                                    required: !cs_return.id.nil?,
+                                    errors: cs_return.errors.full_messages_for(:code)
+                                }) %>
+                            </div>
+                            <div class="col-md-6">
+                                <%= erp_form_control('date', {
+                                    name: 'cs_return[return_date]',
+                                    value: cs_return.return_date,
+                                    placeholder: t('.choose_return_date'),
+                                    label: t('.return_date'),
+                                    required: true,
+                                    errors: cs_return.errors.full_messages_for(:return_date)
+                                }) %>
+                            </div>
+                        </div>
                         <% if Erp::Core.available?("contacts") %>
                             <%= erp_form_control("dataselect", {
                                 name: 'cs_return[contact_id]',
@@ -55,6 +56,12 @@
                                 errors: cs_return.errors.full_messages_for(:contact_id)
                             }) %>
                         <% end %>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="portlet light bordered">
+                    <div class="portlet-body form">
                         <% if Erp::Core.available?("warehouses") %>
                             <%= erp_form_control("dataselect", {
                                 name: 'cs_return[warehouse_id]',
@@ -103,9 +110,10 @@
                             <table class="table table-advance table-hover table-striped">
                                 <thead>
                                     <tr>
-                                        <th><%= t('.consignment_code') %></th>
                                         <th><%= t('.product_name') %></th>
-                                        <th><%= t('.consignment_quantity') %></th>                                        
+                                        <th><%= t('.product_unit') %></th>
+                                        <th><%= t('.consignment_quantity') %></th>
+                                        <th><%= t('.state') %></th>
                                         <th><%= t('.return_quantity') %></th>
                                         <th><%= t('.consignment_return') %></th>
                                         <th><%= t('.status') %></th>
@@ -115,13 +123,17 @@
                                     <% @cs_return.return_details.each_with_index do |return_detail, index| %>
                                         <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][id]" value="<%= return_detail.id %>">  
                                         <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][consignment_detail_id]" value="<%= return_detail.consignment_detail_id %>">
+                                        <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][state_id]" value="<%= return_detail.state_id %>">
                                         <tr class="addableform-line">
-                                            <td><%= return_detail.get_consignment_code %></td>
                                             <td><%= return_detail.get_product_name %></td>
+                                            <td><%= return_detail.get_product_unit %></td>
                                             <td>
                                                 <%= return_detail.get_consignment_quantity %>
                                             </td>
                                             <td>
+                                                <%= return_detail.state_name %>
+                                            </td>
+                                            <td width="10%">
                                                 <%= erp_form_control("number", {
                                                     name: 'cs_return[return_details_attributes][' + index.to_s + '][quantity]',
                                                     value: return_detail.quantity,
@@ -129,7 +141,7 @@
                                                     errors: return_detail.errors.full_messages_for(:quantity)
                                                 }) %>
                                             </td>
-                                            <td><%= return_detail.get_returned_quantity %></td>                                            
+                                            <td><%= return_detail.get_returned_quantity %></td>
                                             <td>
                                                 <% if return_detail.get_consignment_quantity > return_detail.get_returned_quantity %>
                                                     <span class="label label-sm label-warning"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_NOT_RETURN) %></span>

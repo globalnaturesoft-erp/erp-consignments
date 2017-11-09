@@ -11,14 +11,14 @@
             <li class="active">
                 <a href="#tab_5_1" data-toggle="tab">
                     <i class="fa fa-navicon"></i>
-                    Chi tiết đã xuất
+                    <%= t('.consignment_detail') %> <%= t(".#{@consignment.consignment_type}") %>
                 </a>
             </li>
             <% if @consignment.cs_returns.count > 0 %>
             <li>
                 <a href="#tab_5_2" data-toggle="tab">
                     <i class="fa fa-navicon"></i>
-                    Chi tiết đã trả
+                    <%= t('.consignment_return_detail') %> <%= t(".#{@consignment.consignment_type}") %>
                 </a>
             </li>
             <% end %>

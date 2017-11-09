@@ -3,6 +3,7 @@ module Erp::Consignments
     belongs_to :cs_return, inverse_of: :return_details
     validates :cs_return, presence: true
     belongs_to :consignment_detail, class_name: "Erp::Consignments::ConsignmentDetail"
+    belongs_to :state, class_name: "Erp::Products::State"
     
     STATUS_RETURNED = 'returned'
     STATUS_NOT_RETURN = 'not_return'
@@ -35,6 +36,9 @@ module Erp::Consignments
     def get_product_unit
       consignment_detail.get_product_unit
     end
-      
+    
+    def state_name
+      state.nil? ? '' : state.name
+    end
   end
 end

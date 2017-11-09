@@ -1,6 +1,7 @@
 module Erp::Consignments
   class Consignment < ApplicationRecord
-		validates :code, :sent_date, :return_date, :consignment_type, :employee_id, :creator_id, :presence => true
+		validates :code, uniqueness: true
+		validates :sent_date, :return_date, :consignment_type, :employee_id, :creator_id, :presence => true
     belongs_to :employee, class_name: "Erp::User"
     belongs_to :creator, class_name: "Erp::User"
     has_many :cs_returns, class_name: "Erp::Consignments::CsReturn", dependent: :destroy
@@ -164,6 +165,15 @@ module Erp::Consignments
 			return code
 		end
     
+    # check if consign/lend
+    def consign?
+			return consignment_type == Erp::Consignments::Consignment::TYPE_CONSIGN
+		end
+    
+    def lend?
+			return consignment_type == Erp::Consignments::Consignment::TYPE_LEND
+		end
+    
     # STATUS
     def status_draft
 			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DRAFT)
@@ -224,6 +234,27 @@ module Erp::Consignments
     
     def self.unarchive_all
 			update_all(archived: false)
+		end
+    
+    def is_deleted?
+			return status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELETED
+		end
+
+    # Generate code
+    before_validation :generate_code
+    def generate_code
+			if !code.present?
+				if consign?
+					query = Erp::Consignments::Consignment.where(consignment_type: Erp::Consignments::Consignment::TYPE_CONSIGN)
+				elsif lend?
+					query = Erp::Consignments::Consignment.where(consignment_type: Erp::Consignments::Consignment::TYPE_LEND)
+				end
+				
+				str = (consign? ? 'KG' : 'XM')
+				num = query.where('sent_date >= ? AND sent_date <= ?', self.sent_date.beginning_of_month, self.sent_date.end_of_month).count + 1
+				
+				self.code = str + sent_date.strftime("%m") + sent_date.strftime("%Y").last(2) + "-" + num.to_s.rjust(3, '0')
+			end
 		end
   end
 end

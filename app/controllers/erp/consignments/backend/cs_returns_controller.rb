@@ -35,26 +35,30 @@ module Erp
           @cs_return = CsReturn.new
           @cs_return.return_date = Time.now
           @consignment = Erp::Consignments::Consignment.find(params[:consignment_id])
-          @consignment.consignment_details.each do |od|
-            dt = ReturnDetail.new(
-              consignment_detail_id: od.id
+          @cs_return.contact = @consignment.contact
+          @consignment.consignment_details.each do |consignment_detail|
+            return_detail = ReturnDetail.new(
+              consignment_detail_id: consignment_detail.id,
+              quantity: consignment_detail.remain_quantity,
+              state_id: consignment_detail.state_id
             )
-            @cs_return.return_details << dt
+            @cs_return.return_details << return_detail
           end
+          
         end
     
         # GET /cs_returns/1/edit
         def edit
           @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
-          @consignment.consignment_details.each do |od|
+          @consignment.consignment_details.each do |consignment_detail|
             @cs_return.return_details.build(
-              consignment_detail_id: od.id
-            ) if @cs_return.return_details.where(consignment_detail_id: od.id).empty?
+              consignment_detail_id: consignment_detail.id
+            ) if @cs_return.return_details.where(consignment_detail_id: consignment_detail.id).empty?
           end
         end
-    
+        
         # POST /cs_returns
-        def create        
+        def create
           @cs_return = CsReturn.new(cs_return_params)
           @cs_return.creator = current_user
           @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
@@ -67,7 +71,7 @@ module Erp
                 value: @cs_return.id
               }
             else
-              redirect_to erp_consignments.edit_backend_cs_return_path(@cs_return), notice: t('.success')
+              redirect_to erp_consignments.backend_consignments_path, notice: t('.success')
             end
           else
             render :new        
@@ -84,7 +88,7 @@ module Erp
                 value: @cs_return.id
               }              
             else
-              redirect_to erp_consignments.edit_backend_cs_return_path(@cs_return), notice: t('.success')
+              redirect_to erp_consignments.backend_consignments_path, notice: t('.success')
             end
           else
             render :edit
@@ -96,7 +100,7 @@ module Erp
           @cs_return.destroy
 
           respond_to do |format|
-            format.html { redirect_to erp_consignments.backend_cs_returns_path, notice: t('.success') }
+            format.html { redirect_to erp_consignments.backend_consignments_path, notice: t('.success') }
             format.json {
               render json: {
                 'message': t('.success'),
@@ -304,7 +308,7 @@ module Erp
           # Only allow a trusted parameter "white list" through.
           def cs_return_params
             params.fetch(:cs_return, {}).permit(:code, :return_date, :note, :warehouse_id, :contact_id, :consignment_id,
-                                                  :return_details_attributes => [:id, :cs_return_id, :consignment_detail_id, :quantity, :_destroy])
+                                                :return_details_attributes => [:id, :cs_return_id, :consignment_detail_id, :quantity, :state_id, :_destroy])
           end
       end
     end

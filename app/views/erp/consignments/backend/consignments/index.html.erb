@@ -35,7 +35,7 @@
                 name: 'contact',
                 label: t('.filter_customer'),
                 placeholder: t('.choose_customer'),
-                url: erp_contacts.dataselect_backend_contacts_path(format: 'json')
+                url: erp_contacts.dataselect_backend_contacts_path(format: 'json', is_customer: true)
             }) %>
         </div>
         <div class="col-md-3">
@@ -101,13 +101,13 @@
             divider: true
         },
         {
-            text: t('.is_draft'), name: 'erp_consignments_consignments.status', value: 'draft', checked: false
+            text: t('.is_draft'), name: 'erp_consignments_consignments.status', value: 'draft', checked: true
         },
         {
-            text: t('.is_active'), name: 'erp_consignments_consignments.status', value: 'active', checked: false
+            text: t('.is_active'), name: 'erp_consignments_consignments.status', value: 'active', checked: true
         },
         {
-            text: t('.is_delivered'), name: 'erp_consignments_consignments.status', value: 'delivered', checked: false
+            text: t('.is_delivered'), name: 'erp_consignments_consignments.status', value: 'delivered', checked: true
         },
         {
             text: t('.is_deleted'), name: 'erp_consignments_consignments.status', value: 'deleted', checked: false

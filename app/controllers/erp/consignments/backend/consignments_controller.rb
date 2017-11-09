@@ -54,7 +54,7 @@ module Erp
                 value: @consignment.id
               }
             else
-              redirect_to erp_consignments.edit_backend_consignment_path(@consignment), notice: t('.success')
+              redirect_to erp_consignments.backend_consignments_path, notice: t('.success')
             end
           else
             render :new        
@@ -71,7 +71,7 @@ module Erp
                 value: @consignment.id
               }              
             else
-              redirect_to erp_consignments.edit_backend_consignment_path(@consignment), notice: t('.success')
+              redirect_to erp_consignments.backend_consignments_path, notice: t('.success')
             end
           else
             render :edit
@@ -291,7 +291,7 @@ module Erp
           # Only allow a trusted parameter "white list" through.
           def consignment_params
             params.fetch(:consignment, {}).permit(:code, :sent_date, :return_date, :consignment_type, :warehouse_id, :contact_id, :employee_id,
-                                                  :consignment_details_attributes => [:id, :product_id, :quantity, :_destroy])
+                                                  :consignment_details_attributes => [:id, :product_id, :quantity, :state_id, :_destroy])
           end
       end
     end
