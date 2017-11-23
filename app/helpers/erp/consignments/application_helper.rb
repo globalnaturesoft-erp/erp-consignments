@@ -33,14 +33,6 @@ module Erp
           class: 'ajax-link'
         }
         actions << {
-          text: '<i class="fa fa-file-text-o"></i> '+t('.change_active'),
-          url: erp_consignments.status_active_backend_consignments_path(id: consignment),
-          data_method: 'PUT',
-          hide: consignment.status == Erp::Consignments::Consignment::STATUS_ACTIVE,
-          hide: consignment.status == Erp::Consignments::Consignment::STATUS_DELIVERED,
-          class: 'ajax-link'
-        }
-        actions << {
           text: '<i class="fa fa-file-text"></i> '+t('.change_delivered'),
           url: erp_consignments.status_delivered_backend_consignments_path(id: consignment),
           data_method: 'PUT',
@@ -59,7 +51,7 @@ module Erp
           actions
         )
       end
-      
+
       # Consignment-Return dropdown actions
       def cs_return_dropdown_actions(cs_return)
         actions = []
