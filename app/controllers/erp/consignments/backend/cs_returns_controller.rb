@@ -2,7 +2,8 @@ module Erp
   module Consignments
     module Backend
       class CsReturnsController < Erp::Backend::BackendController
-        before_action :set_cs_return, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted, :edit, :update, :destroy]
+        before_action :set_cs_return, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted,
+                                             :show, :show_list, :pdf, :edit, :update]
         before_action :set_cs_returns, only: [:delete_all, :archive_all, :unarchive_all, :status_draft_all, :status_active_all, :status_delivered_all, :status_deleted_all]
     
         # GET /cs_returns
@@ -28,6 +29,58 @@ module Erp
           @cs_return = CsReturn.find(params[:id])
           
           render layout: nil
+        end
+        
+        # GET /cs_returns/1
+        def show
+          #authorize! :print, @cs_return
+          
+          respond_to do |format|
+            format.html
+            format.pdf do
+              render pdf: "show_list",
+                layout: 'erp/backend/pdf'
+            end
+          end
+        end
+
+        # POST /cs_returns/list
+        def show_list
+        end
+
+        # GET /cs_returns/1
+        def pdf
+          #authorize! :print, @cs_return
+
+          respond_to do |format|
+            format.html
+            format.pdf do
+              if @cs_return.return_details.count < 8
+                render pdf: "#{@cs_return.code}",
+                  title: "#{@cs_return.code}",
+                  layout: 'erp/backend/pdf',
+                  page_size: 'A5',
+                  orientation: 'Landscape',
+                  margin: {
+                    top: 7,                     # default 10 (mm)
+                    bottom: 7,
+                    left: 7,
+                    right: 7
+                  }
+              else
+                render pdf: "#{@cs_return.code}",
+                  title: "#{@cs_return.code}",
+                  layout: 'erp/backend/pdf',
+                  page_size: 'A4',
+                  margin: {
+                    top: 7,                     # default 10 (mm)
+                    bottom: 7,
+                    left: 7,
+                    right: 7
+                  }
+              end
+            end
+          end
         end
     
         # GET /cs_returns/new
@@ -61,6 +114,7 @@ module Erp
         def create
           @cs_return = CsReturn.new(cs_return_params)
           @cs_return.creator = current_user
+          @cs_return.status = Erp::Consignments::CsReturn::STATUS_ACTIVE
           @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
     
           if @cs_return.save
@@ -92,21 +146,6 @@ module Erp
             end
           else
             render :edit
-          end
-        end
-    
-        # DELETE /cs_returns/1
-        def destroy
-          @cs_return.destroy
-
-          respond_to do |format|
-            format.html { redirect_to erp_consignments.backend_consignments_path, notice: t('.success') }
-            format.json {
-              render json: {
-                'message': t('.success'),
-                'type': 'success'
-              }
-            }
           end
         end
         
@@ -186,20 +225,6 @@ module Erp
               }
             }
           end
-        end
-        
-        # DELETE ALL /cs_returns/delete_all?ids=1,2,3
-        def delete_all         
-          @cs_returns.destroy_all
-          
-          respond_to do |format|
-            format.json {
-              render json: {
-                'message': t('.success'),
-                'type': 'success'
-              }
-            }
-          end          
         end
         
         # ARCHIVE ALL /cs_returns/archive_all?ids=1,2,3

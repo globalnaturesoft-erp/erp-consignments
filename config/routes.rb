@@ -19,6 +19,8 @@ Erp::Consignments::Engine.routes.draw do
 					put 'unarchive'
 					put 'archive_all'
 					put 'unarchive_all'
+					post 'show_list'
+					get 'pdf'
 				end
 			end
 			resources :cs_returns do
@@ -39,6 +41,8 @@ Erp::Consignments::Engine.routes.draw do
 					put 'unarchive'
 					put 'archive_all'
 					put 'unarchive_all'
+					post 'show_list'
+					get 'pdf'
 				end
 			end
 			resources :consignment_details do

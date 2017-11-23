@@ -1,0 +1,69 @@
+<% content_for :title do %>
+    <%= t('.show') %> # <%= @consignment.code %>
+<% end %>
+
+<% content_for :page_title do %>
+    <a href="<%= erp_consignments.backend_consignments_path %>">
+    <i class="fa fa-cubes"></i> <%= t('.consignments') %>
+    </a> / <%= t(".#{@consignment.consign? ? 'show_consign' : 'show_lend'}") %> # <%= @consignment.code %>
+    <%= status_label(@consignment.status) %>
+<% end %>
+
+<% content_for :page_toolbar do %>
+    <%= erp_component('button/create', {
+        text: t('.create_consignment'),
+        href: erp_consignments.new_backend_consignment_path,
+        class: 'btn-noborder'
+    }) %>
+
+    <%= erp_component('button/edit', {
+        text: t('.edit'),
+        href: erp_consignments.edit_backend_consignment_path(@consignment)
+    }) %>
+
+    <%= erp_component('button/actions', {
+        actions:
+        [
+            {
+                text: '<i class="fa fa-check-square-o"></i> '+t('.delivery'),
+                url: erp_consignments.status_delivered_backend_consignments_path(id: @consignment.id),
+                data_method: 'PUT',
+                data_confirm: t('.status_delivered_confirm'),
+                class: 'ajax-link'
+            },
+            {
+                text: '<i class="fa fa-close"></i> '+t('.delete'),
+                href: erp_consignments.status_deleted_backend_consignments_path(id: @consignment.id),
+                data_method: 'PUT',
+                data_confirm: t('.deleted_confirm'),
+                class: 'ajax-link'
+            },
+        ],
+        text: t('.options'),
+        class: 'btn-noborder'
+    }) %>
+<% end %>
+
+<%= erp_datalist(
+    url: erp_consignments.show_list_backend_consignments_path(id: @consignment.id),
+    columns: [
+        {
+            text: t('.ordinal_number'), name: 'ordinal_number', value: true, checked: true
+        },
+        {
+            text: t('.items'), name: 'items', value: true, checked: true
+        },
+        {
+            text: t('.state'), name: 'state', value: true, checked: true
+        },
+        {
+            text: t('.units'), name: 'units', value: true, checked: true
+        },
+        {
+            text: t('.quantity'), name: 'quantity', value: true, checked: true
+        },
+        {
+            text: t('.note'), name: 'note', value: true, checked: false
+        }
+    ]
+) %>

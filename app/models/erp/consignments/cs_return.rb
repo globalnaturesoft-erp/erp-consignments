@@ -23,14 +23,18 @@ module Erp::Consignments
       end
     end
     
+    def consignment_code
+      consignment.present? ? consignment.code : ''
+    end
+    
     has_many :return_details, inverse_of: :cs_return, dependent: :destroy
     accepts_nested_attributes_for :return_details, :reject_if => lambda { |a| a[:consignment_detail_id].blank? || a[:quantity].blank? || a[:quantity].to_i <= 0 }, :allow_destroy => true
     
     # class const
-    CS_RETURN_STATUS_DRAFT = 'draft'
-    CS_RETURN_STATUS_ACTIVE = 'active'
-    CS_RETURN_STATUS_DELIVERED = 'delivered'
-    CS_RETURN_STATUS_DELETED = 'deleted'
+    STATUS_DRAFT = 'draft'
+    STATUS_ACTIVE = 'active'
+    STATUS_DELIVERED = 'delivered'
+    STATUS_DELETED = 'deleted'
     
     # Filters
     def self.filter(query, params)
@@ -134,35 +138,35 @@ module Erp::Consignments
     
     # STATUS
     def status_draft
-			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DRAFT)
+			update_attributes(status: Erp::Consignments::CsReturn::STATUS_DRAFT)
 		end
     
     def status_active
-			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_ACTIVE)
+			update_attributes(status: Erp::Consignments::CsReturn::STATUS_ACTIVE)
 		end
     
     def status_delivered
-			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELIVERED)
+			update_attributes(status: Erp::Consignments::CsReturn::STATUS_DELIVERED)
 		end
     
     def status_deleted
-			update_attributes(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED)
+			update_attributes(status: Erp::Consignments::CsReturn::STATUS_DELETED)
 		end
     
     def self.status_draft_all
-			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DRAFT)
+			update_all(status: Erp::Consignments::CsReturn::STATUS_DRAFT)
 		end
     
     def self.status_active_all
-			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_ACTIVE)
+			update_all(status: Erp::Consignments::CsReturn::STATUS_ACTIVE)
 		end
     
     def self.status_delivered_all
-			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELIVERED)
+			update_all(status: Erp::Consignments::CsReturn::STATUS_DELIVERED)
 		end
     
     def self.status_deleted_all
-			update_all(status: Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED)
+			update_all(status: Erp::Consignments::CsReturn::STATUS_DELETED)
 		end
     
     def total_quantity        
@@ -187,7 +191,7 @@ module Erp::Consignments
 		end
     
     def is_deleted?
-			return status == Erp::Consignments::CsReturn::CS_RETURN_STATUS_DELETED
+			return status == Erp::Consignments::CsReturn::STATUS_DELETED
 		end
     
     def cs_return_consign?
@@ -202,14 +206,9 @@ module Erp::Consignments
     before_validation :generate_code
     def generate_code
 			if !code.present?
-				query = Erp::Consignments::CsReturn.joins(:consignment)
-				if cs_return_consign?
-					query = query.where(erp_consignments_consignments: {consignment_type: Erp::Consignments::Consignment::TYPE_CONSIGN})
-				elsif cs_return_lend?
-					query = query.where(erp_consignments_consignments: {consignment_type: Erp::Consignments::Consignment::TYPE_LEND})
-				end
+				query = Erp::Consignments::CsReturn
 				
-				str = (cs_return_consign? ? 'HKG' : 'HXM')
+				str = 'TL' # TL: trả lại
 				num = query.where('erp_consignments_cs_returns.return_date >= ? AND erp_consignments_cs_returns.return_date <= ?', self.return_date.beginning_of_month, self.return_date.end_of_month).count + 1
 				
 				self.code = str + return_date.strftime("%m") + return_date.strftime("%Y").last(2) + "-" + num.to_s.rjust(3, '0')

@@ -11,7 +11,8 @@
                                 text: consignment.contact_name,
                                 placeholder: t('.choose_contact'),
                                 label: t('.contact'),
-                                url: erp_contacts.dataselect_backend_contacts_path(format: 'json'),
+                                url: erp_contacts.dataselect_backend_contacts_path(format: 'json',
+                                      contact_id: Erp::Contacts::Contact.get_main_contact.id),
                                 create: {
                                     url: erp_contacts.new_backend_contact_path,
                                     title: t('.create_contact'),

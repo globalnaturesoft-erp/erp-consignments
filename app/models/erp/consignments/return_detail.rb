@@ -36,6 +36,10 @@ module Erp::Consignments
     def get_product_unit
       consignment_detail.get_product_unit
     end
+  
+    def warehouse_name
+      cs_return.warehouse_name # @todo update warehouse on cs return detail
+    end
     
     def state_name
       state.nil? ? '' : state.name

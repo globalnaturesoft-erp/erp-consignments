@@ -1,0 +1,141 @@
+<% content_for :title_line_1 do %>
+    <%= @consignment.consign? ? 'XUẤT KÝ GỬI' : 'XUẤT CHO MƯỢN' %>
+<% end %>
+
+<% content_for :title_line_2 do %>
+    <i>Ngày <%= @consignment.sent_date.strftime('%d') %>
+      tháng <%= @consignment.sent_date.strftime('%m') %>
+      năm <%= @consignment.sent_date.strftime('%Y') %></i>
+    <div>Số: <%= @consignment.code %></div>
+<% end %>
+
+<% content_for :main_info_col_1 do %>
+  <p>
+    <label><%= 'Người nhận hàng' %>:</label>
+    <span><strong><%= @consignment.contact_name %></strong></span>
+  </p>
+  <p>
+    <label>Địa chỉ:</label>
+    <span><%= display_contact_address(@consignment.contact) %></span>
+  </p>
+  <p>
+    <label>Ghi chú:</label>
+    <span><%= @consignment.note %></span>
+  </p>
+<% end %>
+
+<% content_for :main_info_col_2 do %>
+  <p>
+    <label>Kho xuất:</label>
+    <span><strong><%= @consignment.warehouse_name %></strong></span>
+  </p>
+<% end %>
+
+<% content_for :main_info_col_3 do %>
+  <p>
+    <label></label>
+    <span></span>
+  </p>
+  <p>
+    <label>Phụ trách:</label>
+    <span><%= @consignment.employee_name %></span>
+  </p>
+<% end %>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="custom-invoice invoice-content-2 bconsignmented">
+            <div class="row invoice-body">
+                <div class="col-xs-12 table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <% if get_columns(params).include?("ordinal_number") %>
+                                    <th class="invoice-title uppercase"><%= t('.ordinal_number') %></th>
+                                <% end %>
+                                <% if get_columns(params).include?("items") %>
+                                    <th class="invoice-title uppercase"><%= t('.items') %></th>
+                                <% end %>
+                                <% if get_columns(params).include?("state") %>
+                                    <th class="invoice-title uppercase text-center"><%= t('.state') %></th>
+                                <% end %>
+                                <% if get_columns(params).include?("units") %>
+                                    <th class="invoice-title uppercase text-center"><%= t('.units') %></th>
+                                <% end %>
+                                <% if get_columns(params).include?("quantity") %>
+                                    <th class="invoice-title uppercase text-center"><%= t('.quantity') %></th>
+                                <% end %>
+                                <% if get_columns(params).include?("note") %>
+                                    <th class="invoice-title uppercase text-right"><%= t('.note') %></th>
+                                <% end %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @consignment.consignment_details.each_with_index do |consignment_detail,index| %>
+                                <tr>
+                                    <% if get_columns(params).include?("ordinal_number") %>
+                                        <td class="text-center"><%= index+1 %></td>
+                                    <% end %>
+                                    <% if get_columns(params).include?("items") %>
+                                        <td>
+                                            <p><%= consignment_detail.get_product_name %></p>
+                                        </td>
+                                    <% end %>
+                                    <% if get_columns(params).include?("state") %>
+                                        <td class="text-center"><%= consignment_detail.state_name %></td>
+                                    <% end %>
+                                    <% if get_columns(params).include?("units") %>
+                                        <td class="text-center"><%= consignment_detail.get_product_unit %></td>
+                                    <% end %>
+                                    <% if get_columns(params).include?("quantity") %>
+                                        <td class="text-center sbold"><%= consignment_detail.quantity %></td>
+                                    <% end %>
+                                    <% if get_columns(params).include?("note") %>
+                                        <td class="text-center"><%= '' %></td>
+                                    <% end %>
+                                </tr>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="table-footer">
+    <div class="liner">
+        <label>Tổng hàng ký gửi:</label>
+        <span class="text-right"><%= @consignment.total_quantity %></span>
+    </div>
+</div>
+<div class="mt-5 text-small">
+    Lưu ý: Cty chỉ thu hồi hàng hóa khi có HĐBH kèm theo.
+</div>
+<% content_for :footer do %>
+    <div class="col text-center" style="width: 25%">
+        <p>
+            <strong>Người lập phiếu</strong><br/>
+            <i>(Họ và tên)</i>
+        </p>
+        <p class="sign_name"><%= @consignment.creator_name %></p>
+    </div>
+    <div class="col text-center" style="width: 25%">
+        <p>
+            <strong>Người giao hàng</strong><br/>
+            <i>(Họ và tên)</i>
+        </p>
+    </div>
+    <div class="col text-center" style="width: 25%">
+        <p>
+            <strong>Người nhận hàng</strong><br/>
+            <i>(Họ và tên)</i>
+        </p>
+    </div>
+    <div class="col text-center" style="width: 25%">
+        <p>
+            <strong>Thủ kho</strong><br/>
+            <i>(Họ và tên)</i>
+        </p>
+        <p class="sign_name"><%= @consignment.employee_name %></p>
+    </div>
+<% end %>

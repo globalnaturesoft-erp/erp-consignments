@@ -1,8 +1,8 @@
 user = Erp::User.first
-status = [Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DRAFT,
-          Erp::Consignments::Consignment::CONSIGNMENT_STATUS_ACTIVE,
-          Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELIVERED,
-          Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELETED]
+status = [Erp::Consignments::Consignment::STATUS_DRAFT,
+          Erp::Consignments::Consignment::STATUS_ACTIVE,
+          Erp::Consignments::Consignment::STATUS_DELIVERED,
+          Erp::Consignments::Consignment::STATUS_DELETED]
 consignment_type = [Erp::Consignments::Consignment::TYPE_CONSIGN,
                     Erp::Consignments::Consignment::TYPE_LEND]
 

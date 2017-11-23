@@ -2,7 +2,8 @@ module Erp
   module Consignments
     module Backend
       class ConsignmentsController < Erp::Backend::BackendController
-        before_action :set_consignment, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted, :edit, :update, :destroy]
+        before_action :set_consignment, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted,
+                                               :show_list, :show, :pdf, :edit, :update]
         before_action :set_consignments, only: [:delete_all, :archive_all, :unarchive_all, :status_draft_all, :status_active_all, :status_delivered_all, :status_deleted_all]
     
         # GET /consignments
@@ -29,12 +30,65 @@ module Erp
           
           render layout: nil
         end
+        
+        # GET /consignments/1
+        def show
+          #authorize! :print, @consignment
+          
+          respond_to do |format|
+            format.html
+            format.pdf do
+              render pdf: "show_list",
+                layout: 'erp/backend/pdf'
+            end
+          end
+        end
+
+        # POST /consignments/list
+        def show_list
+        end
+
+        # GET /consignments/1
+        def pdf
+          #authorize! :print, @consignment
+
+          respond_to do |format|
+            format.html
+            format.pdf do
+              if @consignment.consignment_details.count < 8
+                render pdf: "#{@consignment.code}",
+                  title: "#{@consignment.code}",
+                  layout: 'erp/backend/pdf',
+                  page_size: 'A5',
+                  orientation: 'Landscape',
+                  margin: {
+                    top: 7,                     # default 10 (mm)
+                    bottom: 7,
+                    left: 7,
+                    right: 7
+                  }
+              else
+                render pdf: "#{@consignment.code}",
+                  title: "#{@consignment.code}",
+                  layout: 'erp/backend/pdf',
+                  page_size: 'A4',
+                  margin: {
+                    top: 7,                     # default 10 (mm)
+                    bottom: 7,
+                    left: 7,
+                    right: 7
+                  }
+              end
+            end
+          end
+        end
     
         # GET /consignments/new
         def new
           @consignment = Consignment.new
           @consignment.sent_date = Time.now
           @consignment.return_date = Time.now + 1.week
+          @consignment.employee = current_user
         end
     
         # GET /consignments/1/edit
@@ -75,21 +129,6 @@ module Erp
             end
           else
             render :edit
-          end
-        end
-    
-        # DELETE /consignments/1
-        def destroy
-          @consignment.destroy
-
-          respond_to do |format|
-            format.html { redirect_to erp_consignments.backend_consignments_path, notice: t('.success') }
-            format.json {
-              render json: {
-                'message': t('.success'),
-                'type': 'success'
-              }
-            }
           end
         end
         

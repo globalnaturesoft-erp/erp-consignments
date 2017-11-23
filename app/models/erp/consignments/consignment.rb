@@ -30,10 +30,10 @@ module Erp::Consignments
     # class const
     TYPE_CONSIGN = 'consign'
     TYPE_LEND = 'lend'
-    CONSIGNMENT_STATUS_DRAFT = 'draft'
-    CONSIGNMENT_STATUS_ACTIVE = 'active'
-    CONSIGNMENT_STATUS_DELIVERED = 'delivered'
-    CONSIGNMENT_STATUS_DELETED = 'deleted'
+    STATUS_DRAFT = 'draft'
+    STATUS_ACTIVE = 'active'
+    STATUS_DELIVERED = 'delivered'
+    STATUS_DELETED = 'deleted'
     
     # get type method options
     def self.get_consignment_type_options()
@@ -176,35 +176,35 @@ module Erp::Consignments
     
     # STATUS
     def status_draft
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DRAFT)
+			update_attributes(status: Erp::Consignments::Consignment::STATUS_DRAFT)
 		end
     
     def status_active
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_ACTIVE)
+			update_attributes(status: Erp::Consignments::Consignment::STATUS_ACTIVE)
 		end
     
     def status_delivered
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELIVERED)
+			update_attributes(status: Erp::Consignments::Consignment::STATUS_DELIVERED)
 		end
     
     def status_deleted
-			update_attributes(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELETED)
+			update_attributes(status: Erp::Consignments::Consignment::STATUS_DELETED)
 		end
     
     def self.status_draft_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DRAFT)
+			update_all(status: Erp::Consignments::Consignment::STATUS_DRAFT)
 		end
     
     def self.status_active_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_ACTIVE)
+			update_all(status: Erp::Consignments::Consignment::STATUS_ACTIVE)
 		end
     
     def self.status_delivered_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELIVERED)
+			update_all(status: Erp::Consignments::Consignment::STATUS_DELIVERED)
 		end
     
     def self.status_deleted_all
-			update_all(status: Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELETED)
+			update_all(status: Erp::Consignments::Consignment::STATUS_DELETED)
 		end
     
     def total_returned_quantity        
@@ -237,7 +237,7 @@ module Erp::Consignments
 		end
     
     def is_deleted?
-			return status == Erp::Consignments::Consignment::CONSIGNMENT_STATUS_DELETED
+			return status == Erp::Consignments::Consignment::STATUS_DELETED
 		end
 
     # Generate code

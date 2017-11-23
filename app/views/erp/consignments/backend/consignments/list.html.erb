@@ -45,7 +45,7 @@
         </tr>
     </thead>
     <tbody>
-        <% if @consignments.each do |consignment| %>
+        <% @consignments.each do |consignment| %>
             <tr class="<%= 'blurred' if consignment.is_deleted? %> odd gradeX has-child-table" data-url="<%= erp_consignments.consignment_details_backend_consignments_path(id: consignment.id) %>">
                 <td>
                     <%= erp_datalist_check_row(id: consignment.id) %>
@@ -53,7 +53,7 @@
                 <% if get_columns(params).include?("code") %>
                     <td>
                         <i class="fa fa-plus expand tr-expand-button"></i>
-                        <strong><%= link_to "#" + consignment.code, erp_consignments.edit_backend_consignment_path(consignment) %></strong>
+                        <strong><%= consignment.code %></strong>
                     </td>
                 <% end %>
                 <% if get_columns(params).include?("type") %>
@@ -96,12 +96,12 @@
                     <%= consignment_dropdown_actions(consignment) %>
                 </td>
             </tr>
-        <% end.empty? %>
-            <tr>
-                <td colspan="7"><%= t('.no_matching_records_found') %></td>
-            </tr>
         <% end %>
     </tbody>
 </table>
-        
+
+<% if @consignments.empty? %>
+    <div class="datalist-empty-line"><%= t('.no_matching_records_found') %></div>
+<% end %>
+
 <%= erp_datalist_pagination(@consignments) %>
