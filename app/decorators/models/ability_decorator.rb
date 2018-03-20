@@ -4,7 +4,7 @@ Erp::Ability.class_eval do
     can :read, Erp::Consignments::Consignment
     
     can :print, Erp::Consignments::Consignment do |consignment|
-      consignment
+      consignment.is_delivered?
     end
     
     can :update, Erp::Consignments::Consignment do |consignment|
