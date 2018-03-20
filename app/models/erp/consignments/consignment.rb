@@ -252,6 +252,19 @@ module Erp::Consignments
     def self.unarchive_all
 			update_all(archived: false)
 		end
+    
+    # check if status
+    def is_draft?
+			return status == Erp::Consignments::Consignment::STATUS_DRAFT
+		end
+
+    def is_active?
+			return status == Erp::Consignments::Consignment::STATUS_ACTIVE
+		end
+
+    def is_delivered?
+			return status == Erp::Consignments::Consignment::STATUS_DELIVERED
+		end
 
     def is_deleted?
 			return status == Erp::Consignments::Consignment::STATUS_DELETED

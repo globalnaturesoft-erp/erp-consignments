@@ -24,13 +24,16 @@
                 </th>
             <% end %>
             <% if get_columns(params).include?("quantity") %>
-                <th><%= t('.quantity') %></th>
+                <th class="text-center"><%= t('.quantity') %></th>
             <% end %>
             <% if get_columns(params).include?("employee") %>
                 <th><%= t('.employee') %></th>
             <% end %>
             <% if get_columns(params).include?("warehouse") %>
                 <th><%= t('.warehouse') %></th>
+            <% end %>
+            <% if get_columns(params).include?("note") %>
+                <th><%= t('.note') %></th>
             <% end %>
             <% if get_columns(params).include?("status") %>
                 <th><%= t('status') %></th>
@@ -46,7 +49,10 @@
     </thead>
     <tbody>
         <% @consignments.each do |consignment| %>
-            <tr class="<%= 'blurred' if consignment.is_deleted? %> odd gradeX has-child-table" data-url="<%= erp_consignments.consignment_details_backend_consignments_path(id: consignment.id) %>">
+            <tr class="<%= 'blurred' if consignment.is_deleted? %> odd gradeX has-child-table"
+                data-url="<%= erp_consignments.consignment_details_backend_consignments_path(
+                    id: consignment.id
+                ) %>">
                 <td>
                     <%= erp_datalist_check_row(id: consignment.id) %>
                 </td>
@@ -69,13 +75,16 @@
                     <td><%= format_date(consignment.return_date) %></td>
                 <% end %>
                 <% if get_columns(params).include?("quantity") %>
-                    <td><%= consignment.total_quantity %></td>
+                    <td class="text-center"><%= consignment.total_quantity %></td>
                 <% end %>
                 <% if get_columns(params).include?("employee") %>
                     <td><%= consignment.employee_name %></td>
                 <% end %>
                 <% if get_columns(params).include?("warehouse") %>
                     <td><%= consignment.warehouse_name %></td>
+                <% end %>
+                <% if get_columns(params).include?("note") %>
+                    <td><%= raw consignment.note %></td>
                 <% end %>
                 <% if get_columns(params).include?("status") %>
                 <td>
