@@ -269,6 +269,15 @@ module Erp::Consignments
     def is_deleted?
 			return status == Erp::Consignments::Consignment::STATUS_DELETED
 		end
+    
+    def check_stock
+      self.consignment_details.each do |cd|
+        if cd.quantity > cd.product.get_stock(warehouse_ids: self.warehouse_id, state_ids: cd.state_id)
+          return false
+        end
+      end
+      return true
+    end
 
     # Generate code
     before_validation :generate_code

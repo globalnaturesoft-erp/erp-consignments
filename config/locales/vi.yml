@@ -83,7 +83,7 @@ vi:
             select_from_date: "Lọc theo ngày xuất phiếu..."
             select_to_date: "Lọc theo ngày xuất phiếu..."
           list:
-            change_draft: "Lưu tạm thời"
+            change_draft: "Lưu nháp (tạm)"
             change_active: "Xác nhận phiếu"
             change_delivered: "Hoàn tất giao hàng"
             change_deleted: "Hủy phiếu"

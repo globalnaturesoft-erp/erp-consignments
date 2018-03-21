@@ -8,11 +8,11 @@ Erp::Ability.class_eval do
     end
     
     can :update, Erp::Consignments::Consignment do |consignment|
-      consignment
+      consignment.is_draft? or consignment.is_active? or consignment.is_delivered?
     end
     
     can :set_draft, Erp::Consignments::Consignment do |consignment|
-      consignment.is_deleled?
+      consignment.is_deleted?
     end
     
     can :set_active, Erp::Consignments::Consignment do |consignment|
@@ -20,7 +20,7 @@ Erp::Ability.class_eval do
     end
     
     can :set_delivered, Erp::Consignments::Consignment do |consignment|
-      consignment.is_draft? or consignment.is_active?
+      (consignment.is_draft? or consignment.is_active?) and (consignment.check_stock == true)
     end
     
     can :set_deleted, Erp::Consignments::Consignment do |consignment|

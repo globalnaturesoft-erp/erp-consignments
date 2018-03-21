@@ -15,6 +15,13 @@ module Erp
         } if can? :update, consignment
         
         actions << {
+          text: '<i class="fa fa-sticky-note-o"></i> '+t('.change_draft'),
+          url: erp_consignments.status_draft_backend_consignments_path(id: consignment),
+          data_method: 'PUT',
+          class: 'ajax-link'
+        } if can? :set_draft, consignment
+        
+        actions << {
           text: '<i class="fa fa-check"></i> '+t('.change_active'),
           url: erp_consignments.status_active_backend_consignments_path(id: consignment),
           data_method: 'PUT',
@@ -33,7 +40,7 @@ module Erp
           url: erp_consignments.new_backend_cs_return_path(consignment_id: consignment.id)
         } if can? :create_consignment_return, consignment
         
-        actions << { divider: true }
+        actions << { divider: true } if can? :set_deleted, consignment
         
         actions << {
           text: '<i class="glyphicon glyphicon-trash"></i> '+t('.change_deleted'),
