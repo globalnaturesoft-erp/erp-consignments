@@ -116,7 +116,7 @@ vi:
             create: "Thêm phiếu"
           consignment_details:
             consignment_detail: "Chi tiết hàng"
-            consignment_return_detail: "Lịch sử trả hàng"
+            consignment_return_detail: "Theo dõi trả hàng"
             consign: "Ký gửi"
             lend: "Cho mượn"
             code: "Mã phiếu"
