@@ -8,6 +8,12 @@
         name: 'consignment[consignment_details_attributes]['+ uid + '][quantity]',
         value: consignment_detail.quantity
     }) %>
+    <% if consignment_detail.product.present? and can?(:combine, consignment_detail.product) %>
+        <span style="margin-top: -10px; font-size: 11px" class="text-small">
+            Tồn: <strong><%= consignment_detail.product.get_stock %></strong> | </span>
+        <a style="margin-top: -10px; font-size: 11px" target="_blank" href="<%= erp_products.combine_backend_products_path(id: consignment_detail.product.id) %>" class="text-small">
+            Ghép sản phẩm</a>
+    <% end %>
 </td>
 <td><%= consignment_detail.get_product_unit %></td>
 <td width='20%'>
