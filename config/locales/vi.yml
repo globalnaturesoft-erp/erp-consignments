@@ -90,6 +90,8 @@ vi:
             change_deleted_confirm: "Bạn có chắc muốn hủy phiếu được chọn?"
             draft: "Lưu tạm"
             active: "Đã xác nhận"
+            in_stock: "Còn hàng"
+            out_of_stock: "Hết hàng"
             delivered: "Đã được giao"
             deleted: "Đã bị hủy"
             delete: "Xóa phiếu"

@@ -89,6 +89,7 @@
                 <% if get_columns(params).include?("status") %>
                 <td>
                     <%= status_label(consignment.status) %>
+                    <%= status_label(consignment.check_stock_status) %>                    
                 </td>
                 <% end %>
                 <% if get_columns(params).include?("creator") %>

@@ -42,6 +42,11 @@ module Erp::Consignments
         {text: I18n.t('.lend'), value: Erp::Consignments::Consignment::TYPE_LEND}
       ]
     end
+    
+    # get not delivered consignments
+    def self.get_not_delivered_consignments
+      self.where.not(status: Erp::Consignments::Consignment::STATUS_DELIVERED)
+    end
 
     # Filters
     def self.filter(query, params)
@@ -277,6 +282,16 @@ module Erp::Consignments
         end
       end
       return true
+    end
+    
+    def check_stock_status
+      if status == Erp::Consignments::Consignment::STATUS_ACTIVE
+        if check_stock == false
+          'out_of_stock'
+        else
+          'in_stock'
+        end
+      end
     end
 
     # Generate code
