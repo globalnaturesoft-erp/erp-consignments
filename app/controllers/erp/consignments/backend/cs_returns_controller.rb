@@ -114,7 +114,7 @@ module Erp
         def create
           @cs_return = CsReturn.new(cs_return_params)
           @cs_return.creator = current_user
-          @cs_return.status = Erp::Consignments::CsReturn::STATUS_ACTIVE
+          @cs_return.status = Erp::Consignments::CsReturn::STATUS_DELIVERED
           @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
     
           if @cs_return.save

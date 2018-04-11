@@ -173,6 +173,10 @@ module Erp::Consignments
 			self.return_details.sum(:quantity)
 		end
     
+    def self.get_delivered
+      self.where(status: self::STATUS_DELIVERED)
+    end
+    
     # ARCHIVE
     def archive
 			update_attributes(archived: true)

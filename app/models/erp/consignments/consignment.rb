@@ -5,6 +5,10 @@ module Erp::Consignments
     belongs_to :employee, class_name: "Erp::User"
     belongs_to :creator, class_name: "Erp::User"
     has_many :cs_returns, class_name: "Erp::Consignments::CsReturn", dependent: :destroy
+    
+    def delivered_cs_returns
+      cs_returns.get_delivered
+    end
 
     if Erp::Core.available?("contacts")
 			validates :contact_id, :presence => true
