@@ -49,7 +49,10 @@ module Erp::Consignments
     
     # get not delivered consignments
     def self.get_not_delivered_consignments
-      self.where.not(status: Erp::Consignments::Consignment::STATUS_DELIVERED)
+      self.where(status: [
+          Erp::Consignments::Consignment::STATUS_ACTIVE,
+          Erp::Consignments::Consignment::STATUS_DRAFT
+      ])
     end
 
     # Filters
