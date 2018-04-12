@@ -133,6 +133,12 @@ vi:
             note: "Ghi chú"
             state: "Trạng thái sản phẩm"
             actions: "Tùy chọn"
+            edit: "Chỉnh sửa"
+            change_draft: "Lưu bản nháp"
+            change_active: "Xác nhận"
+            change_delivered: "Hoàn tất"
+            change_deleted: "Hủy phiếu"
+            change_deleted_confirm: "Bạn có chắc muốn hủy phiếu này?"
           form:
             code: "Mã phiếu"
             name: "Tên sản phẩm"
