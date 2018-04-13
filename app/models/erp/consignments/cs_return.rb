@@ -194,6 +194,18 @@ module Erp::Consignments
 			update_all(archived: false)
 		end
     
+    def is_draft?
+			return status == Erp::Consignments::CsReturn::STATUS_DRAFT
+		end
+    
+    def is_active?
+			return status == Erp::Consignments::CsReturn::STATUS_ACTIVE
+		end
+    
+    def is_delivered?
+			return status == Erp::Consignments::CsReturn::STATUS_DELIVERED
+		end
+    
     def is_deleted?
 			return status == Erp::Consignments::CsReturn::STATUS_DELETED
 		end
@@ -218,5 +230,10 @@ module Erp::Consignments
 				self.code = str + return_date.strftime("%m") + return_date.strftime("%Y").last(2) + "-" + num.to_s.rjust(3, '0')
 			end
 		end
+    
+    after_save :update_consignment_cache_return_status
+    def update_consignment_cache_return_status
+      consignment.update_cache_return_status
+    end
   end
 end

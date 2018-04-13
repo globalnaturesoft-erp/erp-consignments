@@ -118,6 +118,9 @@ module Erp
           @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
     
           if @cs_return.save
+            # update consignment cache return status
+            @cs_return.update_consignment_cache_return_status
+            
             if request.xhr?
               render json: {
                 status: 'success',
@@ -135,6 +138,9 @@ module Erp
         # PATCH/PUT /cs_returns/1
         def update
           if @cs_return.update(cs_return_params)
+            # update consignment cache return status
+            @cs_return.update_consignment_cache_return_status
+            
             if request.xhr?
               render json: {
                 status: 'success',

@@ -12,7 +12,6 @@
                                 <%= erp_form_control("text", {
                                     name: 'cs_return[code]',
                                     value: cs_return.code,
-                                    id: "cs_return_code",
                                     label: t('.code'),
                                     placeholder: t('.enter_code'),
                                     help: t('.help_code'),
@@ -112,11 +111,13 @@
                                     <tr>
                                         <th><%= t('.product_name') %></th>
                                         <th><%= t('.product_unit') %></th>
-                                        <th><%= t('.consignment_quantity') %></th>
                                         <th><%= t('.state') %></th>
-                                        <th><%= t('.return_quantity') %></th>
-                                        <th><%= t('.consignment_return') %></th>
-                                        <th><%= t('.status') %></th>
+                                        <th class="text-center"><%= t('.consignment_quantity') %></th>
+                                        <th class="text-center"><%= t('.returned_quantity') %></th>
+                                        <th class="text-right"><%= t('.quantity') %></th>
+                                        <% if false %>
+                                            <th><%= t('.status') %></th>
+                                        <% end %>
                                     </tr>
                                 </thead>
                                 <tbody class="addableform-container">
@@ -127,30 +128,38 @@
                                         <tr class="addableform-line">
                                             <td><%= return_detail.get_product_name %></td>
                                             <td><%= return_detail.get_product_unit %></td>
-                                            <td>
-                                                <%= return_detail.get_consignment_quantity %>
-                                            </td>
-                                            <td>
-                                                <%= return_detail.state_name %>
-                                            </td>
+                                            <td><%= return_detail.state_name %></td>
+                                            <td class="bold text-center"><%= return_detail.get_consignment_quantity %></td>
+                                            <td class="bold text-center"><%= return_detail.get_returned_quantity %></td>
                                             <td width="10%">
-                                                <%= erp_form_control("number", {
-                                                    name: 'cs_return[return_details_attributes][' + index.to_s + '][quantity]',
-                                                    value: return_detail.quantity,
-                                                    required: true,
-                                                    errors: return_detail.errors.full_messages_for(:quantity)
-                                                }) %>
-                                            </td>
-                                            <td><%= return_detail.get_returned_quantity %></td>
-                                            <td>
-                                                <% if return_detail.get_consignment_quantity > return_detail.get_returned_quantity %>
-                                                    <span class="label label-sm label-warning"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_NOT_RETURN) %></span>
-                                                <% elsif return_detail.get_consignment_quantity == return_detail.get_returned_quantity %>
-                                                    <span class="label label-sm label-success"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_RETURNED) %></span>
+                                                <% if return_detail.get_remain_quantity < 1 %>
+                                                    <div class="form-group font-green-jungle">
+                                                        <input type="text" readonly style="width: 100%"
+                                                            placeholder="Đã trả xong" class="form-control border-green-jungle" />
+                                                    </div>
                                                 <% else %>
-                                                    <span class="label label-sm label-danger"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_OVER_RETURED) %></span>
+                                                    <%= erp_form_control("select", {
+                                                        name: 'cs_return[return_details_attributes][' + index.to_s + '][quantity]',
+                                                        value: return_detail.quantity,
+                                                        placeholder: t('.choose_quantity'),
+                                                        options: (1..return_detail.get_remain_quantity).map{|number| {value: number, text: "#{number} / #{return_detail.get_remain_quantity}"} },
+                                                        class: "line_quantity",
+                                                        required: true,
+                                                        errors: return_detail.errors.full_messages_for(:quantity)
+                                                    }) %>
                                                 <% end %>
                                             </td>
+                                            <% if false %>
+                                                <td>
+                                                    <% if return_detail.get_consignment_quantity > return_detail.get_returned_quantity %>
+                                                        <span class="label label-sm label-warning"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_NOT_RETURN) %></span>
+                                                    <% elsif return_detail.get_consignment_quantity == return_detail.get_returned_quantity %>
+                                                        <span class="label label-sm label-success"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_RETURNED) %></span>
+                                                    <% else %>
+                                                        <span class="label label-sm label-danger"><%= t('.'+Erp::Consignments::ReturnDetail::STATUS_OVER_RETURED) %></span>
+                                                    <% end %>
+                                                </td>
+                                            <% end %>
                                         </tr>
                                     <% end %>
                                 </tbody>

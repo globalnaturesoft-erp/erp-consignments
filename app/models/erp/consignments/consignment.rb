@@ -38,6 +38,10 @@ module Erp::Consignments
     STATUS_ACTIVE = 'active'
     STATUS_DELIVERED = 'delivered'
     STATUS_DELETED = 'deleted'
+    
+    RETURN_STATUS_RETURNED = 'returned'
+    RETURN_STATUS_NOT_RETURNED = 'not_returned'
+    RETURN_STATUS_OVER_RETURNED = 'over_returned'
 
     # get type method options
     def self.get_consignment_type_options()
@@ -247,6 +251,35 @@ module Erp::Consignments
     def total_remain_quantity
 			total_quantity - total_returned_quantity
 		end
+    
+    def return_status
+      remain = total_remain_quantity
+      if remain > 0
+        return Erp::Consignments::Consignment::RETURN_STATUS_NOT_RETURNED
+      elsif remain == 0
+        return Erp::Consignments::Consignment::RETURN_STATUS_RETURNED
+      else
+        return Erp::Consignments::Consignment::RETURN_STATUS_OVER_RETURNED
+      end
+    end
+    
+    after_save :update_cache_return_status
+    def update_cache_return_status
+      self.update_column(:cache_return_status, self.return_status)
+    end
+    
+    # Check is return status
+    def is_returned?
+      return cache_return_status == Erp::Consignments::Consignment::RETURN_STATUS_RETURNED
+    end
+    
+    def is_not_returned?
+      return cache_return_status == Erp::Consignments::Consignment::RETURN_STATUS_NOT_RETURNED
+    end
+    
+    def is_over_returned?
+      return cache_return_status == Erp::Consignments::Consignment::RETURN_STATUS_OVER_RETURNED
+    end
 
     # ARCHIVE
     def archive

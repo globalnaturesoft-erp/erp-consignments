@@ -58,41 +58,52 @@ module Erp
       # Consignment-Return dropdown actions
       def cs_return_dropdown_actions(cs_return)
         actions = []
+        
+        actions << {
+          text: '<i class="fa fa-print"></i> '+t('.view_print'),
+          url: erp_consignments.backend_cs_return_path(cs_return),
+          class: 'modal-link'
+        } if can? :print, cs_return
+        
         actions << {
           text: '<i class="fa fa-edit"></i> '+t('.edit'),
-          href: erp_consignments.edit_backend_cs_return_path(cs_return)
+          href: erp_consignments.edit_backend_cs_return_path(cs_return),
+          target: '_blank'
         }
-        actions << { divider: true }
+        
+        actions << { divider: true } if (can? :set_draft, cs_return) or (can? :set_active, cs_return) or (can? :set_delivered, cs_return)
+        
         actions << {
-          text: '<i class="fa fa-file-o"></i> '+t('.change_draft'),
+          text: '<i class="fa fa-sticky-note-o"></i> '+t('.set_draft'),
           url: erp_consignments.status_draft_backend_cs_returns_path(id: cs_return),
           data_method: 'PUT',
-          hide: cs_return.status == Erp::Consignments::CsReturn::STATUS_DRAFT,
           class: 'ajax-link'
-        }
+        } if can? :set_draft, cs_return
+        
         actions << {
-          text: '<i class="fa fa-file-text-o"></i> '+t('.change_active'),
+          text: '<i class="fa fa-check"></i> '+t('.set_active'),
           url: erp_consignments.status_active_backend_cs_returns_path(id: cs_return),
           data_method: 'PUT',
-          hide: cs_return.status == Erp::Consignments::CsReturn::STATUS_ACTIVE,
-          hide: cs_return.status == Erp::Consignments::CsReturn::STATUS_DELIVERED,
           class: 'ajax-link'
-        }
+        } if can? :set_active, cs_return
+        
         actions << {
-          text: '<i class="fa fa-file-text"></i> '+t('.change_delivered'),
+          text: '<i class="glyphicon glyphicon-arrow-right"></i> '+t('.set_delivered'),
           url: erp_consignments.status_delivered_backend_cs_returns_path(id: cs_return),
           data_method: 'PUT',
-          hide: cs_return.status == Erp::Consignments::CsReturn::STATUS_DRAFT,
           class: 'ajax-link'
-        }
-        actions << { divider: true }
+        } if can? :set_delivered, cs_return
+        
+        actions << { divider: true } if can? :set_deleted, cs_return
+        
         actions << {
-          text: '<i class="fa fa-close"></i> '+t('.change_deleted'),
+          text: '<i class="glyphicon glyphicon-trash"></i> '+t('.set_deleted'),
           url: erp_consignments.status_deleted_backend_cs_returns_path(id: cs_return),
           data_method: 'PUT',
           class: 'ajax-link',
-          data_confirm: t('.change_deleted_confirm')
-        }
+          data_confirm: t('.set_deleted_confirm')
+        } if can? :set_deleted, cs_return
+        
         erp_datalist_row_actions(
           actions
         )

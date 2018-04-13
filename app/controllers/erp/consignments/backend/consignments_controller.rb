@@ -102,6 +102,9 @@ module Erp
           @consignment.status = Consignment::STATUS_ACTIVE
 
           if @consignment.save
+            # update cache return status
+            @consignment.update_cache_return_status
+            
             if request.xhr?
               render json: {
                 status: 'success',
@@ -119,6 +122,9 @@ module Erp
         # PATCH/PUT /consignments/1
         def update
           if @consignment.update(consignment_params)
+            # update cache return status
+            @consignment.update_cache_return_status
+            
             if request.xhr?
               render json: {
                 status: 'success',
