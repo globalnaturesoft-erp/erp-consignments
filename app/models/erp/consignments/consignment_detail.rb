@@ -11,12 +11,14 @@ module Erp::Consignments
       
       def returned_amount
         self.return_details.joins(:delivery)
-                            .where(erp_deliveries_deliveries: {delivery_type: Erp::Deliveries::Delivery::TYPE_IMPORT})
-                            .sum('erp_deliveries_delivery_details.quantity')
+            .where(erp_deliveries_deliveries: {delivery_type: Erp::Deliveries::Delivery::TYPE_IMPORT})
+            .sum('erp_deliveries_delivery_details.quantity')
       end
       
       def returned_quantity        
-        self.return_details.includes(:cs_return).where(erp_consignments_cs_returns: {status: Erp::Consignments::CsReturn::STATUS_DELIVERED}).sum('erp_consignments_return_details.quantity')
+        self.return_details.includes(:cs_return)
+            .where(erp_consignments_cs_returns: {status: Erp::Consignments::CsReturn::STATUS_DELIVERED})
+            .sum('erp_consignments_return_details.quantity')
       end
       
       def remain_quantity        
