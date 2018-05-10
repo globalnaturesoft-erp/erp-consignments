@@ -142,7 +142,7 @@
                                                         name: 'cs_return[return_details_attributes][' + index.to_s + '][quantity]',
                                                         value: return_detail.quantity,
                                                         placeholder: t('.choose_quantity'),
-                                                        options: (1..return_detail.get_remain_quantity).map{|number| {value: number, text: "#{number} / #{return_detail.get_remain_quantity}"} },
+                                                        options: (0..return_detail.get_remain_quantity).map{|number| {value: number, text: "#{number} / #{return_detail.get_remain_quantity}"} },
                                                         class: "line_quantity",
                                                         required: true,
                                                         errors: return_detail.errors.full_messages_for(:quantity)
