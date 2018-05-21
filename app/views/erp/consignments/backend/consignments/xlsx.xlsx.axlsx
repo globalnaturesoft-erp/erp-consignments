@@ -72,7 +72,7 @@ wb.styles do |s|
       items_num_col_last = num_col
       header[:columns] << nil
       header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
-      footer[:columns] << "#{items_num_col_first} >=< #{items_num_col_last} (#{header_num_row})"
+      footer[:columns] << nil
       footer[:styles] << (s.add_style border.deep_merge(bold))
       column_widths << 12
       infos_rows_colspan += 1
