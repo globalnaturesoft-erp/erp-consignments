@@ -1,0 +1,326 @@
+wb = xlsx_package.workbook
+xlsx_package.use_autowidth = true
+wb.styles do |s|
+  wb.styles.fonts.first.name = 'Calibri'
+  wb.add_worksheet(name: @consignment.code) do |sheet|
+    # style
+    bg_info = {:bg_color => "305496", :fg_color => "FF"}
+    text_center = {alignment: { horizontal: :center }}
+    text_left = {alignment: { horizontal: :left }}
+    text_right = {alignment: { horizontal: :right }}
+    text_middle = {alignment: { horizontal: :center, vertical: :center }}
+    border = {border: { style: :thin, color: "00", :edges => [:left, :right, :bottom, :top] }}
+    number = {format_code: '#,##0'}
+    bold = {b: true}
+    italic = {i: true}
+    
+     # Top head
+    sheet.add_row ["[COMPANY NAME]"], b: true
+    sheet.add_row ["[ADDRESS]"], b: true
+    
+    # add empty row
+    sheet.add_row [nil]
+    
+    # Title
+    title = (@consignment.consign? ? 'XUẤT KÝ GỬI' : 'XUẤT CHO MƯỢN')
+    sheet.add_row [title], sz: 16, b: true, style: (s.add_style text_center)
+    sheet.add_row [@consignment.sent_date.strftime('Ngày %d tháng %m năm %Y')], sz: 11, i: true, style: (s.add_style text_center)
+    sheet.add_row ["Số: #{@consignment.code}"], sz: 12, style: (s.add_style text_center)
+    
+    num_row = 6
+    num_col = (-1)
+    infos_rows_colspan = (-1)
+    
+    # add empty row
+    sheet.add_row [nil]
+    num_row += 1
+    header_num_row = (num_row + 4 + 1) # 4 (3 infos rows, 1 empty row)
+
+    # header
+    header = {columns: [], styles: []}
+    footer = {columns: [], styles: []}
+    column_widths = []
+    
+    if get_columns(params).include?("ordinal_number") or get_columns(params).empty?
+      header[:columns] << t('.ordinal_number')
+      header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
+      footer[:columns] << 'Tổng hàng ký gửi:'
+      footer[:styles] << (s.add_style text_center.deep_merge(border).deep_merge(bold))
+      column_widths << 5
+      num_col += 1
+      infos_rows_colspan += 1
+    end
+    if get_columns(params).include?("items") or get_columns(params).empty?
+      header[:columns] << t('.items')
+      header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
+      footer[:columns] << nil
+      footer[:styles] << (s.add_style border.deep_merge(bold))
+      column_widths << 12
+      num_col += 1
+      items_num_col_first = num_col
+      infos_rows_colspan += 1
+      
+      header[:columns] << nil
+      header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
+      footer[:columns] << nil
+      footer[:styles] << (s.add_style border.deep_merge(bold))
+      column_widths << 12
+      num_col += 1
+      infos_rows_colspan += 1
+      
+      num_col += 1
+      items_num_col_last = num_col
+      header[:columns] << nil
+      header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
+      footer[:columns] << "#{items_num_col_first} >=< #{items_num_col_last} (#{header_num_row})"
+      footer[:styles] << (s.add_style border.deep_merge(bold))
+      column_widths << 12
+      infos_rows_colspan += 1
+      
+      sheet.merge_cells("#{('A'.codepoints.first + items_num_col_first).chr}#{header_num_row}:#{('A'.codepoints.first + items_num_col_last).chr}#{header_num_row}")
+    end
+    if get_columns(params).include?("state") or get_columns(params).empty?
+      header[:columns] << t('.state')
+      header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
+    
+      footer[:columns] << nil
+      footer[:styles] << (s.add_style border.deep_merge(bold))
+      column_widths << 15
+      num_col += 1
+      infos_rows_colspan += 1
+    end
+    if get_columns(params).include?("units") or get_columns(params).empty?
+      header[:columns] << t('.units')
+      header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
+      footer[:columns] << nil
+      footer[:styles] << (s.add_style border.deep_merge(bold))
+      column_widths << 15
+      num_col += 1
+      infos_rows_colspan += 1
+    end
+    if get_columns(params).include?("quantity") or get_columns(params).empty?
+      header[:columns] << t('.quantity')
+      header[:styles] << (s.add_style bg_info.deep_merge(text_middle).deep_merge(border).deep_merge(bold))
+      footer[:columns] << @consignment.total_quantity
+      footer[:styles] << (s.add_style text_center.deep_merge(border).deep_merge(bold))
+      column_widths << 15
+      num_col += 1
+      infos_rows_colspan += 1
+      quantity_num_col = num_col
+    end
+    if get_columns(params).include?("note") or get_columns(params).empty?
+      header[:columns] << t('.note')
+      header[:styles] << (s.add_style bg_info.deep_merge(border).deep_merge(text_middle).deep_merge(bold))
+      footer[:columns] << nil
+      footer[:styles] << (s.add_style text_right.deep_merge(border).deep_merge(bold))
+      column_widths << 10
+      num_col += 1
+      infos_rows_colspan += 1
+      note_num_col_first = num_col
+      
+      header[:columns] << nil
+      header[:styles] << (s.add_style bg_info.deep_merge(border).deep_merge(text_middle).deep_merge(bold))
+      footer[:columns] << nil
+      footer[:styles] << (s.add_style text_right.deep_merge(border).deep_merge(bold))
+      column_widths << 10
+      num_col += 1
+      infos_rows_colspan += 1
+      note_num_col_last = num_col
+      
+      sheet.merge_cells("#{('A'.codepoints.first + note_num_col_first).chr}#{header_num_row}:#{('A'.codepoints.first + note_num_col_last).chr}#{header_num_row}")
+    end
+    
+    # Info rows
+    infos_row_1 = {columns: [], styles: []}
+    infos_row_2 = {columns: [], styles: []}
+    infos_row_3 = {columns: [], styles: []}
+    
+    infos_row_1[:columns] << "Người nhận hàng: #{@consignment.contact_name}"
+    infos_row_1[:styles] << (s.add_style text_left)
+    
+    infos_row_2[:columns] << "Địa chỉ: #{display_contact_address(@consignment.contact)}"
+    infos_row_2[:styles] << (s.add_style text_left)
+    
+    infos_row_3[:columns] << "Ghi chú: #{@consignment.note}"
+    infos_row_3[:styles] << (s.add_style text_left)
+    
+    infos_rows_colspan = 6 if infos_rows_colspan < 6
+    (0..(infos_rows_colspan-2)).each do |col| # số 2: là trừ 2 cột đầu mút
+      infos_row_1[:columns] << nil
+      infos_row_1[:styles] << (s.add_style text_left)
+      
+      infos_row_2[:columns] << nil
+      infos_row_2[:styles] << (s.add_style text_left)
+      
+      infos_row_3[:columns] << nil
+      infos_row_3[:styles] << (s.add_style text_left)
+    end
+    
+    infos_row_1[:columns] << "Kho xuất: #{@consignment.warehouse_name}"
+    infos_row_1[:styles] << (s.add_style text_right)
+    
+    infos_row_2[:columns] << "Phụ trách: #{@consignment.employee_name}"
+    infos_row_2[:styles] << (s.add_style text_right)
+    
+    infos_row_3[:columns] << nil
+    infos_row_3[:styles] << (s.add_style {})
+    
+    sheet.add_row infos_row_1[:columns], style: infos_row_1[:styles]
+    num_row += 1
+    sheet.add_row infos_row_2[:columns], style: infos_row_2[:styles]
+    num_row += 1
+    sheet.add_row infos_row_3[:columns], style: infos_row_3[:styles]
+    num_row += 1
+    
+    # add empty row
+    sheet.add_row [nil]
+    num_row += 1
+    
+    sheet.add_row header[:columns], style: header[:styles], height: 20
+    num_row += 1
+    
+    # rows
+    @consignment.consignment_details.each_with_index do |consignment_detail, index|
+      row = {columns: [], styles: []}
+      current_num_row = num_row + 1
+      
+      if get_columns(params).include?("ordinal_number") or get_columns(params).empty?
+        row[:columns] << index+1
+        row[:styles] << (s.add_style text_center.deep_merge(border))
+      end
+      if get_columns(params).include?("items") or get_columns(params).empty?
+        row[:columns] << consignment_detail.get_product_name
+        row[:styles] << (s.add_style border)
+        
+        row[:columns] << nil
+        row[:styles] << (s.add_style border)
+        
+        row[:columns] << nil
+        row[:styles] << (s.add_style border)
+        
+        sheet.merge_cells("#{('A'.codepoints.first + items_num_col_first).chr}#{current_num_row}:#{('A'.codepoints.first + items_num_col_last).chr}#{current_num_row}")
+      end
+      if get_columns(params).include?("state") or get_columns(params).empty?
+        row[:columns] << consignment_detail.state_name
+        row[:styles] << (s.add_style border.deep_merge(text_center))
+      end
+      if get_columns(params).include?("units") or get_columns(params).empty?
+        row[:columns] << consignment_detail.get_product_unit
+        row[:styles] << (s.add_style text_center.deep_merge(border))
+      end
+      if get_columns(params).include?("quantity") or get_columns(params).empty?
+        row[:columns] << consignment_detail.quantity
+        row[:styles] << (s.add_style text_center.deep_merge(border))
+      end
+      if get_columns(params).include?("note") or get_columns(params).empty?
+        row[:columns] << nil
+        row[:styles] << (s.add_style border)
+        
+        row[:columns] << nil
+        row[:styles] << (s.add_style border)
+        
+        sheet.merge_cells("#{('A'.codepoints.first + note_num_col_first).chr}#{current_num_row}:#{('A'.codepoints.first + note_num_col_last).chr}#{current_num_row}")
+      end
+    
+      sheet.add_row row[:columns], style: row[:styles]
+      num_row += 1
+    end
+
+    # footer
+    sheet.add_row footer[:columns], style: footer[:styles]
+    num_row += 1
+    row_ft = num_row
+    
+    if get_columns(params).include?("quantity") or get_columns(params).empty?
+      sheet.merge_cells("#{('A'.codepoints.first).chr}#{row_ft}:#{('A'.codepoints.first + (quantity_num_col - 1)).chr}#{row_ft}")
+    end
+    
+    if get_columns(params).include?("note") or get_columns(params).empty?
+      sheet.merge_cells("#{('A'.codepoints.first + note_num_col_first).chr}#{row_ft}:#{('A'.codepoints.first + note_num_col_last).chr}#{row_ft}")
+    end
+    
+    # add empty row
+    sheet.add_row [nil], height: 5
+    num_row += 1
+    sheet.add_row ["Lưu ý: Cty chỉ thu hồi hàng hóa khi có HĐBH kèm theo"]
+    num_row += 1
+    sheet.add_row [nil]
+    num_row += 1
+    
+    # signature footer
+    sign = {columns: [], styles: []}
+    sign1 = {columns: [], styles: []}
+    sign2 = {columns: [], styles: []}
+    
+    sign[:columns] << nil
+    sign[:styles] << (s.add_style {})
+    sign[:columns] << nil
+    sign[:styles] << (s.add_style {})
+    sign[:columns] << nil
+    sign[:styles] << (s.add_style {})
+    sign[:columns] << nil
+    sign[:styles] << (s.add_style {})
+    sign[:columns] << nil
+    sign[:styles] << (s.add_style {})
+    sign[:columns] << nil
+    sign[:styles] << (s.add_style {})
+    sign[:columns] << nil
+    sign[:styles] << (s.add_style {})
+    sign[:columns] << Time.now.strftime('Ngày %d tháng %m năm %Y')
+    sign[:styles] << (s.add_style text_center.merge(italic))
+    
+    sign1[:columns] << nil
+    sign1[:styles] << (s.add_style {})
+    sign1[:columns] << 'Người lập phiếu'
+    sign1[:styles] << (s.add_style text_center.merge(bold))
+    sign1[:columns] << nil
+    sign1[:styles] << (s.add_style {})
+    sign1[:columns] << 'Người giao hàng'
+    sign1[:styles] << (s.add_style text_center.merge(bold))
+    sign1[:columns] << nil
+    sign1[:styles] << (s.add_style {})
+    sign1[:columns] << 'Người nhận hàng'
+    sign1[:styles] << (s.add_style text_center.merge(bold))
+    sign1[:columns] << nil
+    sign1[:styles] << (s.add_style {})
+    sign1[:columns] << 'Thủ kho'
+    sign1[:styles] << (s.add_style text_center.merge(bold))
+    
+    sign2[:columns] << nil
+    sign2[:styles] << (s.add_style {})
+    sign2[:columns] << '(Ký, họ tên)'
+    sign2[:styles] << (s.add_style text_center.merge(italic))
+    sign2[:columns] << nil
+    sign2[:styles] << (s.add_style {})
+    sign2[:columns] << '(Ký, họ tên)'
+    sign2[:styles] << (s.add_style text_center.merge(italic))
+    sign2[:columns] << nil
+    sign2[:styles] << (s.add_style {})
+    sign2[:columns] << '(Ký, họ tên)'
+    sign2[:styles] << (s.add_style text_center.merge(italic))
+    sign2[:columns] << nil
+    sign2[:styles] << (s.add_style {})
+    sign2[:columns] << '(Ký, họ tên)'
+    sign2[:styles] << (s.add_style text_center.merge(italic))
+    
+    sheet.add_row sign[:columns], style: sign[:styles]
+    num_row += 1
+    sheet.add_row sign1[:columns], style: sign1[:styles]
+    num_row += 1
+    sheet.add_row sign2[:columns], style: sign2[:styles]
+    num_row += 1
+    
+    sheet.add_row [nil]
+    num_row += 1
+    sheet.add_row [nil]
+    num_row += 1
+    sheet.add_row [nil, @consignment.creator_name, nil, nil, nil], b: true, style: (s.add_style text_center)
+
+    # Setup
+    sheet.merge_cells("#{('A'.codepoints.first).chr}4:#{('A'.codepoints.first + num_col).chr}4")
+    sheet.merge_cells("#{('A'.codepoints.first).chr}5:#{('A'.codepoints.first + num_col).chr}5")
+    sheet.merge_cells("#{('A'.codepoints.first).chr}6:#{('A'.codepoints.first + num_col).chr}6")
+    
+    sheet.column_widths *column_widths
+  end
+end

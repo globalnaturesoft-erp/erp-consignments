@@ -213,6 +213,13 @@ vi:
             units: "ĐVT"
             quantity: "Số lượng"
             note: "Ghi chú"
+          xlsx:
+            ordinal_number: "STT"
+            items: "Tên sản phẩm"
+            state: "Tình trạng"
+            units: "ĐVT"
+            quantity: "Số lượng"
+            note: "Ghi chú"
         cs_returns:
           create:
             success: "Thêm phiếu trả thành công."

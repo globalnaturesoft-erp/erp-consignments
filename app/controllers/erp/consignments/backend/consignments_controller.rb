@@ -3,7 +3,7 @@ module Erp
     module Backend
       class ConsignmentsController < Erp::Backend::BackendController
         before_action :set_consignment, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted,
-                                               :show_list, :show, :pdf, :edit, :update]
+                                               :show_list, :show, :pdf, :xlsx, :edit, :update]
         before_action :set_consignments, only: [:delete_all, :archive_all, :unarchive_all, :status_draft_all, :status_active_all, :status_delivered_all, :status_deleted_all]
 
         # GET /consignments
@@ -80,6 +80,14 @@ module Erp
                   }
               end
             end
+          end
+        end
+        
+        def xlsx
+          respond_to do |format|
+            format.xlsx {
+              response.headers['Content-Disposition'] = "attachment; filename='Phieu ky gui #{@consignment.code}.xlsx'"
+            }
           end
         end
 

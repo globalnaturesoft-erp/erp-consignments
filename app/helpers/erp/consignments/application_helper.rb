@@ -10,6 +10,12 @@ module Erp
         } if can? :print, consignment
         
         actions << {
+          text: '<i class="fa fa-file-excel-o"></i> Xuất excel',
+          url: erp_consignments.xlsx_backend_consignments_path(id: consignment.id, format: 'xlsx'),
+          target: '_blank'
+        } if true
+        
+        actions << {
           text: '<i class="fa fa-edit"></i> '+t('edit'),
           url: erp_consignments.edit_backend_consignment_path(consignment)
         } if can? :update, consignment
