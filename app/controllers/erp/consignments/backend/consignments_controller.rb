@@ -345,7 +345,7 @@ module Erp
           # Only allow a trusted parameter "white list" through.
           def consignment_params
             params.fetch(:consignment, {}).permit(:code, :sent_date, :return_date, :consignment_type, :warehouse_id, :contact_id, :employee_id, :note,
-                                                  :consignment_details_attributes => [:id, :product_id, :quantity, :state_id, :_destroy])
+                                                  :consignment_details_attributes => [:id, :product_id, :quantity, :state_id, :serials, :_destroy])
           end
       end
     end

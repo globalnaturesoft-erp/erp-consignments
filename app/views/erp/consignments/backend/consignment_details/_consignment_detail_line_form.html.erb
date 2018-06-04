@@ -1,7 +1,6 @@
 <input type="hidden" name="consignment[consignment_details_attributes][<%= uid %>][id]" value="<%= consignment_detail.id %>">
 <input type="hidden" name="consignment[consignment_details_attributes][<%= uid %>][product_id]" value="<%= consignment_detail.product_id %>">
 <input type="hidden" name="consignment[consignment_details_attributes][<%= uid %>][_destroy]" value="">
-<td><%= consignment_detail.get_product_code %></td>
 <td><%= consignment_detail.get_product_name %></td>
 <td width='10%'>
     <%= erp_form_control("number", {
@@ -25,6 +24,18 @@
         url: erp_products.dataselect_backend_states_path(format: 'json'),
         required: true
     }) %>
+</td>
+<td width='20%'>
+    <% if Erp::Core.available?('ortho_k') %>
+        <%= erp_form_control("text", {
+            name: 'consignment[consignment_details_attributes][' + uid + '][serials]',
+            value: consignment_detail.serials,
+            text: consignment_detail.serials,
+            class: 'product-serials',
+            rows: 1,
+            placeholder: 'Số Lô/Serials'
+        }) %>
+    <% end %>
 </td>
 <td class="text-right">
     <%= erp_form_control("addableform_remove_button", {

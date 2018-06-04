@@ -168,11 +168,11 @@
                                         modal_size: "full"
                                     }
                                 }),
-                                thead: "<th>#{t('.code')}</th>
-                                        <th>#{t('.name')}</th>
+                                thead: "<th>#{t('.product_name')}</th>
                                         <th>#{t('.quantity')}</th>
                                         <th>#{t('.unit')}</th>
                                         <th>#{t('.state')}</th>
+                                        #{'<th>' + t('.serials') + '</th>' if Erp::Core.available?('ortho_k')}
                                         <th class='text-right'>#{t('.action')}</th>"
                             }) %>
                         </div>
