@@ -339,6 +339,7 @@ vi:
             product_name: "Tên sản phẩm"
             product_unit: "Đơn vị tính"
             state: "Tình trạng"
+            serials: "Số Lô/Sê-ri"
             consignment_quantity: "Số lượng KG/XM"
             returned_quantity: "Số lượng đã trả"
             quantity: "Số lượng (còn lại chưa trả)"

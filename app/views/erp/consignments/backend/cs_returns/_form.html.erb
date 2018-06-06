@@ -112,6 +112,9 @@
                                         <th><%= t('.product_name') %></th>
                                         <th><%= t('.product_unit') %></th>
                                         <th><%= t('.state') %></th>
+                                        <% if Erp::Core.available?('ortho_k') %>
+                                        <th><%= t('.serials') %></th>
+                                        <% end %>
                                         <th class="text-center"><%= t('.consignment_quantity') %></th>
                                         <th class="text-center"><%= t('.returned_quantity') %></th>
                                         <th class="text-right">Số lượng trả</th>
@@ -129,7 +132,22 @@
                                             <td><%= return_detail.get_product_name %></td>
                                             <td><%= return_detail.get_product_unit %></td>
                                             <td><%= return_detail.state_name %></td>
-                                            <td class="bold text-center"><%= return_detail.get_consignment_quantity %></td>
+                                            <td width="10%"
+                                              <% if Erp::Core.available?('ortho_k') %>
+                                                  <%= erp_form_control("text", {
+                                                      name: 'cs_return[return_details_attributes][' + index.to_s + '][serials]',
+                                                      value: return_detail.serials,
+                                                      text: return_detail.serials,
+                                                      class: 'product-serials',
+                                                      rows: 1,
+                                                      placeholder: 'Số Lô/Sê-ri'
+                                                  }) %>
+                                              <% end %>
+                                            </td>
+                                            <td class="bold text-center">
+                                                <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][quantity]" value="<%= return_detail.get_consignment_quantity %>">
+                                                <%= return_detail.get_consignment_quantity %>
+                                            </td>
                                             <td class="bold text-center"><%= return_detail.get_returned_quantity %></td>
                                             <td width="10%">
                                                 <% if return_detail.get_remain_quantity < 1 %>
