@@ -7,11 +7,13 @@
 <% end %>
 
 <% content_for :page_toolbar do %>
-    <%= erp_component('button/create', {
-        text: t('.create'),
-        href: erp_consignments.new_backend_consignment_path,
-        class: 'btn-noborder'
-    }) %>
+    <% if can? :sales_consignments_create, nil %>
+        <%= erp_component('button/create', {
+            text: t('.create'),
+            href: erp_consignments.new_backend_consignment_path,
+            class: 'btn-noborder'
+        }) %>
+    <% end %>
 <% end %>
 
 <% content_for :global_filter do %>
@@ -95,7 +97,19 @@
         },
         {
             text: t('.is_deleted'), name: 'erp_consignments_consignments.status', value: 'deleted', checked: false
-        }
+        },
+        {
+            divider: true
+        },
+        {
+            text: t('.is_returned'), name: 'erp_consignments_consignments.cache_return_status', value: Erp::Consignments::Consignment::RETURN_STATUS_RETURNED, checked: false
+        },
+        {
+            text: t('.is_not_returned'), name: 'erp_consignments_consignments.cache_return_status', value: Erp::Consignments::Consignment::RETURN_STATUS_NOT_RETURNED, checked: false
+        },
+        {
+            text: t('.is_over_returned'), name: 'erp_consignments_consignments.cache_return_status', value: Erp::Consignments::Consignment::RETURN_STATUS_OVER_RETURNED, checked: false
+        },
     ],
     columns: [
         {

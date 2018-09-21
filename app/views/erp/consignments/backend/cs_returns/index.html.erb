@@ -56,17 +56,17 @@
     actions: [
         {
             text: '<i class="fa fa-file-o"></i> '+t('.change_draft'),
-            url: erp_consignments.status_draft_all_backend_cs_returns_path,
+            url: erp_consignments.set_draft_all_backend_cs_returns_path,
             data_method: 'PUT'
         },
         {
             text: '<i class="fa fa-file-text-o"></i> '+t('.change_active'),
-            url: erp_consignments.status_active_all_backend_cs_returns_path,
+            url: erp_consignments.set_active_all_backend_cs_returns_path,
             data_method: 'PUT'
         },
         {
             text: '<i class="fa fa-file-text"></i> '+t('.change_delivered'),
-            url: erp_consignments.status_delivered_all_backend_cs_returns_path,
+            url: erp_consignments.set_delivered_all_backend_cs_returns_path,
             data_method: 'PUT'
         },
         {
@@ -74,7 +74,7 @@
         },
         {
             text: '<i class="fa fa-trash"></i> '+t('.change_deleted'),
-            url: erp_consignments.status_deleted_all_backend_cs_returns_path,
+            url: erp_consignments.set_deleted_all_backend_cs_returns_path,
             data_method: 'PUT',
             data_confirm: t('.change_deleted_confirm')
         }

@@ -9,11 +9,13 @@
 <% end %>
 
 <% content_for :page_toolbar do %>
-    <%= erp_component('button/create', {
-        text: t('.create'),
-        href: erp_consignments.new_backend_consignment_path,
-        class: 'btn-noborder'
-    }) %>
+    <% if can? :create, @consignment %>
+        <%= erp_component('button/create', {
+            text: t('.create'),
+            href: erp_consignments.new_backend_consignment_path,
+            class: 'btn-noborder'
+        }) %>
+    <% end %>
 <% end %>
 
 <div class="row">

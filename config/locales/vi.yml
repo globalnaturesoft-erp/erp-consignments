@@ -34,21 +34,21 @@ vi:
             success: "Ẩn phiếu được chọn thành công."
           unarchive_all:
             success: "Hiện phiếu được chọn thành công."
-          status_draft:
+          set_draft:
             success: "Thay đổi phiếu thành trạng thái nháp thành công."
-          status_active:
+          set_active:
             success: "Phiếu được xác nhận thành công."
-          status_delivered:
+          set_delivered:
             success: "Phiếu đã được giao thành công."
-          status_deleted:
+          set_deleted:
             success: "Phiếu đã được hủy."
-          status_draft_all:
+          set_draft_all:
             success: "Thay đổi phiếu đã chọn thành trạng thái nháp thành công."
-          status_active_all:
+          set_active_all:
             success: "Phiếu đã chọn được xác nhận thành công."
-          status_delivered_all:
+          set_delivered_all:
             success: "Phiếu đã được giao thành công."
-          status_deleted_all:
+          set_deleted_all:
             success: "Phiếu được chọn đã được hủy."
           index:
             filter_customer: "Đối tượng"
@@ -75,10 +75,13 @@ vi:
             returned_qty: "Số lượng đã trả"
             is_type_consign: "Loại ký gửi"
             is_type_lend: "Loại cho mượn"
-            is_draft: "Lưu tạm"
+            is_draft: "Phiếu tạm"
             is_active: "Đã xác nhận"
-            is_delivered: "Đã được giao"
+            is_delivered: "Đã giao hàng"
             is_deleted: "Đã bị hủy"
+            is_returned: "Hàng trả xong"
+            is_not_returned: "Chưa trả xong"
+            is_over_returned: "Hàng trả dư"
             consignment_from_date: "Từ ngày"
             consignment_to_date: "Đến ngày"
             select_from_date: "Lọc theo ngày xuất phiếu..."
@@ -116,7 +119,7 @@ vi:
             edit: "Cập nhật phiếu"
             delete: "Xóa phiếu"
             create_return: "Trả lại hàng"
-            change_draft: "Lưu nháp (tạm)"
+            change_draft: "Lưu tạm"
             change_active: "Xác nhận phiếu"
             change_delivered: "Hoàn tất giao hàng"
             change_deleted: "Hủy phiếu"
@@ -151,6 +154,10 @@ vi:
             set_deleted: "Hủy phiếu"
             set_deleted_confirm: "Bạn có chắc muốn hủy phiếu này?"
             view_print: "Xem và In"
+            draft: "Phiếu tạm"
+            active: "Đã xác nhận"
+            delivered: "Đã giao hàng"
+            deleted: "Đã bị hủy"
           form:
             code: "Mã phiếu"
             product_code: "Mã SP"
@@ -194,7 +201,7 @@ vi:
             create_consignment: "Thêm phiếu KG/XM"
             edit: "Chỉnh sửa"
             delivery: "Xác nhận giao hàng"
-            status_delivered_confirm: "Bạn muốn xác nhận giao hàng KG/XM hoàn tất?"
+            set_delivered_confirm: "Bạn muốn xác nhận giao hàng KG/XM hoàn tất?"
             delete: "Hủy phiếu"
             deleted_confirm: "Bạn muốn hủy phiếu này?"
             options: "Tùy chọn"
@@ -239,21 +246,21 @@ vi:
             success: "Ẩn phiếu trả được chọn thành công."
           unarchive_all:
             success: "Hiện phiếu trả được chọn thành công."
-          status_draft:
+          set_draft:
             success: "Thay đổi phiếu thành trạng thái nháp thành công."
-          status_active:
+          set_active:
             success: "Phiếu được xác nhận thành công."
-          status_delivered:
+          set_delivered:
             success: "Phiếu đã được giao thành công."
-          status_deleted:
+          set_deleted:
             success: "Phiếu đã được hủy."
-          status_draft_all:
+          set_draft_all:
             success: "Thay đổi phiếu đã chọn thành trạng thái nháp thành công."
-          status_active_all:
+          set_active_all:
             success: "Phiếu đã chọn được xác nhận thành công."
-          status_delivered_all:
+          set_delivered_all:
             success: "Phiếu đã được giao thành công."
-          status_deleted_all:
+          set_deleted_all:
             success: "Phiếu được chọn đã được hủy."
           index:
             change_draft: "Phiếu nháp"
@@ -270,9 +277,9 @@ vi:
             return_date: "Ngày trả"
             contact_return: "Người trả"
             is_draft: "Phiếu nháp"
-            is_active: "Phiếu đã xác nhận"
-            is_delivered: "Phiếu đã giao"
-            is_deleted: "Phiếu đã xóa"
+            is_active: "Đã xác nhận"
+            is_delivered: "Đã giao hàng"
+            is_deleted: "Đã bị hủy"
             return_from_date: "Ngày trả hàng (từ ngày):"
             return_to_date: "Ngày trả hàng (đến ngày:)"
             select_from_date: "Chọn mốc thời gian từ..."
@@ -281,14 +288,15 @@ vi:
             change_draft: "Phiếu nháp"
             change_active: "Xác nhận phiếu"
             change_delivered: "Phiếu đã được giao"
-            change_deleted: "Hủy phiếu"
-            change_deleted_confirm: "Bạn có chắc muốn hủy phiếu được chọn?"
+            set_deleted: "Hủy phiếu trả"
+            set_deleted_confirm: "Bạn có chắc muốn hủy phiếu được chọn?"
             draft: "Phiếu nháp"
-            active: "Phiếu đã xác nhận"
-            delivered: "Phiếu đã giao"
-            deleted: "Phiếu đã xóa"
+            active: "Đã xác nhận"
+            delivered: "Đã giao hàng"
+            deleted: "Đã bị hủy"
             delete: "Xóa phiếu trả"
-            edit: "Cập nhật phiếu trả"
+            edit: "Cập nhật"
+            view_print: "Xem và In"
             consignment_code: "Mã phiếu ký gửi"
             code: "Mã phiếu trả"
             return_date: "Ngày trả"
@@ -359,7 +367,7 @@ vi:
             create_consignment: "Thêm phiếu KG/XM"
             edit: "Chỉnh sửa"
             delivery: "Xác nhận trả hàng"
-            status_delivered_confirm: "Bạn muốn xác nhận đã nhận hàng cho phiếu này?"
+            set_delivered_confirm: "Bạn muốn xác nhận đã nhận hàng cho phiếu này?"
             delete: "Hủy phiếu"
             deleted_confirm: "Bạn muốn hủy phiếu này?"
             options: "Tùy chọn"

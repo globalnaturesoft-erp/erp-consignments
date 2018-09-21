@@ -2,16 +2,23 @@ module Erp
   module Consignments
     module Backend
       class CsReturnsController < Erp::Backend::BackendController
-        before_action :set_cs_return, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted,
+        before_action :set_cs_return, only: [:archive, :unarchive, :set_draft, :set_active, :set_delivered, :set_deleted,
                                              :show, :show_list, :pdf, :edit, :update]
-        before_action :set_cs_returns, only: [:delete_all, :archive_all, :unarchive_all, :status_draft_all, :status_active_all, :status_delivered_all, :status_deleted_all]
+        before_action :set_cs_returns, only: [:delete_all, :archive_all, :unarchive_all, :set_draft_all, :set_active_all, :set_delivered_all, :set_deleted_all]
     
         # GET /cs_returns
         def index
+          if Erp::Core.available?("ortho_k")
+            authorize! :sales_cs_returns_index, nil
+          end
         end
     
         # POST /cs_returns/list
         def list
+          if Erp::Core.available?("ortho_k")
+            authorize! :sales_cs_returns_index, nil
+          end
+          
           @cs_returns = CsReturn.search(params).paginate(:page => params[:page], :per_page => 10)
           
           if params.to_unsafe_hash[:global_filter].present? and params.to_unsafe_hash[:global_filter][:return_from_date].present?
@@ -33,7 +40,7 @@ module Erp
         
         # GET /cs_returns/1
         def show
-          #authorize! :print, @cs_return
+          authorize! :print, @cs_return
           
           respond_to do |format|
             format.html
@@ -50,7 +57,7 @@ module Erp
 
         # GET /cs_returns/1
         def pdf
-          #authorize! :print, @cs_return
+          authorize! :print, @cs_return
 
           respond_to do |format|
             format.html
@@ -86,6 +93,9 @@ module Erp
         # GET /cs_returns/new
         def new
           @cs_return = CsReturn.new
+          
+          authorize! :create, @cs_return
+          
           @cs_return.return_date = Time.now
           @consignment = Erp::Consignments::Consignment.find(params[:consignment_id])
           @cs_return.contact = @consignment.contact
@@ -102,6 +112,8 @@ module Erp
     
         # GET /cs_returns/1/edit
         def edit
+          authorize! :update, @cs_return
+          
           @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
           @consignment.consignment_details.each do |consignment_detail|
             @cs_return.return_details.build(
@@ -113,6 +125,9 @@ module Erp
         # POST /cs_returns
         def create
           @cs_return = CsReturn.new(cs_return_params)
+          
+          authorize! :create, @cs_return
+          
           @cs_return.creator = current_user
           @cs_return.status = Erp::Consignments::CsReturn::STATUS_DELIVERED
           @consignment = Erp::Consignments::Consignment.find(@cs_return.consignment_id)
@@ -137,6 +152,8 @@ module Erp
     
         # PATCH/PUT /cs_returns/1
         def update
+          authorize! :update, @cs_return
+          
           if @cs_return.update(cs_return_params)
             # update consignment cache return status
             @cs_return.update_consignment_cache_return_status
@@ -157,6 +174,8 @@ module Erp
         
         # ARCHIVE /cs_returns/archive?id=1
         def archive
+          authorize! :archive, @cs_return
+          
           @cs_return.archive
           respond_to do |format|
             format.json {
@@ -170,6 +189,8 @@ module Erp
         
         # UNARCHIVE /cs_returns/archive?id=1
         def unarchive
+          authorize! :unarchive, @cs_return
+          
           @cs_return.unarchive
           respond_to do |format|
             format.json {
@@ -181,9 +202,11 @@ module Erp
           end
         end
         
-        # STATUS DRAFT /cs_returns/status_draft?id=1
-        def status_draft
-          @cs_return.status_draft
+        # STATUS DRAFT /cs_returns/set_draft?id=1
+        def set_draft
+          authorize! :set_draft, @cs_return
+          
+          @cs_return.set_draft
           respond_to do |format|
             format.json {
               render json: {
@@ -194,9 +217,11 @@ module Erp
           end
         end
         
-        # STATUS ACTIVE /cs_returns/status_active?id=1
-        def status_active
-          @cs_return.status_active
+        # STATUS ACTIVE /cs_returns/set_active?id=1
+        def set_active
+          authorize! :set_active, @cs_return
+          
+          @cs_return.set_active
           respond_to do |format|
             format.json {
               render json: {
@@ -207,9 +232,13 @@ module Erp
           end
         end
         
-        # STATUS DELIVERED /cs_returns/status_delivered?id=1
-        def status_delivered
-          @cs_return.status_delivered
+        # STATUS DELIVERED /cs_returns/set_delivered?id=1
+        def set_delivered
+          authorize! :set_delivered, @cs_return
+          
+          @cs_return.set_delivered
+          @cs_return.update_confirmed_at
+          
           respond_to do |format|
             format.json {
               render json: {
@@ -220,9 +249,11 @@ module Erp
           end
         end
         
-        # STATUS DELETED /cs_returns/status_deleted?id=1
-        def status_deleted
-          @cs_return.status_deleted
+        # STATUS DELETED /cs_returns/set_deleted?id=1
+        def set_deleted
+          authorize! :set_deleted, @cs_return
+          
+          @cs_return.set_deleted
           respond_to do |format|
             format.json {
               render json: {
@@ -261,9 +292,9 @@ module Erp
           end          
         end
         
-        # STATUS DRAFT ALL /cs_returns/status_draft_all?ids=1,2,3
-        def status_draft_all         
-          @cs_returns.status_draft_all
+        # STATUS DRAFT ALL /cs_returns/set_draft_all?ids=1,2,3
+        def set_draft_all         
+          @cs_returns.set_draft_all
           
           respond_to do |format|
             format.json {
@@ -275,9 +306,9 @@ module Erp
           end          
         end
         
-        # STATUS ACTIVE ALL /cs_returns/status_active_all?ids=1,2,3
-        def status_active_all
-          @cs_returns.status_active_all
+        # STATUS ACTIVE ALL /cs_returns/set_active_all?ids=1,2,3
+        def set_active_all
+          @cs_returns.set_active_all
           
           respond_to do |format|
             format.json {
@@ -289,9 +320,9 @@ module Erp
           end          
         end
         
-        # STATUS DELIVERED ALL /cs_returns/status_delivered_all?ids=1,2,3
-        def status_delivered_all         
-          @cs_returns.status_delivered_all
+        # STATUS DELIVERED ALL /cs_returns/set_delivered_all?ids=1,2,3
+        def set_delivered_all         
+          @cs_returns.set_delivered_all
           
           respond_to do |format|
             format.json {
@@ -303,9 +334,9 @@ module Erp
           end          
         end
         
-        # STATUS DELETED ALL /cs_returns/status_deleted_all?ids=1,2,3
-        def status_deleted_all
-          @cs_returns.status_deleted_all
+        # STATUS DELETED ALL /cs_returns/set_deleted_all?ids=1,2,3
+        def set_deleted_all
+          @cs_returns.set_deleted_all
           
           respond_to do |format|
             format.json {

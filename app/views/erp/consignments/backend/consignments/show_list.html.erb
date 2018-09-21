@@ -1,8 +1,10 @@
-<div class="text-right mb-10">
-  <a target="_blank"
-    href="<%= erp_consignments.xlsx_backend_consignments_path(params.to_unsafe_hash.merge({format: 'xlsx'})) %>"
-    target="_blank"
-    class="btn btn-primary"
-  >Xuất excel</a>
-</div>
+<% if can? :excel_export, @consignment %>
+    <div class="text-right mb-10">
+        <a target="_blank"
+            href="<%= erp_consignments.xlsx_backend_consignments_path(params.to_unsafe_hash.merge({format: 'xlsx'})) %>"
+            target="_blank"
+            class="btn btn-primary"
+        >Xuất excel</a>
+    </div>
+<% end %>
 <iframe class="pdf" src="<%= erp_consignments.pdf_backend_consignments_path(params.to_unsafe_hash.merge({format: 'pdf'})) %>" />

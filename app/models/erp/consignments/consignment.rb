@@ -208,35 +208,35 @@ module Erp::Consignments
 		end
 
     # STATUS
-    def status_draft
+    def set_draft
 			update_attributes(status: Erp::Consignments::Consignment::STATUS_DRAFT)
 		end
 
-    def status_active
+    def set_active
 			update_attributes(status: Erp::Consignments::Consignment::STATUS_ACTIVE)
 		end
 
-    def status_delivered
+    def set_delivered
 			update_attributes(status: Erp::Consignments::Consignment::STATUS_DELIVERED)
 		end
 
-    def status_deleted
+    def set_deleted
 			update_attributes(status: Erp::Consignments::Consignment::STATUS_DELETED)
 		end
 
-    def self.status_draft_all
+    def self.set_draft_all
 			update_all(status: Erp::Consignments::Consignment::STATUS_DRAFT)
 		end
 
-    def self.status_active_all
+    def self.set_active_all
 			update_all(status: Erp::Consignments::Consignment::STATUS_ACTIVE)
 		end
 
-    def self.status_delivered_all
+    def self.set_delivered_all
 			update_all(status: Erp::Consignments::Consignment::STATUS_DELIVERED)
 		end
 
-    def self.status_deleted_all
+    def self.set_deleted_all
 			update_all(status: Erp::Consignments::Consignment::STATUS_DELETED)
 		end
 
@@ -332,6 +332,11 @@ module Erp::Consignments
           'in_stock'
         end
       end
+    end
+    
+    # update confirmed at
+    def update_confirmed_at
+      self.update_columns(confirmed_at: Time.now)
     end
 
     # Generate code

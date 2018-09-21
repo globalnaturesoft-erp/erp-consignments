@@ -2,16 +2,24 @@ module Erp
   module Consignments
     module Backend
       class ConsignmentsController < Erp::Backend::BackendController
-        before_action :set_consignment, only: [:archive, :unarchive, :status_draft, :status_active, :status_delivered, :status_deleted,
-                                               :show_list, :show, :pdf, :xlsx, :edit, :update]
-        before_action :set_consignments, only: [:delete_all, :archive_all, :unarchive_all, :status_draft_all, :status_active_all, :status_delivered_all, :status_deleted_all]
+        before_action :set_consignment, only: [:archive, :unarchive, :show_list, :show, :pdf, :xlsx, :edit, :update,
+                                               :set_draft, :set_active, :set_delivered, :set_deleted]
+        before_action :set_consignments, only: [:delete_all, :archive_all, :unarchive_all,
+                                                :set_draft_all, :set_active_all, :set_delivered_all, :set_deleted_all]
 
         # GET /consignments
         def index
+          if Erp::Core.available?("ortho_k")
+            authorize! :sales_consignments_index, nil
+          end
         end
 
         # POST /consignments/list
         def list
+          if Erp::Core.available?("ortho_k")
+            authorize! :sales_consignments_index, nil
+          end
+          
           @consignments = Consignment.search(params).paginate(:page => params[:page], :per_page => 10)
 
           if params.to_unsafe_hash[:global_filter].present? and params.to_unsafe_hash[:global_filter][:consignment_from_date].present?
@@ -33,7 +41,7 @@ module Erp
 
         # GET /consignments/1
         def show
-          #authorize! :print, @consignment
+          authorize! :print, @consignment
 
           respond_to do |format|
             format.html
@@ -50,7 +58,7 @@ module Erp
 
         # GET /consignments/1
         def pdf
-          #authorize! :print, @consignment
+          authorize! :print, @consignment
 
           respond_to do |format|
             format.html
@@ -94,6 +102,9 @@ module Erp
         # GET /consignments/new
         def new
           @consignment = Consignment.new
+          
+          authorize! :create, @consignment
+          
           @consignment.sent_date = Time.now
           @consignment.return_date = Time.now + 1.week
           @consignment.employee = current_user
@@ -101,11 +112,15 @@ module Erp
 
         # GET /consignments/1/edit
         def edit
+          authorize! :update, @consignment
         end
 
         # POST /consignments
         def create
           @consignment = Consignment.new(consignment_params)
+          
+          authorize! :create, @consignment
+          
           @consignment.creator = current_user
           @consignment.status = Consignment::STATUS_ACTIVE
 
@@ -129,6 +144,8 @@ module Erp
 
         # PATCH/PUT /consignments/1
         def update
+          authorize! :update, @consignment
+          
           if @consignment.update(consignment_params)
             # update cache return status
             @consignment.update_cache_return_status
@@ -149,6 +166,8 @@ module Erp
 
         # ARCHIVE /consignments/archive?id=1
         def archive
+          authorize! :archive, @consignment
+          
           @consignment.archive
           respond_to do |format|
             format.json {
@@ -162,6 +181,8 @@ module Erp
 
         # UNARCHIVE /consignments/archive?id=1
         def unarchive
+          authorize! :unarchive, @consignment
+          
           @consignment.unarchive
           respond_to do |format|
             format.json {
@@ -173,9 +194,11 @@ module Erp
           end
         end
 
-        # STATUS DRAFT /consignments/status_draft?id=1
-        def status_draft
-          @consignment.status_draft
+        # STATUS DRAFT /consignments/set_draft?id=1
+        def set_draft
+          authorize! :set_draft, @consignment
+          
+          @consignment.set_draft
           respond_to do |format|
             format.json {
               render json: {
@@ -186,9 +209,11 @@ module Erp
           end
         end
 
-        # STATUS ACTIVE /consignments/status_active?id=1
-        def status_active
-          @consignment.status_active
+        # STATUS ACTIVE /consignments/set_active?id=1
+        def set_active
+          authorize! :set_active, @consignment
+          
+          @consignment.set_active
           respond_to do |format|
             format.json {
               render json: {
@@ -199,9 +224,13 @@ module Erp
           end
         end
 
-        # STATUS DELIVERED /consignments/status_delivered?id=1
-        def status_delivered
-          @consignment.status_delivered
+        # STATUS DELIVERED /consignments/set_delivered?id=1
+        def set_delivered
+          authorize! :set_delivered, @consignment
+          
+          @consignment.set_delivered
+          @consignment.update_confirmed_at
+          
           respond_to do |format|
             format.json {
               render json: {
@@ -212,9 +241,11 @@ module Erp
           end
         end
 
-        # STATUS DELETED /consignments/status_deleted?id=1
-        def status_deleted
-          @consignment.status_deleted
+        # STATUS DELETED /consignments/set_deleted?id=1
+        def set_deleted
+          authorize! :set_deleted, @consignment
+          
+          @consignment.set_deleted
           respond_to do |format|
             format.json {
               render json: {
@@ -267,9 +298,9 @@ module Erp
           end
         end
 
-        # STATUS DRAFT ALL /consignments/status_draft_all?ids=1,2,3
-        def status_draft_all
-          @consignments.status_draft_all
+        # STATUS DRAFT ALL /consignments/set_draft_all?ids=1,2,3
+        def set_draft_all
+          @consignments.set_draft_all
 
           respond_to do |format|
             format.json {
@@ -281,9 +312,9 @@ module Erp
           end
         end
 
-        # STATUS ACTIVE ALL /consignments/status_active_all?ids=1,2,3
-        def status_active_all
-          @consignments.status_active_all
+        # STATUS ACTIVE ALL /consignments/set_active_all?ids=1,2,3
+        def set_active_all
+          @consignments.set_active_all
 
           respond_to do |format|
             format.json {
@@ -295,9 +326,9 @@ module Erp
           end
         end
 
-        # STATUS DELIVERED ALL /consignments/status_delivered_all?ids=1,2,3
-        def status_delivered_all
-          @consignments.status_delivered_all
+        # STATUS DELIVERED ALL /consignments/set_delivered_all?ids=1,2,3
+        def set_delivered_all
+          @consignments.set_delivered_all
 
           respond_to do |format|
             format.json {
@@ -309,9 +340,9 @@ module Erp
           end
         end
 
-        # STATUS DELETED ALL /consignments/status_deleted_all?ids=1,2,3
-        def status_deleted_all
-          @consignments.status_deleted_all
+        # STATUS DELETED ALL /consignments/set_deleted_all?ids=1,2,3
+        def set_deleted_all
+          @consignments.set_deleted_all
 
           respond_to do |format|
             format.json {

@@ -10,35 +10,41 @@
 <% end %>
 
 <% content_for :page_toolbar do %>
-    <%= erp_component('button/create', {
-        text: t('.create_consignment'),
-        href: erp_consignments.new_backend_consignment_path,
-        class: 'btn-noborder'
-    }) %>
-
-    <%= erp_component('button/edit', {
-        text: t('.edit'),
-        href: erp_consignments.edit_backend_consignment_path(@consignment)
-    }) %>
-
+    <% if can? :create, @consignment %>
+        <%= erp_component('button/create', {
+            text: t('.create_consignment'),
+            href: erp_consignments.new_backend_consignment_path,
+            class: 'btn-noborder'
+        }) %>
+    <% end %>
+    
+    <% if can? :update, @consignment %>
+        <%= erp_component('button/edit', {
+            text: t('.edit'),
+            href: erp_consignments.edit_backend_consignment_path(@consignment)
+        }) %>
+    <% end %>
+    
+    <%
+        actions = []
+        actions << {
+            text: '<i class="fa fa-check-square-o"></i> '+t('.delivery'),
+            url: erp_consignments.set_delivered_backend_consignments_path(id: @consignment.id),
+            data_method: 'PUT',
+            data_confirm: t('.set_delivered_confirm'),
+            class: 'ajax-link'
+        } if can? :set_delivered, @consignment
+        actions << {
+            text: '<i class="fa fa-close"></i> '+t('.delete'),
+            href: erp_consignments.set_deleted_backend_consignments_path(id: @consignment.id),
+            data_method: 'PUT',
+            data_confirm: t('.deleted_confirm'),
+            class: 'ajax-link'
+        } if can? :set_deleted, @consignment
+    %>
+    
     <%= erp_component('button/actions', {
-        actions:
-        [
-            {
-                text: '<i class="fa fa-check-square-o"></i> '+t('.delivery'),
-                url: erp_consignments.status_delivered_backend_consignments_path(id: @consignment.id),
-                data_method: 'PUT',
-                data_confirm: t('.status_delivered_confirm'),
-                class: 'ajax-link'
-            },
-            {
-                text: '<i class="fa fa-close"></i> '+t('.delete'),
-                href: erp_consignments.status_deleted_backend_consignments_path(id: @consignment.id),
-                data_method: 'PUT',
-                data_confirm: t('.deleted_confirm'),
-                class: 'ajax-link'
-            },
-        ],
+        actions: actions,
         text: t('.options'),
         class: 'btn-noborder'
     }) %>
