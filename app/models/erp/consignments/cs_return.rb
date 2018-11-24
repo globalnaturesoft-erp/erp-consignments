@@ -27,6 +27,10 @@ module Erp::Consignments
       consignment.present? ? consignment.code : ''
     end
     
+    def consignment_employee_name
+      consignment.present? ? consignment.employee_name : ''
+    end
+    
     has_many :return_details, inverse_of: :cs_return, dependent: :destroy
     accepts_nested_attributes_for :return_details, :reject_if => lambda { |a| a[:consignment_detail_id].blank? || a[:quantity].blank? || a[:quantity].to_i <= 0 }, :allow_destroy => true
     
@@ -171,6 +175,10 @@ module Erp::Consignments
     
     def total_quantity        
 			self.return_details.sum(:quantity)
+		end
+    
+    def self.total_quantity        
+			self.sum(&:total_quantity)
 		end
     
     def self.get_delivered

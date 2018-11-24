@@ -1,3 +1,29 @@
+<div class="text-right mb-10">
+    <%= actions = []
+        actions << {
+            text: 'Danh sách phiếu kg/xm',
+            url: erp_consignments.export_list_xlsx_backend_consignments_path(params.to_unsafe_hash.merge({format: 'xlsx'})),
+            target: "_blank"
+        }
+        actions << {
+            text: 'Danh sách phiếu trả lại',
+            url: erp_consignments.export_cs_returns_list_xlsx_backend_consignments_path(params.to_unsafe_hash.merge({format: 'xlsx'})),
+            target: "_blank"
+        }
+        actions << {
+            text: 'Chi tiết hàng kg/xm/trả',
+            url: erp_consignments.export_detail_xlsx_backend_consignments_path(params.to_unsafe_hash.merge({format: 'xlsx'})),
+            target: "_blank"
+        } if false
+        erp_component('button/actions', {
+            actions: actions,
+            text: 'Xuất excel',
+            class: 'btn-primary',
+            icon: 'fa fa-file-excel-o'
+        })
+    %>
+</div>
+
 <table class="table table-advance table-hover table-striped table-checkable order-column">
     <thead>
         <tr>

@@ -252,6 +252,18 @@ module Erp::Consignments
 			total_quantity - total_returned_quantity
 		end
     
+    def self.total_quantity
+      self.sum(&:total_quantity)
+    end
+    
+    def self.total_returned_quantity
+      self.sum(&:total_returned_quantity)
+    end
+    
+    def self.total_remain_quantity
+      self.sum(&:total_remain_quantity)
+    end
+    
     def return_status
       remain = total_remain_quantity
       if remain > 0

@@ -91,10 +91,73 @@ module Erp
           end
         end
         
+        # Export excel file
         def xlsx
           respond_to do |format|
             format.xlsx {
               response.headers['Content-Disposition'] = "attachment; filename='Phieu ky gui #{@consignment.code}.xlsx'"
+            }
+          end
+        end
+        
+        def export_list_xlsx
+          timestamp = Time.now.strftime('%Y%m%d-%H%M%S')
+          
+          glb = params.to_unsafe_hash[:global_filter]
+          if glb[:period].present?
+            @from = Erp::Periods::Period.find(glb[:period]).from_date.beginning_of_day
+            @to = Erp::Periods::Period.find(glb[:period]).to_date.end_of_day
+            @period_name = Erp::Periods::Period.find(glb[:period]).name
+          else
+            @from = (glb.present? and glb[:from_date].present?) ? glb[:from_date].to_date : nil
+            @to = (glb.present? and glb[:to_date].present?) ? glb[:to_date].to_date : nil
+            @period_name = nil
+          end
+          
+          @consignments = Consignment.search(params)
+          
+          if @from.present?
+            @consignments = @consignments.where('sent_date >= ?', @from.beginning_of_day)
+          end
+
+          if @to.present?
+            @consignments = @consignments.where('sent_date <= ?', @to.end_of_day)
+          end
+          
+          respond_to do |format|
+            format.xlsx {
+              response.headers['Content-Disposition'] = "attachment; filename='Danh-sach-ky-gui-va-cho-muon-u#{current_user.id}-t#{timestamp}.xlsx'"
+            }
+          end
+        end
+        
+        def export_cs_returns_list_xlsx
+          timestamp = Time.now.strftime('%Y%m%d-%H%M%S')
+          
+          glb = params.to_unsafe_hash[:global_filter]
+          if glb[:period].present?
+            @from = Erp::Periods::Period.find(glb[:period]).from_date.beginning_of_day
+            @to = Erp::Periods::Period.find(glb[:period]).to_date.end_of_day
+            @period_name = Erp::Periods::Period.find(glb[:period]).name
+          else
+            @from = (glb.present? and glb[:from_date].present?) ? glb[:from_date].to_date : nil
+            @to = (glb.present? and glb[:to_date].present?) ? glb[:to_date].to_date : nil
+            @period_name = nil
+          end
+          
+          @consignments = Consignment.search(params)
+          
+          if @from.present?
+            @consignments = @consignments.where('sent_date >= ?', @from.beginning_of_day)
+          end
+
+          if @to.present?
+            @consignments = @consignments.where('sent_date <= ?', @to.end_of_day)
+          end
+          
+          respond_to do |format|
+            format.xlsx {
+              response.headers['Content-Disposition'] = "attachment; filename='Danh-sach-tra-hang-ky-gui-u#{current_user.id}-t#{timestamp}.xlsx'"
             }
           end
         end

@@ -22,6 +22,9 @@ Erp::Consignments::Engine.routes.draw do
 					post 'show_list'
 					get 'pdf'
 					get 'xlsx'
+					get 'export_list_xlsx'
+					get 'export_detail_xlsx'
+					get 'export_cs_returns_list_xlsx'
 				end
 			end
 			resources :cs_returns do
