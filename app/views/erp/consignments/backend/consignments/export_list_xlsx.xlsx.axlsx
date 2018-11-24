@@ -20,8 +20,8 @@ wb.styles do |s|
     bold = {b: true}
     
     # Top head
-    sheet.add_row ["CÔNG TY TNHH ORTHO-K VIỆT NAM"], b: true
-    sheet.add_row ["535 An Dương Vương, Phường 8, Quận 5, TP. Hồ Chí Minh, Việt Nam"], b: true
+    sheet.add_row ["[COMPANY NAME]"], b: true
+    sheet.add_row ["[ADDRESS]"], b: true
     
     # add empty row
     sheet.add_row [nil]
