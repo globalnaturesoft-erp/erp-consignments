@@ -125,9 +125,11 @@
                                 </thead>
                                 <tbody class="addableform-container">
                                     <% @cs_return.return_details.each_with_index do |return_detail, index| %>
-                                        <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][id]" value="<%= return_detail.id %>">  
-                                        <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][consignment_detail_id]" value="<%= return_detail.consignment_detail_id %>">
-                                        <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][state_id]" value="<%= return_detail.state_id %>">
+                                    <% if return_detail.get_consignment_quantity > return_detail.get_returned_quantity %>
+                                          <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][id]" value="<%= return_detail.id %>">  
+                                          <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][consignment_detail_id]" value="<%= return_detail.consignment_detail_id %>">
+                                          <input type="hidden" name="cs_return[return_details_attributes][<%= index.to_s %>][state_id]" value="<%= return_detail.state_id %>">
+                                    <% end %>
                                         <tr class="addableform-line">
                                             <td><%= return_detail.get_product_name %></td>
                                             <td><%= return_detail.get_product_unit %></td>
