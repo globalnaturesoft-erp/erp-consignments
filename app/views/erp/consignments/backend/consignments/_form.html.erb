@@ -140,6 +140,23 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane addableform-table active" id="tab_5_1">
+                            <% if Erp::Core.available?("ortho_k") %>
+                                <div class="row">
+                                    <div class="col-md-4" style="border-left: solid 1px #ddd; padding-left: 20px">
+                                        <%= erp_form_control("file", {
+                                            name: 'import_file',
+                                            value: '',
+                                            text: '',
+                                            label: ('Nhập từ file (<a href="'+url_for('/backend/file/consignment_import.xlsx')+'" target="_blank">Tải mẫu</a>)').html_safe,
+                                        }) %>
+                                    </div>
+                                    <div class="col-md-1 mt-25 text-right" style="margin-top: 26px;">
+                                        <button class="btn btn-primary custom-form-submit" data-action="<%= erp_consignments.import_file_backend_consignments_path(id: consignment.id) %>">Tải file</button>
+                                    </div>
+                                </div>
+                                <hr>
+                            <% end %>
+                            
                             <%= erp_form_control("addableform", {
                                 type: 'table',
                                 add_button: t('.add_product'),
