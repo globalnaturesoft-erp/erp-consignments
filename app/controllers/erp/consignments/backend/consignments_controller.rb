@@ -126,7 +126,7 @@ module Erp
           
           respond_to do |format|
             format.xlsx {
-              response.headers['Content-Disposition'] = "attachment; filename='Danh-sach-ky-gui-va-cho-muon-u#{current_user.id}-t#{timestamp}.xlsx'"
+              response.headers['Content-Disposition'] = "attachment; filename=Danh-sach-ky-gui-va-cho-muon-u#{current_user.id}-t#{timestamp}.xlsx"
             }
           end
         end
@@ -157,7 +157,7 @@ module Erp
           
           respond_to do |format|
             format.xlsx {
-              response.headers['Content-Disposition'] = "attachment; filename='Danh-sach-tra-hang-ky-gui-u#{current_user.id}-t#{timestamp}.xlsx'"
+              response.headers['Content-Disposition'] = "attachment; filename=Danh-sach-tra-hang-ky-gui-u#{current_user.id}-t#{timestamp}.xlsx"
             }
           end
         end
