@@ -12,7 +12,15 @@
                                 placeholder: t('.choose_contact'),
                                 label: t('.contact'),
                                 url: erp_contacts.dataselect_backend_contacts_path(format: 'json',
-                                      contact_id: Erp::Contacts::Contact.get_main_contact.id),
+                                      contact_id: Erp::Contacts::Contact.get_main_contact.id,
+                                      is_customer: true,
+                                      contact_group_id: [Erp::Contacts::ContactGroup::GROUP_HOSPITAL,
+                                      Erp::Contacts::ContactGroup::GROUP_COMPANY,
+                                      Erp::Contacts::ContactGroup::GROUP_CLINIC,
+                                      Erp::Contacts::ContactGroup::GROUP_PHARMACY,
+                                      Erp::Contacts::ContactGroup::GROUP_RETAIL_CUSTOMER,
+                                      Erp::Contacts::ContactGroup::GROUP_STAFF]
+                                ),
                                 create: {
                                     url: erp_contacts.new_backend_contact_path,
                                     title: t('.create_contact'),
