@@ -155,6 +155,15 @@ module Erp::Consignments
 					query = query.where(warehouse_id: global_filter[:warehouse])
 				end
 			end
+      
+      # single keyword
+      if params[:keyword].present?
+				keyword = params[:keyword].strip.downcase
+				keyword.split(' ').each do |q|
+					q = q.strip
+					query = query.where('LOWER(erp_consignments_consignments.cache_search) LIKE ?', '%'+q+'%')
+				end
+			end
 
       return query
     end
@@ -366,6 +375,22 @@ module Erp::Consignments
 
 				self.code = str + sent_date.strftime("%m") + sent_date.strftime("%Y").last(2) + "-" + num.to_s.rjust(3, '0')
 			end
+		end
+    
+    # Update casche search
+    after_save :update_cache_search
+		def update_cache_search
+			str = []
+			str << consignment_code.to_s.downcase.strip
+			str << contact_name.to_s.downcase.strip
+			str << warehouse_name.to_s.downcase.strip
+			str << employee_name.to_s.downcase.strip
+			str << creator_name.to_s.downcase.strip
+			consignment_details.each do |cd|
+        str << cd.get_product_name.to_s.downcase.strip
+			end
+
+			self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").to_ascii)
 		end
   end
 end

@@ -70,19 +70,20 @@
 
 <%= erp_datalist(
     url: erp_consignments.list_backend_consignments_path,
-    keywords: [
-        {
-            text: t('.code'), name: 'erp_consignments_consignments.code'
-        },
-        {
-            text: t('creator'),
-            name: 'erp_users.name',
-            select: {
-                name: 'erp_users.id',
-                data_url: erp.dataselect_backend_users_path
-            }
-        }
-    ],
+    keyword: true,
+    #keywords: [
+    #    {
+    #        text: t('.code'), name: 'erp_consignments_consignments.code'
+    #    },
+    #    {
+    #        text: t('creator'),
+    #        name: 'erp_users.name',
+    #        select: {
+    #            name: 'erp_users.id',
+    #            data_url: erp.dataselect_backend_users_path
+    #        }
+    #    }
+    #],
     filters: [
         {
             text: t('.is_type_consign'), name: 'erp_consignments_consignments.consignment_type', value: 'consign', checked: false
