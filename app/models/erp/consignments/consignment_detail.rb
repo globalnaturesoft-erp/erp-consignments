@@ -40,6 +40,10 @@ module Erp::Consignments
 			def state_name
 				state.nil? ? '' : state.name
 			end
+
+      def return_status
+        remain_quantity == 0 ? 'Hàng trả xong' : 'Chưa trả xong'
+      end
     end
   end
 end
